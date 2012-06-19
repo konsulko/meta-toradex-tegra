@@ -1,26 +1,21 @@
-DESCRIPTION = "tegrastats, gives information about cpu use"
-LICENSE = "Nvidia propriatry"
-PR = "r1"
+DESCRIPTION = "NVIDIAS tegrastats in a commandline version and one with output to a gtk title bar, gives information about cpu use"
+LICENSE = "CLOSED"
+PR = "r2"
 
-PACKAGE_ARCH = "${MACHINE_ARCH}"
+SRC_URI =  "file://tegrastats \
+            file://tegrastats-gtk \
+	    file://Tegrastats-gtk.desktop "
 
-#SRC_URI =  "file://tegrastats \
-#            "
-
-S = "${WORKDIR}/target-utils/tegrastats"
-
-SVN_REV = "230"
-SRC_URI = "svn://tegradev:tegra123!@mammut.toradex.int:8090/colibri_tegra_linux/trunk;module=target-utils/tegrastats;rev=${SVN_REV};proto=http"
+S = "${WORKDIR}"
 
 PACKAGES = "${PN}"
 
-#FILES_${PN} = 
-
-do_compile() {
-	${CC} -DNV_IS_LDK=1 ${CFLAGS} ${CPPFLAGS} ${LDFLAGS} ${S}/main.c -o tegrastats
-}
-
 do_install() {
-	install -d ${D}/usr/bin
-	install -m 0755  ${S}/tegrastats  ${D}/usr/bin
+    install -d ${D}${bindir}/ ${D}/home/root/Desktop/
+    install -m 0755 ${S}/tegrastats* ${D}${bindir}/
+    install -m 0755 ${S}/Tegrastats-gtk.desktop ${D}/home/root/Desktop/
 }
+
+FILES_${PN} = " \
+	${bindir}/tegrastats* \
+	/home/root/Desktop/Tegra* "
