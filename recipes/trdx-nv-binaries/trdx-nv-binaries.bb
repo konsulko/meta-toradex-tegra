@@ -1,6 +1,6 @@
 DESCRIPTION = "binary files from Nvidia along with there configuration"
 LICENSE = "CLOSED"
-PR = "r3"
+PR = "r4"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
@@ -49,6 +49,7 @@ do_install_colibri-t20 () {
 	install -m 0644 ${WORKDIR}/mimeapps.list ${D}//home/root/.local/share/applications/
 	install -m 0644 ${WORKDIR}/nvgstplayer.desktop ${D}/home/root/.local/share/applications/
 	ln -s libpcre.so.0.0.1 ${D}/usr/lib/libpcre.so.3
+	ln -s libpcreposix.so.0.0.0 ${D}/usr/lib/libpcreposix.so.3
 	ln -s tegra_drv.abi11.so ${D}/usr/lib/xorg/modules/drivers/tegra_drv.so
 	ln -s libGLESv2.so ${D}/usr/lib//libGLESv2.so.2
 	ln -s libEGL.so ${D}/usr/lib/libEGL.so.1
