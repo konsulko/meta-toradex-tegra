@@ -48,4 +48,3 @@ diff -Naur nvsamples-1.0-r0.orig/nvsamples/make/nvdefs.mk nvsamples-1.0-r0/nvsam
  
  NV_CGDIR = $(NV_TOPDIR)/utils/Cg
  HEXIFY   = $(NV_CGDIR)/hexify.pl
-Datei nvsamples-1.0-r0.orig/pseudo/pseudo.socket ist ein socket wÀhrend Datei nvsamples-1.0-r0/pseudo/pseudo.socket ein socket ist.

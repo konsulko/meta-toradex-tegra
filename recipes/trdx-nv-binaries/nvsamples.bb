@@ -8,6 +8,8 @@ PR = "r0"
 
 SRC_URI = "http://developer.toradex.com/files/toradex-dev/uploads/media/Colibri/Linux/Samples/nvsamples.tar.bz2 \
 	   file://nvsamples-oe.patch \
+	   file://nvsamples-no-binary-shaders.patch \
+	   file://nvsamples-hardfp.patch \
 "
 
 S = "${WORKDIR}/nvsamples"
@@ -20,9 +22,20 @@ INSANE_SKIP_${PN} = "dev-so ldflags"
 
 FILES_${PN} += " \
         /home/root/textures/* \
+        /home/root/shaders/* \
 "
 
 do_compile () {
+	cd ${S}/samples/tools/nvtexfont2
+	oe_runmake clean
+	oe_runmake WORKDIR=${WORKDIR}
+	mv -f libnvtexfont2.a ${S}/lib-target/
+
+	cd ${S}/samples/tools/nvgl2demo_common
+	oe_runmake clean
+	oe_runmake WORKDIR=${WORKDIR}
+	mv -f libnvgl2demo_common.a ${S}/lib-target/
+
 	cd ${S}/samples/opengles2
 	oe_runmake clean
 	oe_runmake WORKDIR=${WORKDIR}
@@ -32,13 +45,18 @@ do_install () {
 # install the sample code
 	install -d ${D}${bindir}
 	install -d ${D}/home/root/textures
+	install -d ${D}/home/root/shaders
         install -m 0755 ${S}/samples/opengles2/ctree/ctree ${D}${bindir}
         install -m 0644 ${S}/samples/opengles2/ctree/textures/* ${D}/home/root/textures
+        install -m 0644 ${S}/samples/opengles2/ctree/*.glsl? ${D}/home/root/shaders
         install -m 0755 ${S}/samples/opengles2/bubble/bubble ${D}${bindir}
         install -m 0644 ${S}/samples/opengles2/bubble/textures/* ${D}/home/root/textures
+        install -m 0644 ${S}/samples/opengles2/bubble/*.glsl? ${D}/home/root/shaders
         install -m 0755 ${S}/samples/opengles2/gears/gears ${D}${bindir}
+        install -m 0644 ${S}/samples/opengles2/gears/*.glsl? ${D}/home/root/shaders
 
 # export OpenGL ES headers
+# maybe replace with http://www.khronos.org/registry/omxil/api/1.2.0/OpenMAX_IL_1_2_0_Header.zip, http://www.khronos.org/registry/khronos_headers.tgz
 	for dir in EGL GLES2 KD KHR OpenMAX/il OpenMAX/ilclient
 	do
 		install -d ${D}${includedir}/$dir 
