@@ -90,6 +90,7 @@ do_install_colibri-t20 () {
     install -m 0644 nvidia_drivers/lib/firmware/* ${D}/lib/firmware/
     install -m 0644 nvidia_drivers/opt/licenses/nvidia_drivers/* ${D}/opt/licenses/nvidia_drivers/
     install -m 0644 nvidia_drivers/usr/lib/*.so ${D}/usr/lib/
+    rm ${D}/usr/lib/libjpeg.so
     install -m 0644 nvidia_drivers/usr/lib/xorg/modules/drivers/* ${D}/usr/lib/xorg/modules/drivers/
     ln -s tegra_drv.abi11.so ${D}/usr/lib/xorg/modules/drivers/tegra_drv.so
     ln -s libGLESv2.so ${D}/usr/lib/libGLESv2.so.2
