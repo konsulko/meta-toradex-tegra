@@ -1,33 +1,42 @@
 DESCRIPTION = "binary files from Nvidia along with there configuration"
-LICENSE = "CLOSED"
-PR = "r6"
+LICENSE = "CLOSED SGI Khronos"
+PR = "r8"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-SRC_URI_colibri-t20 =  " \
-    file://ventana_Tegra-Linux-codecs-R16.1.0_armhf.tbz2 \
-    file://ventana_Tegra-Linux-R16.1.0_armhf.tbz2 \
+SRC_COMMON =  " \
     file://nvgstplayer.desktop \
     file://mimeapps.list \
+    https://www.khronos.org/registry/khronos_headers.tgz;name=gles-h \
+    https://www.khronos.org/registry/omxil/api/1.1.2/OpenMAX_IL_1_1_2_Header.zip;name=openmax-h;unpack=no \
+    file://egl.pc \
+    file://gles.pc \
+    file://glesv2.pc \
+"
+SRC_URI_colibri-t20 =  " \
+    file://ventana_Tegra-Linux-codecs-R16.2.0_armhf.tbz2 \
+    file://ventana_Tegra-Linux-R16.2.0_armhf.tbz2 \
+    ${SRC_COMMON} \
 "
 
-#base.tgz \
-#restricted_codecs.tbz2 \
-#nvgstapps.tgz \
-#mimeapps.list \
-#"
-
-SRC_URI_colibri-t30 =  "file://base.tgz \
-	file://x/tegra_drv.abi*.so \
-	file://restricted_codecs.tbz2 \
-	file://Tegra-Linux-nvgstplayerR15.alpha.1.0.tbz2 \
-	file://wifi.tbz2 \
-	file://xorg.conf \
-	file://mimeapps.list \
-	file://nvgstplayer.desktop \
+SRC_URI_colibri-t30 =  " \
+    file://cardhu_Tegra-Linux-codecs-R16.2.0_armhf.tbz2 \
+    file://cardhu_Tegra-Linux-R16.2.0_armhf.tbz2 \
+    ${SRC_COMMON} \
 "
 
-PACKAGES = "${PN}-restricted-codecs ${PN}-nv-gstapps ${PN}"
+SRC_URI[gles-h.md5sum] = "45806b48a2967f12f74d9e1e5e9fea29"
+SRC_URI[gles-h.sha256sum] = "0ef2ab3676f042ec9bab5d2761a15fbc58f237fedcbaea2884ff78975972cc47"
+
+SRC_URI[openmax-h.md5sum] = "f8ac8d7272abdbe1980eeac8d03338e8"
+SRC_URI[openmax-h.sha256sum] = "9e8aee85f37946202ff15a52836233f983e90a751c0816ba341ba0c1ffedf99e"
+#    https://www.khronos.org/registry/omxil/api/1.2.0/OpenMAX_IL_1_2.0_Header.zip;name=openmax-h;unpack=no \
+#SRC_URI[openmax-h.md5sum] = "a328b82e29d1e2abc1f20f070b9041a9"
+#SRC_URI[openmax-h.sha256sum] = "9a121921450497e5373abcda000daf52af2ee31097d59c0d299a522b66936fa7"
+
+LIC_FILES_CHKSUM = "file://../khronos_headers/GLES2/gl2.h;beginline=12;endline=15;md5=acbf6ad5edbe9552e8cc04776b0208fa"
+
+PACKAGES = "${PN}-restricted-codecs ${PN}-nv-gstapps ${PN} ${PN}-dev"
 
 FILES_${PN} += " \
     ${sysconfdir}/X11/def* \
@@ -55,7 +64,12 @@ FILES_${PN}-nv-gstapps += " \
 INSANE_SKIP_${PN} = "dev-so ldflags"
 INSANE_SKIP_${PN}-nv-gstapps = "dev-so ldflags"
 
-do_compile_colibri-t20() {
+do_patch () {
+    mkdir -p OpenMAX/il
+    unzip -d OpenMAX/il OpenMAX_IL_1_1_2_Header.zip
+}
+
+do_compile () {
     #unpack the different packages
     #nvidia drivers
     mkdir -p nvidia_drivers/opt/licenses/nvidia_drivers
@@ -74,10 +88,9 @@ do_compile_colibri-t20() {
     mkdir -p restricted_codecs/opt/licenses/restricted_codecs
     tar -C restricted_codecs -xjf ${WORKDIR}/restricted_codecs.tbz2
     cp ${WORKDIR}/*.txt restricted_codecs/opt/licenses/restricted_codecs/
-
 }
 
-do_install_colibri-t20 () {
+do_install () {
     #nvidia_driver
     install -d ${D}/usr/lib/xorg/modules/drivers ${D}/home/root/.local/share/applications/
     install -d ${D}/opt/licenses/nvidia_drivers ${D}/lib/firmware/
@@ -90,11 +103,19 @@ do_install_colibri-t20 () {
     install -m 0644 nvidia_drivers/lib/firmware/* ${D}/lib/firmware/
     install -m 0644 nvidia_drivers/opt/licenses/nvidia_drivers/* ${D}/opt/licenses/nvidia_drivers/
     install -m 0644 nvidia_drivers/usr/lib/*.so ${D}/usr/lib/
+    install -m 0644 nvidia_drivers/usr/lib/*.so.? ${D}/usr/lib/
     rm ${D}/usr/lib/libjpeg.so
     install -m 0644 nvidia_drivers/usr/lib/xorg/modules/drivers/* ${D}/usr/lib/xorg/modules/drivers/
     ln -s tegra_drv.abi11.so ${D}/usr/lib/xorg/modules/drivers/tegra_drv.so
-    ln -s libGLESv2.so ${D}/usr/lib/libGLESv2.so.2
-    ln -s libEGL.so ${D}/usr/lib/libEGL.so.1
+    export LIBNAME=`ls ${D}/usr/lib/libGLESv2.so.?`
+    export LIBNAME=`basename $LIBNAME`
+    ln -s $LIBNAME ${D}/usr/lib/libGLESv2.so
+    export LIBNAME=`ls ${D}/usr/lib/libEGL.so.?`
+    export LIBNAME=`basename $LIBNAME`
+    ln -s $LIBNAME ${D}/usr/lib/libEGL.so
+    export LIBNAME=`ls ${D}/usr/lib/libGLESv1_CM.so.?`
+    export LIBNAME=`basename $LIBNAME`
+    ln -s $LIBNAME ${D}/usr/lib/libGLESv1_CM.so
 
     #nvidia sample gstreamer apps
     install -d ${D}/usr/bin ${D}/usr/lib/gstreamer-0.10 ${D}/usr/share/doc/nv_gstapps
@@ -113,34 +134,17 @@ do_install_colibri-t20 () {
     install -d ${D}/opt/licenses/restricted_codecs ${D}/lib/firmware/
     install -m 0644 restricted_codecs/lib/firmware/* ${D}/lib/firmware/
     install -m 0644 restricted_codecs/opt/licenses/restricted_codecs/* ${D}/opt/licenses/restricted_codecs
-}
 
-do_install_colibri-t30 () {
-	#base.tgz, xorg driver, restricted codecs
-	install -d ${D} ${D}/${sysconfdir}/X11/ ${D}/lib/firmware/ ${D}/usr/lib/xorg/modules/drivers
-	install -m 0644 ${WORKDIR}/${sysconfdir}/X11/xorg.conf ${D}/${sysconfdir}/X11/xorg.conf.nvidia
-	install -m 0644 ${WORKDIR}/lib/firmware/nv* ${D}/lib/firmware/
-	install -m 0644 ${WORKDIR}/usr/lib/*.so ${D}/usr/lib/
-	install -m 0644 ${WORKDIR}/x/tegra_drv.abi5.so ${D}/usr/lib/xorg/modules/drivers/
-	install -m 0644 ${WORKDIR}/x/tegra_drv.abi6.so ${D}/usr/lib/xorg/modules/drivers/
-	install -m 0644 ${WORKDIR}/x/tegra_drv.abi7.so ${D}/usr/lib/xorg/modules/drivers/
-	install -m 0644 ${WORKDIR}/x/tegra_drv.abi8.so ${D}/usr/lib/xorg/modules/drivers/
-	install -m 0644 ${WORKDIR}/x/tegra_drv.abi10.so ${D}/usr/lib/xorg/modules/drivers/
-	install -m 0644 ${WORKDIR}/x/tegra_drv.abi11.so ${D}/usr/lib/xorg/modules/drivers/
-	ln -s tegra_drv.abi8.so ${D}/usr/lib/xorg/modules/drivers/tegra_drv.so
-	ln -s libGLESv2.so ${D}/usr/lib//libGLESv2.so.2
-	ln -s libEGL.so ${D}/usr/lib/libEGL.so.1
+    #khronos headers for EGL/GLES/GLES2/OpenMax
+    for dir in EGL GLES GLES2 KD KHR
+    do
+        install -d ${D}${includedir}/$dir 
+        install -m 0644 ${WORKDIR}/khronos_headers/$dir/* ${D}${includedir}/$dir
+    done
+    dir="OpenMAX/il"
+    install -d ${D}${includedir}/$dir
+    install -m 0644 ${WORKDIR}/$dir/* ${D}${includedir}/$dir
 
-	#nvgstplayer.tbz2
-	cd ${WORKDIR}; tar xjf nvgstplayer.tbz2; cd ${S}
-	install -d ${D}/usr/bin ${D}/usr/lib/gstreamer-0.10 ${D}/home/root/.local/share/applications/
-	install -m 0755 ${WORKDIR}/usr/bin/nvgstplayer ${D}/usr/bin/
-	install -m 0644 ${WORKDIR}/usr/lib/gstreamer-0.10/*.so ${D}/usr/lib/gstreamer-0.10/
-	install -m 0644 ${WORKDIR}/mimeapps.list ${D}//home/root/.local/share/applications/
-	install -m 0644 ${WORKDIR}/nvgstplayer.desktop ${D}/home/root/.local/share/applications/
-	ln -s libpcre.so.0.0.1 ${D}/usr/lib/libpcre.so.3
-
-	#wifi.tbz2
-	install -d ${D} ${D}/lib/firmware/bcm4329
-	install -m 0644 ${WORKDIR}/lib/firmware/bcm4329/* ${D}/lib/firmware/bcm4329
+    install -d  ${D}/usr/lib/pkgconfig
+    install -m 0644 ${WORKDIR}/*.pc ${D}/usr/lib/pkgconfig/
 }
