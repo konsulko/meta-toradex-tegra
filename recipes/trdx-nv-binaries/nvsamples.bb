@@ -4,7 +4,7 @@ LICENSE = "CLOSED"
 DEPENDS = "trdx-nv-binaries"
 RDEPENDS = "trdx-nv-binaries"
 
-PR = "r0"
+PR = "r1"
 
 SRC_URI = "http://developer.toradex.com/files/toradex-dev/uploads/media/Colibri/Linux/Samples/nvsamples.tar.bz2 \
 	   file://nvsamples-oe.patch \
@@ -54,12 +54,4 @@ do_install () {
         install -m 0644 ${S}/samples/opengles2/bubble/*.glsl? ${D}/home/root/shaders
         install -m 0755 ${S}/samples/opengles2/gears/gears ${D}${bindir}
         install -m 0644 ${S}/samples/opengles2/gears/*.glsl? ${D}/home/root/shaders
-
-# export OpenGL ES headers
-# maybe replace with http://www.khronos.org/registry/omxil/api/1.2.0/OpenMAX_IL_1_2_0_Header.zip, http://www.khronos.org/registry/khronos_headers.tgz
-	for dir in EGL GLES2 KD KHR OpenMAX/il OpenMAX/ilclient
-	do
-		install -d ${D}${includedir}/$dir 
-		install -m 0644 ${S}/include/$dir/* ${D}${includedir}/$dir
-	done
 }
