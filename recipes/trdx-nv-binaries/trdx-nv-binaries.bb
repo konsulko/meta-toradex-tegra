@@ -1,10 +1,11 @@
 DESCRIPTION = "binary files from Nvidia along with there configuration"
 LICENSE = "CLOSED SGI Khronos"
-PR = "r9"
+PR = "r10"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 LIC_DIR = "${datadir}/common-licenses"
+#gstnvvidconf.tar.bz2 will hopefully be integrated into the public L4T packages
 SRC_COMMON =  " \
     file://nvgstplayer.desktop \
     file://mimeapps.list \
@@ -13,6 +14,7 @@ SRC_COMMON =  " \
     file://egl.pc \
     file://gles.pc \
     file://glesv2.pc \
+    file://gstnvvidconf.tar.bz2 \
 "
 SRC_URI_colibri-t20 =  " \
     file://ventana_Tegra-Linux-codecs-R16.2.0_armhf.tbz2 \
