@@ -1,9 +1,10 @@
 DESCRIPTION = "binary files from Nvidia along with there configuration"
 LICENSE = "CLOSED SGI Khronos"
-PR = "r8"
+PR = "r9"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
+LIC_DIR = "${datadir}/common-licenses"
 SRC_COMMON =  " \
     file://nvgstplayer.desktop \
     file://mimeapps.list \
@@ -46,17 +47,18 @@ FILES_${PN} += " \
     ${sysconfdir}/init/nv* \
     ${sysconfdir}/init/wpa* \	
     /lib/firmware/* \
-    /opt/licenses/* \
+    ${LIC_DIR}/${PN}/* \
     /usr/lib/* \
     /home/root/.local/share/applications/* \
 "
 FILES_${PN}-restricted-codecs += " \
     /lib/firmware/*.axf \
-    /opt/licenses/restricted_codecs/* \
+    ${LIC_DIR}/${PN}-restricted-codecs/* \
 "
 FILES_${PN}-nv-gstapps += " \
     /usr/bin/* \
     /usr/share/doc/nv_gstapps/* \
+    ${LIC_DIR}/${PN}-nv-gstapps/* \
 "
 
 #no gnu_hash in NVIDIA binaries, skip QA dev-so for this package
@@ -72,28 +74,28 @@ do_patch () {
 do_compile () {
     #unpack the different packages
     #nvidia drivers
-    mkdir -p nvidia_drivers/opt/licenses/nvidia_drivers
+    mkdir -p nvidia_drivers${LIC_DIR}/${PN}/nvidia_drivers
     tar -C nvidia_drivers -xjf ${WORKDIR}/Linux_for_Tegra/nv_tegra/nvidia_drivers.tbz2
     tar -C nvidia_drivers -xjf ${WORKDIR}/Linux_for_Tegra/nv_tegra/config.tbz2
-    cp ${WORKDIR}/Linux_for_Tegra/nv_tegra/LICENSE nvidia_drivers/opt/licenses/nvidia_drivers/
+    cp ${WORKDIR}/Linux_for_Tegra/nv_tegra/LICENSE nvidia_drivers${LIC_DIR}/${PN}/nvidia_drivers/
 
     #nvidia sample gstreamer apps
-    mkdir -p nvgstapps/opt/licenses/nv_gstreamer
+    mkdir -p nvgstapps${LIC_DIR}/${PN}-nv-gstapps
     mkdir -p nvgstapps/usr/share/doc/nv_gstapps
     tar -C nvgstapps -xjf ${WORKDIR}/Linux_for_Tegra/nv_tegra/nv_sample_apps/nvgstapps.tbz2
-    cp ${WORKDIR}/Linux_for_Tegra/nv_tegra/nv_sample_apps/LICENSE* nvgstapps/opt/licenses/nv_gstreamer/
+    cp ${WORKDIR}/Linux_for_Tegra/nv_tegra/nv_sample_apps/LICENSE* nvgstapps${LIC_DIR}/${PN}-nv-gstapps/
     cp ${WORKDIR}/Linux_for_Tegra/nv_tegra/nv_sample_apps/nv*.txt nvgstapps/usr/share/doc/nv_gstapps/
 
     #restricted codecs
-    mkdir -p restricted_codecs/opt/licenses/restricted_codecs
+    mkdir -p restricted_codecs${LIC_DIR}/${PN}-restricted-codecs/
     tar -C restricted_codecs -xjf ${WORKDIR}/restricted_codecs.tbz2
-    cp ${WORKDIR}/*.txt restricted_codecs/opt/licenses/restricted_codecs/
+    cp ${WORKDIR}/*.txt restricted_codecs${LIC_DIR}/${PN}-restricted-codecs/
 }
 
 do_install () {
     #nvidia_driver
     install -d ${D}/usr/lib/xorg/modules/drivers ${D}/home/root/.local/share/applications/
-    install -d ${D}/opt/licenses/nvidia_drivers ${D}/lib/firmware/
+    install -d ${D}${LIC_DIR}/${PN}/nvidia_drivers ${D}/lib/firmware/
     install -d ${D}/${sysconfdir}/X11 ${D}/${sysconfdir}/init ${D}/${sysconfdir}/udev/rules.d
     install -m 0644 nvidia_drivers/${sysconfdir}/X11/xorg.conf ${D}/${sysconfdir}/X11/xorg.conf.nvidia
     install -m 0755 nvidia_drivers/${sysconfdir}/init/* ${D}/${sysconfdir}/init/
@@ -101,12 +103,13 @@ do_install () {
     install -m 0644 nvidia_drivers/${sysconfdir}/nv* ${D}/${sysconfdir}/
     install -m 0644 nvidia_drivers/${sysconfdir}/wpa* ${D}/${sysconfdir}/
     install -m 0644 nvidia_drivers/lib/firmware/* ${D}/lib/firmware/
-    install -m 0644 nvidia_drivers/opt/licenses/nvidia_drivers/* ${D}/opt/licenses/nvidia_drivers/
+    install -m 0644 nvidia_drivers${LIC_DIR}/${PN}/nvidia_drivers/* ${D}${LIC_DIR}/${PN}/nvidia_drivers/
     install -m 0644 nvidia_drivers/usr/lib/*.so ${D}/usr/lib/
     install -m 0644 nvidia_drivers/usr/lib/*.so.? ${D}/usr/lib/
     rm ${D}/usr/lib/libjpeg.so
     install -m 0644 nvidia_drivers/usr/lib/xorg/modules/drivers/* ${D}/usr/lib/xorg/modules/drivers/
     ln -s tegra_drv.abi11.so ${D}/usr/lib/xorg/modules/drivers/tegra_drv.so
+    # create symlink to the shared libs for development, *.so -> *.so.x
     export LIBNAME=`ls ${D}/usr/lib/libGLESv2.so.?`
     export LIBNAME=`basename $LIBNAME`
     ln -s $LIBNAME ${D}/usr/lib/libGLESv2.so
@@ -120,20 +123,20 @@ do_install () {
     #nvidia sample gstreamer apps
     install -d ${D}/usr/bin ${D}/usr/lib/gstreamer-0.10 ${D}/usr/share/doc/nv_gstapps
     install -d ${D}/usr/lib/xorg/modules/drivers ${D}/home/root/.local/share/applications/
-    install -d ${D}/opt/licenses/nv_gstreamer
+    install -d ${D}${LIC_DIR}/${PN}-nv-gstapps/
     install -m 0755 nvgstapps/usr/bin/* ${D}/usr/bin/
     install -m 0644 nvgstapps/usr/lib/gstreamer-0.10/*.so ${D}/usr/lib/gstreamer-0.10/
     install -m 0644 nvgstapps/usr/share/doc/nv_gstapps/* ${D}/usr/share/doc/nv_gstapps/
-    install -m 0644 nvgstapps/opt/licenses/nv_gstreamer/* ${D}/opt/licenses/nv_gstreamer
+    install -m 0644 nvgstapps${LIC_DIR}/${PN}-nv-gstapps/* ${D}${LIC_DIR}/${PN}-nv-gstapps/
     install -m 0644 ${WORKDIR}/nvgstplayer.desktop ${D}/home/root/.local/share/applications/
     install -m 0644 ${WORKDIR}/mimeapps.list ${D}//home/root/.local/share/applications/
     ln -s libpcre.so.1.0.1 ${D}/usr/lib/libpcre.so.3
     ln -s libpcreposix.so.0.0.1 ${D}/usr/lib/libpcreposix.so.3
 
     #nvidia restricted codecs
-    install -d ${D}/opt/licenses/restricted_codecs ${D}/lib/firmware/
+    install -d ${D}${LIC_DIR}/${PN}-restricted-codecs ${D}/lib/firmware/
     install -m 0644 restricted_codecs/lib/firmware/* ${D}/lib/firmware/
-    install -m 0644 restricted_codecs/opt/licenses/restricted_codecs/* ${D}/opt/licenses/restricted_codecs
+    install -m 0644 restricted_codecs${LIC_DIR}/${PN}-restricted-codecs/* ${D}${LIC_DIR}/${PN}-restricted-codecs/
 
     #khronos headers for EGL/GLES/GLES2/OpenMax
     for dir in EGL GLES GLES2 KD KHR
