@@ -1,6 +1,6 @@
 DESCRIPTION = "binary files from Nvidia along with there configuration"
 LICENSE = "CLOSED SGI Khronos"
-PR = "r10"
+PR = "r11"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
@@ -14,17 +14,25 @@ SRC_COMMON =  " \
     file://egl.pc \
     file://gles.pc \
     file://glesv2.pc \
-    file://gstnvvidconf.tar.bz2 \
 "
 SRC_URI_colibri-t20 =  " \
     file://ventana_Tegra-Linux-codecs-R16.2.0_armhf.tbz2 \
     file://ventana_Tegra-Linux-R16.2.0_armhf.tbz2 \
+    file://gstnvvidconf.tar.bz2 \
     ${SRC_COMMON} \
 "
 
 SRC_URI_colibri-t30 =  " \
-    file://cardhu_Tegra-Linux-codecs-R16.2.0_armhf.tbz2 \
-    file://cardhu_Tegra-Linux-R16.2.0_armhf.tbz2 \
+    file://t30/cardhu_Tegra-Linux-codecs-R16.2.0_armhf.tbz2 \
+    file://t30/cardhu_Tegra-Linux-R16.2.0_armhf.tbz2 \
+    file://t30/gstnvvidconf.tar.bz2 \
+    ${SRC_COMMON} \
+"
+
+SRC_URI_apalis-t30 =  " \
+    file://t30/cardhu_Tegra-Linux-codecs-R16.2.0_armhf.tbz2 \
+    file://t30/cardhu_Tegra-Linux-R16.2.0_armhf.tbz2 \
+    file://t30/gstnvvidconf.tar.bz2 \
     ${SRC_COMMON} \
 "
 
