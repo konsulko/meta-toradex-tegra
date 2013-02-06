@@ -8,6 +8,7 @@ LIC_DIR = "${datadir}/common-licenses"
 #gstnvvidconf.tar.bz2 will hopefully be integrated into the public L4T packages
 SRC_COMMON =  " \
     file://nvgstplayer.desktop \
+    file://aplay.desktop \
     file://mimeapps.list \
     https://www.khronos.org/registry/khronos_headers.tgz;name=gles-h \
     https://www.khronos.org/registry/omxil/api/1.1.2/OpenMAX_IL_1_1_2_Header.zip;name=openmax-h;unpack=no \
@@ -138,7 +139,7 @@ do_install () {
     install -m 0644 nvgstapps/usr/lib/gstreamer-0.10/*.so ${D}/usr/lib/gstreamer-0.10/
     install -m 0644 nvgstapps/usr/share/doc/nv_gstapps/* ${D}/usr/share/doc/nv_gstapps/
     install -m 0644 nvgstapps${LIC_DIR}/${PN}-nv-gstapps/* ${D}${LIC_DIR}/${PN}-nv-gstapps/
-    install -m 0644 ${WORKDIR}/nvgstplayer.desktop ${D}/home/root/.local/share/applications/
+    install -m 0644 ${WORKDIR}/*.desktop ${D}/home/root/.local/share/applications/
     install -m 0644 ${WORKDIR}/mimeapps.list ${D}//home/root/.local/share/applications/
     ln -s libpcre.so.1.0.1 ${D}/usr/lib/libpcre.so.3
     ln -s libpcreposix.so.0.0.1 ${D}/usr/lib/libpcreposix.so.3
