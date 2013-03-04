@@ -1,8 +1,8 @@
 diff --git a/arch/arm/mach-tegra/board-apalis_t30-panel.c b/arch/arm/mach-tegra/board-apalis_t30-panel.c
-index 0462411..8097b7d 100644
+index f8f0672..5d4af1f 100644
 --- a/arch/arm/mach-tegra/board-apalis_t30-panel.c
 +++ b/arch/arm/mach-tegra/board-apalis_t30-panel.c
-@@ -259,6 +259,7 @@ static struct tegra_dc_mode apalis_t30_panel_modes[] = {
+@@ -260,6 +260,7 @@ static struct tegra_dc_mode apalis_t30_panel_modes[] = {
  		.v_front_porch	= 10,		/* lower_margin */
  	},
  #else /* TEGRA_FB_VGA */
@@ -10,15 +10,15 @@ index 0462411..8097b7d 100644
  	{
  		/* 800x480@60 (e.g. EDT ET070080DH6) */
  		.pclk		= 32460000,
-@@ -396,6 +397,7 @@ static struct tegra_dc_mode apalis_t30_panel_modes[] = {
+@@ -410,6 +411,7 @@ static struct tegra_dc_mode apalis_t30_panel_modes[] = {
  		.v_front_porch	= 1,
  //high active vertical sync polarity
  	},
 +#endif	
  	{
- 		/* 1920x1080p 59.94/60hz EIA/CEA-861-B Format 16 */
- 		.pclk		= 148500000,
-@@ -476,8 +478,8 @@ static struct tegra_fb_data apalis_t30_fb_data = {
+ 		/* LG LP156WF1 15.6 inch full HD dual channel LVDS panel */
+ 		.pclk		= 138500000,
+@@ -503,8 +505,8 @@ static struct tegra_fb_data apalis_t30_fb_data = {
  	.xres		= 640,
  	.yres		= 480,
  #else /* TEGRA_FB_VGA */
@@ -29,7 +29,7 @@ index 0462411..8097b7d 100644
  #endif /* TEGRA_FB_VGA */
  	.bits_per_pixel	= 16,
  	.flags		= TEGRA_FB_FLIP_ON_PROBE,
-@@ -485,8 +487,8 @@ static struct tegra_fb_data apalis_t30_fb_data = {
+@@ -512,8 +514,8 @@ static struct tegra_fb_data apalis_t30_fb_data = {
  
  static struct tegra_fb_data apalis_t30_hdmi_fb_data = {
  	.win		= 0,
