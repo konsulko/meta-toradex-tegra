@@ -138,8 +138,8 @@ do_install () {
     install -m 0644 nvgstapps${LIC_DIR}/${PN}-nv-gstapps/* ${D}${LIC_DIR}/${PN}-nv-gstapps/
     install -m 0644 ${WORKDIR}/*.desktop ${D}/home/root/.local/share/applications/
     install -m 0644 ${WORKDIR}/mimeapps.list ${D}//home/root/.local/share/applications/
-    ln -s libpcre.so.1.0.1 ${D}/usr/lib/libpcre.so.3
-    ln -s libpcreposix.so.0.0.1 ${D}/usr/lib/libpcreposix.so.3
+    ln -s libpcre.so.1 ${D}/usr/lib/libpcre.so.3
+    ln -s libpcreposix.so.0 ${D}/usr/lib/libpcreposix.so.3
 
     #nvidia restricted codecs
     install -d ${D}${LIC_DIR}/${PN}-restricted-codecs ${D}/lib/firmware/
