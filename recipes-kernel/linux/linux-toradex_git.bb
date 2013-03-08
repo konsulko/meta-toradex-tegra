@@ -43,3 +43,22 @@ do_configure_prepend () {
     #maybe change some configuration
     config_script 
 }
+
+kernel_do_compile() {
+	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MACHINE
+        export CC=`echo "${KERNEL_CC}" | sed 's/-mfloat-abi=hard//g'`
+	oe_runmake ${KERNEL_IMAGETYPE_FOR_MAKE} ${KERNEL_ALT_IMAGETYPE} LD="${KERNEL_LD}"
+	if test "${KERNEL_IMAGETYPE_FOR_MAKE}.gz" = "${KERNEL_IMAGETYPE}"; then
+		gzip -9c < "${KERNEL_IMAGETYPE_FOR_MAKE}" > "${KERNEL_OUTPUT}"
+	fi
+}
+
+do_compile_kernelmodules() {
+	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MACHINE
+        export CC=`echo "${KERNEL_CC}" | sed 's/-mfloat-abi=hard//g'`
+	if (grep -q -i -e '^CONFIG_MODULES=y$' .config); then
+		oe_runmake ${PARALLEL_MAKE} modules LD="${KERNEL_LD}"
+	else
+		bbnote "no modules to compile"
+	fi
+}
