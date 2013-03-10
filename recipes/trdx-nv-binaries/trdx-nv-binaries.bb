@@ -45,8 +45,11 @@ SRC_URI[openmax-h.sha256sum] = "9e8aee85f37946202ff15a52836233f983e90a751c0816ba
 
 LIC_FILES_CHKSUM = "file://../khronos_headers/GLES2/gl2.h;beginline=12;endline=15;md5=acbf6ad5edbe9552e8cc04776b0208fa"
 
-PACKAGES = "${PN}-restricted-codecs ${PN}-nv-gstapps ${PN} ${PN}-dev"
+PACKAGES = "${PN}-dbg ${PN}-restricted-codecs ${PN}-nv-gstapps ${PN} ${PN}-dev"
 
+FILES_${PN}-dbg += " \
+    /usr/lib/gstreamer-0.10/.debug \
+"
 FILES_${PN} += " \
     ${sysconfdir}/X11/def* \
     ${sysconfdir}/X11/xorg.conf.* \
@@ -109,14 +112,14 @@ do_install () {
     install -m 0755 nvidia_drivers/${sysconfdir}/init/* ${D}/${sysconfdir}/init/
     install -m 0644 nvidia_drivers/${sysconfdir}/udev/rules.d/* ${D}/${sysconfdir}/udev/rules.d/
     install -m 0644 nvidia_drivers/${sysconfdir}/nv* ${D}/${sysconfdir}/
-    install -m 0644 nvidia_drivers/${sysconfdir}/wpa* ${D}/${sysconfdir}/
+    install -m 0644 nvidia_drivers/${sysconfdir}/wpa_supplicant.conf ${D}/${sysconfdir}/wpa_supplicant.conf.nvidia
     install -m 0644 nvidia_drivers/lib/firmware/* ${D}/lib/firmware/
     install -m 0644 nvidia_drivers${LIC_DIR}/${PN}/nvidia_drivers/* ${D}${LIC_DIR}/${PN}/nvidia_drivers/
     install -m 0644 nvidia_drivers/usr/lib/*.so ${D}/usr/lib/
     install -m 0644 nvidia_drivers/usr/lib/*.so.? ${D}/usr/lib/
     rm ${D}/usr/lib/libjpeg.so
     install -m 0644 nvidia_drivers/usr/lib/xorg/modules/drivers/* ${D}/usr/lib/xorg/modules/drivers/
-    ln -s tegra_drv.abi11.so ${D}/usr/lib/xorg/modules/drivers/tegra_drv.so
+    ln -s tegra_drv.abi13.so ${D}/usr/lib/xorg/modules/drivers/tegra_drv.so
     # create symlink to the shared libs for development, *.so -> *.so.x
     export LIBNAME=`ls ${D}/usr/lib/libGLESv2.so.?`
     export LIBNAME=`basename $LIBNAME`
