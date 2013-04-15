@@ -2,7 +2,7 @@ SECTION = "graphical/utils"
 DESCRIPTION = "Nvidia samples for OpenGL ES, OpenGL ES  headers"
 LICENSE = "CLOSED"
 DEPENDS = "trdx-nv-binaries"
-RDEPENDS = "trdx-nv-binaries"
+RDEPENDS_{PN} = "trdx-nv-binaries"
 
 PR = "r1"
 
