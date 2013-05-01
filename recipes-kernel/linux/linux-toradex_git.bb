@@ -9,7 +9,7 @@ SRCREV_colibri-t30 = "fa2371bff9ac03581881849d8f95678ef3992719"
 PR_colibri-t30 = "V2.0b1"
 SRCREV_apalis-t30 = "eb880f7c9a3cf7c6ce440c662c84449840e0b64b"
 PR_apalis-t30 = "V2.0a0"
-SRCREV_colibri-pxa = "fa2371bff9ac03581881849d8f95678ef3992719"
+SRCREV_colibri-pxa = "64898e54084445317383ecbe125dc14c0ee729d0"
 PR_colibri-pxa = "V2.0a0"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
