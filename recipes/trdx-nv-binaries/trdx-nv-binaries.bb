@@ -1,6 +1,6 @@
 DESCRIPTION = "binary files from Nvidia along with there configuration"
 LICENSE = "CLOSED SGI Khronos"
-PR = "r11"
+PR = "r12"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
@@ -17,23 +17,20 @@ SRC_COMMON =  " \
     file://glesv2.pc \
 "
 SRC_URI_colibri-t20 =  " \
-    file://ventana_Tegra-Linux-codecs-R16.2.0_armhf.tbz2 \
-    file://ventana_Tegra-Linux-R16.2.0_armhf.tbz2 \
-    file://gstnvvidconf.tar.bz2 \
+    file://ventana_Tegra-Linux-codecs-R16.3.0_armhf.tbz2 \
+    file://ventana_Tegra-Linux-R16.3.0_armhf.tbz2 \
     ${SRC_COMMON} \
 "
 
 SRC_URI_colibri-t30 =  " \
-    file://t30/cardhu_Tegra-Linux-codecs-R16.2.0_armhf.tbz2 \
-    file://t30/cardhu_Tegra-Linux-R16.2.0_armhf.tbz2 \
-    file://t30/gstnvvidconf.tar.bz2 \
+    file://t30/cardhu_Tegra-Linux-codecs-R16.3.0_armhf.tbz2 \
+    file://t30/cardhu_Tegra-Linux-R16.3.0_armhf.tbz2 \
     ${SRC_COMMON} \
 "
 
 SRC_URI_apalis-t30 =  " \
-    file://t30/cardhu_Tegra-Linux-codecs-R16.2.0_armhf.tbz2 \
-    file://t30/cardhu_Tegra-Linux-R16.2.0_armhf.tbz2 \
-    file://t30/gstnvvidconf.tar.bz2 \
+    file://t30/cardhu_Tegra-Linux-codecs-R16.3.0_armhf.tbz2 \
+    file://t30/cardhu_Tegra-Linux-R16.3.0_armhf.tbz2 \
     ${SRC_COMMON} \
 "
 
