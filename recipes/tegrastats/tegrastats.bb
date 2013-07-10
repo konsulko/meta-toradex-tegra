@@ -1,6 +1,6 @@
 DESCRIPTION = "NVIDIAS tegrastats in a commandline version and one with output to a gtk title bar, gives information about cpu use"
 LICENSE = "CLOSED"
-PR = "r2"
+PR = "r3"
 
 SRC_URI =  "file://tegrastats \
             file://tegrastats-gtk \
