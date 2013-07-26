@@ -10,6 +10,9 @@ S = "${WORKDIR}"
 
 PACKAGES = "${PN}"
 
+# Inhibit warnings about files being stripped.
+INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
+
 do_install() {
     install -d ${D}${bindir}/ ${D}/home/root/Desktop/
     install -m 0755 ${S}/tegrastats* ${D}${bindir}/
