@@ -1,6 +1,6 @@
 DESCRIPTION = "binary files from Nvidia along with there configuration"
 LICENSE = "CLOSED SGI Khronos"
-PR = "r12"
+PR = "r13"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
@@ -34,8 +34,8 @@ SRC_URI_apalis-t30 =  " \
     ${SRC_COMMON} \
 "
 
-SRC_URI[gles-h.md5sum] = "45806b48a2967f12f74d9e1e5e9fea29"
-SRC_URI[gles-h.sha256sum] = "0ef2ab3676f042ec9bab5d2761a15fbc58f237fedcbaea2884ff78975972cc47"
+SRC_URI[gles-h.md5sum] = "b564caef8b776709a112754f7e9603af"
+SRC_URI[gles-h.sha256sum] = "d8dbe2005d5312faf41c28f2b6de7e806f96cb3d3e269d80c95e4bda6d2c5526"
 
 SRC_URI[openmax-h.md5sum] = "f8ac8d7272abdbe1980eeac8d03338e8"
 SRC_URI[openmax-h.sha256sum] = "9e8aee85f37946202ff15a52836233f983e90a751c0816ba341ba0c1ffedf99e"
