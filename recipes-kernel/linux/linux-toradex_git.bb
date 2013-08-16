@@ -3,14 +3,14 @@ require recipes-kernel/linux/linux.inc
 
 LINUX_VERSION ?= "3.1.10"
 
-SRCREV_colibri-t20 = "fa2371bff9ac03581881849d8f95678ef3992719"
-PR_colibri-t20 = "V2.0"
-SRCREV_colibri-t30 = "304fae6e8872c4b9d694900c5cef91abdbc81c7e"
-PR_colibri-t30 = "V2.0b3"
-SRCREV_apalis-t30 = "304fae6e8872c4b9d694900c5cef91abdbc81c7e"
-PR_apalis-t30 = "V2.0b2"
-SRCREV_colibri-pxa = "61a50f833622ce901054b32c332c4e168ced4c98"
-PR_colibri-pxa = "V2.0a1"
+SRCREV_colibri-t20 = "35412b809534b5fe6572b6c14949594b8053bc84"
+PR_colibri-t20 = "V2.1a1"
+SRCREV_colibri-t30 = "35412b809534b5fe6572b6c14949594b8053bc84e"
+PR_colibri-t30 = "V2.1a1"
+SRCREV_apalis-t30 = "35412b809534b5fe6572b6c14949594b8053bc84"
+PR_apalis-t30 = "V2.1a1"
+SRCREV_colibri-pxa = "35412b809534b5fe6572b6c14949594b8053bc84"
+PR_colibri-pxa = "V2.1a1"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"
