@@ -1,8 +1,11 @@
 DESCRIPTION = "binary files from Nvidia along with there configuration"
 LICENSE = "CLOSED SGI Khronos"
-PR = "r14"
+PR = "r15"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
+COMPATIBLE_MACHINE = "(tegra)"
+
+PROVIDES += "virtual/egl virtual/libgles1 virtual/libgles2"
 
 LIC_DIR = "${datadir}/common-licenses"
 #gstnvvidconf.tar.bz2 will hopefully be integrated into the public L4T packages
@@ -16,21 +19,14 @@ SRC_COMMON =  " \
     file://gles.pc \
     file://glesv2.pc \
 "
-SRC_URI_colibri-t20 =  " \
+SRC_URI_tegra2 =  " \
     file://ventana_Tegra-Linux-codecs-R16.3.0_armhf.tbz2 \
     file://ventana_Tegra-Linux-R16.3.0_armhf.tbz2 \
     file://ventana_Tegra-Linux-tegra_drv_abi14-R16.3.0_armhf.tbz2 \
     ${SRC_COMMON} \
 "
 
-SRC_URI_colibri-t30 =  " \
-    file://t30/cardhu_Tegra-Linux-codecs-R16.3.0_armhf.tbz2 \
-    file://t30/cardhu_Tegra-Linux-R16.3.0_armhf.tbz2 \
-    file://t30/cardhu_Tegra-Linux-tegra_drv_abi14-R16.3.0_armhf.tbz2 \
-    ${SRC_COMMON} \
-"
-
-SRC_URI_apalis-t30 =  " \
+SRC_URI_tegra3 =  " \
     file://t30/cardhu_Tegra-Linux-codecs-R16.3.0_armhf.tbz2 \
     file://t30/cardhu_Tegra-Linux-R16.3.0_armhf.tbz2 \
     file://t30/cardhu_Tegra-Linux-tegra_drv_abi14-R16.3.0_armhf.tbz2 \
