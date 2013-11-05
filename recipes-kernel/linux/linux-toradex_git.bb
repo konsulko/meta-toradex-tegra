@@ -36,7 +36,7 @@ config_script () {
 do_configure_prepend () {
     #use the defconfig provided in the kernel source tree
     #assume its called ${MACHINE}_defconfig, but with '_' instead of '-'
-    DEFCONFIG=`echo ${MACHINE} | sed -e 's/\-/\_/g' -e 's/$/_defconfig/'`
+    DEFCONFIG="`echo ${MACHINE} | sed -e 's/\-/\_/g' -e 's/$/_defconfig/'`"
 
     oe_runmake $DEFCONFIG
 
@@ -46,7 +46,7 @@ do_configure_prepend () {
 
 kernel_do_compile() {
 	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MACHINE
-        export CC=`echo "${KERNEL_CC}" | sed 's/-mfloat-abi=hard//g'`
+        export CC="`echo "${KERNEL_CC}" | sed 's/-mfloat-abi=hard//g'`"
 	oe_runmake ${KERNEL_IMAGETYPE_FOR_MAKE} ${KERNEL_ALT_IMAGETYPE} LD="${KERNEL_LD}"
 	if test "${KERNEL_IMAGETYPE_FOR_MAKE}.gz" = "${KERNEL_IMAGETYPE}"; then
 		gzip -9c < "${KERNEL_IMAGETYPE_FOR_MAKE}" > "${KERNEL_OUTPUT}"
@@ -55,7 +55,7 @@ kernel_do_compile() {
 
 do_compile_kernelmodules() {
 	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MACHINE
-        export CC=`echo "${KERNEL_CC}" | sed 's/-mfloat-abi=hard//g'`
+        export CC="`echo "${KERNEL_CC}" | sed 's/-mfloat-abi=hard//g'`"
 	if (grep -q -i -e '^CONFIG_MODULES=y$' .config); then
 		oe_runmake ${PARALLEL_MAKE} modules LD="${KERNEL_LD}"
 	else
