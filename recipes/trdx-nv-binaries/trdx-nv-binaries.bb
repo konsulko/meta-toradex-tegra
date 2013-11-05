@@ -33,8 +33,8 @@ SRC_URI_tegra3 =  " \
     ${SRC_COMMON} \
 "
 
-SRC_URI[gles-h.md5sum] = "b564caef8b776709a112754f7e9603af"
-SRC_URI[gles-h.sha256sum] = "d8dbe2005d5312faf41c28f2b6de7e806f96cb3d3e269d80c95e4bda6d2c5526"
+SRC_URI[gles-h.md5sum] = "56ad0e432eb56ba3ff058595eda7fa52"
+SRC_URI[gles-h.sha256sum] = "0e5a8df9fc34cfe88a76d1796e3b5f7384139448a07f2f8819f3f2ebbcdb223e"
 
 SRC_URI[openmax-h.md5sum] = "f8ac8d7272abdbe1980eeac8d03338e8"
 SRC_URI[openmax-h.sha256sum] = "9e8aee85f37946202ff15a52836233f983e90a751c0816ba341ba0c1ffedf99e"
@@ -45,7 +45,7 @@ SRC_URI[openmax-h.sha256sum] = "9e8aee85f37946202ff15a52836233f983e90a751c0816ba
 # xserver-xorg driver ABI version to be used by the symlink, must match the required ABI version from the used xserver
 XSERVER_DRIVER_ABI_REQUIRED = "14"
 
-LIC_FILES_CHKSUM = "file://../khronos_headers/GLES2/gl2.h;beginline=12;endline=15;md5=acbf6ad5edbe9552e8cc04776b0208fa"
+LIC_FILES_CHKSUM = "file://../khronos_headers/GLES2/gl2.h;beginline=8;endline=29;md5=c0e8cc16602f8077310fb00bbf128ef6"
 
 PACKAGES = "${PN}-dbg ${PN}-restricted-codecs ${PN}-nv-gstapps ${PN} ${PN}-dev"
 
