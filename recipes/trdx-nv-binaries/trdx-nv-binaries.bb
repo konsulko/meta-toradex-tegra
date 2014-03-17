@@ -1,6 +1,6 @@
 DESCRIPTION = "binary files from Nvidia along with there configuration"
 LICENSE = "CLOSED SGI Khronos"
-PR = "r15"
+PR = "r16"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "(tegra)"
@@ -20,16 +20,14 @@ SRC_COMMON =  " \
     file://glesv2.pc \
 "
 SRC_URI_tegra2 =  " \
-    file://ventana_Tegra-Linux-codecs-R16.3.0_armhf.tbz2 \
-    file://ventana_Tegra-Linux-R16.3.0_armhf.tbz2 \
-    file://ventana_Tegra-Linux-tegra_drv_abi14-R16.3.0_armhf.tbz2 \
+    file://ventana_Tegra-Linux-codecs-R16.4.0_armhf.tbz2 \
+    file://ventana_Tegra-Linux-R16.4.0_armhf.tbz2 \
     ${SRC_COMMON} \
 "
 
 SRC_URI_tegra3 =  " \
-    file://t30/cardhu_Tegra-Linux-codecs-R16.3.0_armhf.tbz2 \
-    file://t30/cardhu_Tegra-Linux-R16.3.0_armhf.tbz2 \
-    file://t30/cardhu_Tegra-Linux-tegra_drv_abi14-R16.3.0_armhf.tbz2 \
+    file://cardhu_Tegra-Linux-codecs-R16.4.0_armhf.tbz2 \
+    file://cardhu_Tegra-Linux-R16.4.0_armhf.tbz2 \
     ${SRC_COMMON} \
 "
 
@@ -95,8 +93,6 @@ do_compile () {
     mkdir -p nvidia_drivers${LIC_DIR}/${PN}/nvidia_drivers
     tar -C nvidia_drivers -xjf ${WORKDIR}/Linux_for_Tegra/nv_tegra/nvidia_drivers.tbz2
     tar -C nvidia_drivers -xjf ${WORKDIR}/Linux_for_Tegra/nv_tegra/config.tbz2
-    #R16.3 separate xdriver abi version 14
-    tar -C nvidia_drivers -xjf ${WORKDIR}/tegra_drv_abi_14.tbz2
     cp ${WORKDIR}/Linux_for_Tegra/nv_tegra/LICENSE nvidia_drivers${LIC_DIR}/${PN}/nvidia_drivers/
 
     #nvidia sample gstreamer apps
