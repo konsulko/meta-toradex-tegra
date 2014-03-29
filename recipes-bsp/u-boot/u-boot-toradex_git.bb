@@ -1,9 +1,11 @@
-# Extends the core u-boot recipe 
-# to take the u-boot sources including the colibri stuff from our git repository
-PR ="r7"
+require recipes-bsp/u-boot/u-boot.inc
+
+PROVIDES = "u-boot"
 DEPENDS += "dtc-native"
- 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+
+LICENSE = "GPLv2+"
+LIC_FILES_CHKSUM = "file://COPYING;md5=1707d6db1d42237583f50183a5651ecb \
+                    file://README;beginline=1;endline=22;md5=5ba4218ac89af7846802d0348df3fb90"
 
 COMPATIBLE_MACHINE_colibri-t20 = "colibri-t20"
 COMPATIBLE_MACHINE_colibri-t30 = "colibri-t30"
@@ -16,7 +18,8 @@ DEFAULT_PREFERENCE_apalis-t30 = "1"
 FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
 SRC_URI_COLIBRI =  "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=colibri"
-#SRC_URI_COLIBRI += "file://u-boot-dont-build-standalone.patch"
+SRC_URI_COLIBRI += "file://u-boot-dont-build-standalone.patch"
+# This revision is based on upstream "v2011.06"
 SRCREV_COLIBRI = "ccd521c4681a5850bbec1feec140eeaec33936b0"
 
 PV_colibri-t20 = "${PR}+gitr${SRCREV}"
@@ -51,3 +54,5 @@ do_compile_append_colibri-t20() {
 
 #do_install_append() {
 #}
+
+PACKAGE_ARCH = "${MACHINE_ARCH}"
