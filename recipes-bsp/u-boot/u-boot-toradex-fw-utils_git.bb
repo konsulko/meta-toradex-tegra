@@ -1,11 +1,10 @@
-require recipes-bsp/u-boot/u-boot.inc
-
-PROVIDES = "u-boot"
-DEPENDS += "dtc-native"
-
+DESCRIPTION = "U-boot bootloader fw_printenv/setenv utils"
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://COPYING;md5=1707d6db1d42237583f50183a5651ecb \
                     file://README;beginline=1;endline=22;md5=5ba4218ac89af7846802d0348df3fb90"
+SECTION = "bootloader"
+PROVIDES = "u-boot-fw-utils"
+DEPENDS = "mtd-utils"
 
 COMPATIBLE_MACHINE = "(colibri-t20|colibri-t30|apalis-t30)"
 
@@ -32,25 +31,21 @@ SRCREV_colibri-t20 = "${SRCREV_COLIBRI}"
 SRCREV_colibri-t30 = "${SRCREV_COLIBRI}"
 SRCREV_apalis-t30 = "${SRCREV_COLIBRI}"
 
-# override the solution passed in from u-boot.inc as we want to set additional flags
-EXTRA_OEMAKE_colibri-t20 = "CROSS_COMPILE=${TARGET_PREFIX}"
-EXTRA_OEMAKE_colibri-t30 = "CROSS_COMPILE=${TARGET_PREFIX}"
-EXTRA_OEMAKE_apalis-t30 = "CROSS_COMPILE=${TARGET_PREFIX}"
+S = "${WORKDIR}/git"
 
-# colibri-t20: build additionally a u-boot binary which uses/stores its environment on an T20 external sd or mmc card
-SPL_BINARY_colibri-t20  = "u-boot-hsmmc.bin"
-SPL_IMAGE_colibri-t20   = "u-boot-hsmmc-${MACHINE}-${PV}-${PR}.bin"
-SPL_SYMLINK_colibri-t20 = "u-boot-hsmmc-${MACHINE}.bin"
-do_compile_append_colibri-t20() {
-    # keep u-boot-nand
-    mv u-boot.bin u-boot-nand.bin
-    oe_runmake colibri_t20_sdboot_config
-    oe_runmake ${UBOOT_MAKE_TARGET}
-    mv u-boot.bin u-boot-hsmmc.bin
-    mv u-boot-nand.bin u-boot.bin
+EXTRA_OEMAKE = 'HOSTCC="${CC}" HOSTSTRIP="true"'
+
+inherit uboot-config
+
+do_compile () {
+  oe_runmake ${UBOOT_MACHINE}
+  oe_runmake env
 }
 
-#do_install_append() {
-#}
+do_install () {
+  install -d ${D}${base_sbindir}
+  install -m 755 ${S}/tools/env/fw_printenv ${D}${base_sbindir}/fw_printenv
+  install -m 755 ${S}/tools/env/fw_printenv ${D}${base_sbindir}/fw_setenv
+}
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
