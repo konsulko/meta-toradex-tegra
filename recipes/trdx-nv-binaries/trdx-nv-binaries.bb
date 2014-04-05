@@ -1,19 +1,23 @@
 DESCRIPTION = "binary files from Nvidia along with there configuration"
 LICENSE = "CLOSED SGI Khronos"
-PR = "r16"
+PR = "r17"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "(tegra)"
 
 PROVIDES += "virtual/egl virtual/libgles1 virtual/libgles2"
+DEPENDS = "virtual/xserver"
 
 LIC_DIR = "${datadir}/common-licenses"
 #gstnvvidconf.tar.bz2 will hopefully be integrated into the public L4T packages
+
+# the khronos headers are taken from here: https://www.khronos.org/registry/khronos_headers.tgz
+# this tarball changes from time to time breaking the receipe, thus it is provided with the recipe
 SRC_COMMON =  " \
     file://nvgstplayer.desktop \
     file://aplay.desktop \
     file://mimeapps.list \
-    https://www.khronos.org/registry/khronos_headers.tgz;name=gles-h \
+    file://khronos_headers.tgz \
     https://www.khronos.org/registry/omxil/api/1.1.2/OpenMAX_IL_1_1_2_Header.zip;name=openmax-h;unpack=no \
     file://egl.pc \
     file://gles.pc \
@@ -30,9 +34,6 @@ SRC_URI_tegra3 =  " \
     file://cardhu_Tegra-Linux-R16.4.0_armhf.tbz2 \
     ${SRC_COMMON} \
 "
-
-SRC_URI[gles-h.md5sum] = "56ad0e432eb56ba3ff058595eda7fa52"
-SRC_URI[gles-h.sha256sum] = "0e5a8df9fc34cfe88a76d1796e3b5f7384139448a07f2f8819f3f2ebbcdb223e"
 
 SRC_URI[openmax-h.md5sum] = "f8ac8d7272abdbe1980eeac8d03338e8"
 SRC_URI[openmax-h.sha256sum] = "9e8aee85f37946202ff15a52836233f983e90a751c0816ba341ba0c1ffedf99e"
