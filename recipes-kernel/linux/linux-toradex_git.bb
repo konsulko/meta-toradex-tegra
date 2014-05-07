@@ -1,5 +1,5 @@
 inherit kernel
-require recipes-kernel/linux/linux.inc
+require recipes-kernel/linux/linux-toradex.inc
 
 LINUX_VERSION ?= "3.1.10"
 
