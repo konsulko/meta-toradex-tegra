@@ -49,9 +49,6 @@ LIC_FILES_CHKSUM = "file://../khronos_headers/GLES2/gl2.h;beginline=8;endline=29
 
 PACKAGES = "${PN}-dbg ${PN}-restricted-codecs ${PN}-nv-gstapps ${PN} ${PN}-dev"
 
-# Inhibit warnings about files being stripped.
-INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
-
 FILES_${PN}-dbg += " \
     /usr/lib/gstreamer-0.10/.debug \
 "
@@ -81,8 +78,9 @@ FILES_${PN}-nv-gstapps += " \
 
 #no gnu_hash in NVIDIA binaries, skip QA dev-so for this package
 #we have symlinks ending in .so, skip QA ldflags for this package
-INSANE_SKIP_${PN} = "dev-so ldflags"
-INSANE_SKIP_${PN}-nv-gstapps = "dev-so ldflags"
+#inhibit warnings about files being stripped
+INSANE_SKIP_${PN} = "dev-so ldflags already-stripped textrel"
+INSANE_SKIP_${PN}-nv-gstapps = "dev-so ldflags already-stripped textrel"
 
 do_patch () {
     mkdir -p OpenMAX/il

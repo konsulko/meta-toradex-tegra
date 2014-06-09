@@ -11,7 +11,7 @@ S = "${WORKDIR}"
 PACKAGES = "${PN}"
 
 # Inhibit warnings about files being stripped.
-INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
+INSANE_SKIP_${PN} = "already-stripped"
 
 do_install() {
     install -d ${D}${bindir}/ ${D}/home/root/Desktop/
