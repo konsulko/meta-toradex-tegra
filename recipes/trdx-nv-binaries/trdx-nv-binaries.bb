@@ -22,6 +22,7 @@ SRC_COMMON =  " \
     file://egl.pc \
     file://gles.pc \
     file://glesv2.pc \
+    file://eglplatform.h \
 "
 SRC_URI_tegra2 =  " \
     file://ventana_Tegra-Linux-codecs-R16.4.0_armhf.tbz2 \
@@ -161,6 +162,10 @@ do_install () {
         install -d ${D}${includedir}/$dir 
         install -m 0644 ${WORKDIR}/khronos_headers/$dir/* ${D}${includedir}/$dir
     done
+
+    #Override eglplatform.h that khrobos provide.
+    install -m 0644 ${WORKDIR}/eglplatform.h ${D}${includedir}/EGL/
+
     dir="OpenMAX/il"
     install -d ${D}${includedir}/$dir
     install -m 0644 ${WORKDIR}/$dir/* ${D}${includedir}/$dir
