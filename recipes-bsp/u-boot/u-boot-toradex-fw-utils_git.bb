@@ -16,6 +16,7 @@ FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
 SRC_URI_COLIBRI =  "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=colibri"
 SRC_URI_COLIBRI += "file://u-boot-dont-build-standalone.patch"
+SRC_URI_COLIBRI += "file://fw_env.config"
 # This revision is based on upstream "v2011.06"
 SRCREV_COLIBRI = "9d41458a8095fc58e355e3ecca6f96aa7d98d725"
 
@@ -38,14 +39,23 @@ EXTRA_OEMAKE = 'HOSTCC="${CC}" HOSTSTRIP="true"'
 inherit uboot-config
 
 do_compile () {
-  oe_runmake ${UBOOT_MACHINE}
-  oe_runmake env
+    oe_runmake ${UBOOT_MACHINE}
+    oe_runmake env
 }
 
 do_install () {
-  install -d ${D}${base_sbindir}
-  install -m 755 ${S}/tools/env/fw_printenv ${D}${base_sbindir}/fw_printenv
-  install -m 755 ${S}/tools/env/fw_printenv ${D}${base_sbindir}/fw_setenv
+    install -d ${D}${base_sbindir} ${D}${sysconfdir}
+    install -m 755 ${S}/tools/env/fw_printenv ${D}${base_sbindir}/fw_printenv
+    install -m 755 ${S}/tools/env/fw_printenv ${D}${base_sbindir}/fw_setenv
+    install -m 644 ${WORKDIR}/fw_env.config ${D}${sysconfdir}/
+}
+
+pkg_postinst_${PN}_tegra2 () {
+    # can't do this offline
+    if [ "x$D" != "x" ]; then
+        exit 1
+    fi
+    grep ENV /proc/mtd | awk '{print "/dev/" substr($1,0,4) " 0x00000000 0x00001000 0x" $3 " 1" >> "/etc/fw_env.config" }'
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
