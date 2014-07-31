@@ -3,28 +3,23 @@ require recipes-kernel/linux/linux-toradex.inc
 
 LINUX_VERSION ?= "3.1.10"
 
-SRCREV_colibri-t20 = "f195d3bc9cfb38159f8a3a299222396e0005aa91"
-PR_colibri-t20 = "V2.1b3"
-SRCREV_colibri-t30 = "f195d3bc9cfb38159f8a3a299222396e0005aa91"
-PR_colibri-t30 = "V2.1b3"
-SRCREV_apalis-t30 = "f195d3bc9cfb38159f8a3a299222396e0005aa91"
-PR_apalis-t30 = "V2.1b3"
-SRCREV_colibri-pxa = "f195d3bc9cfb38159f8a3a299222396e0005aa91"
-PR_colibri-pxa = "V2.1a3"
+SRCREV_colibri-t20 = "b2ec16b357ec3c965883737a3176fcf64e8a00d2"
+PR_colibri-t20 = "V2.3b1"
+SRCREV_colibri-t30 = "b2ec16b357ec3c965883737a3176fcf64e8a00d2"
+PR_colibri-t30 = "V2.3b1"
+SRCREV_apalis-t30 = "b2ec16b357ec3c965883737a3176fcf64e8a00d2"
+PR_apalis-t30 = "V2.3b1"
+SRCREV_colibri-pxa = "b2ec16b357ec3c965883737a3176fcf64e8a00d2"
+PR_colibri-pxa = "V2.3a1"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"
 SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=colibri"
-# Patch to set parallel RGB (aka LVDS-1) to full-hd
-#SRC_URI += "file://full-hd.patch "
 
 
-COMPATIBLE_MACHINE_colibri-t20 = "colibri-t20"
-COMPATIBLE_MACHINE_colibri-t30 = "colibri-t30"
-COMPATIBLE_MACHINE_apalis-t30 = "apalis-t30"
-COMPATIBLE_MACHINE_colibri-pxa = "colibri-pxa"
+COMPATIBLE_MACHINE = "(colibri-t20|colibri-t30|apalis-t30|colibri-pxa)"
 
-# Place changes to the defconfig here
+# One possibiltiy for changes to the defconfig:
 config_script () {
 #    #example change to the .config
 #    #sets CONFIG_TEGRA_CAMERA unconditionally to 'y'
