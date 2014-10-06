@@ -106,9 +106,10 @@ typedef void                        *EGLNativeDisplayType;
 
 #elif defined(__unix__)
 
+/* don't include the X headers here, some define clash with Qt5 symbols */
 #if 1
 
-typedef void            *EGLNativeDisplayType;
+typedef struct _XDisplay *EGLNativeDisplayType;
 typedef khronos_uint32_t EGLNativePixmapType;
 typedef khronos_uint32_t EGLNativeWindowType;
 
