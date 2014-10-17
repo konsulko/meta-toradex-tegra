@@ -1,2 +1,2 @@
 #build it only for OpenGL ES
-PACKAGECONFIG = "gles2"
+PACKAGECONFIG_tegra = "gles2"
