@@ -15,7 +15,11 @@ PV = "1.6"
 
 EXTRA_OEMAKE='PREFIX="${prefix}" LIBDIR="${libdir}"'
 
+do_compile () {
+    oe_runmake CPPFLAGS=-I${includedir}/cryptopp || die "make failed"
+}
+
 S = "${WORKDIR}/git"
 
-inherit autotools
+inherit autotools native
 
