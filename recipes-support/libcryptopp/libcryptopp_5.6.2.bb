@@ -25,9 +25,21 @@ inherit autotools pkgconfig
 EXTRA_OECONF = "--libdir=${base_libdir}"
 
 do_compile() {
-	sed -i -e 's/^CXXFLAGS/#CXXFLAGS/' GNUmakefile
-	export CXXFLAGS="${CXXFLAGS} -DNDEBUG -fPIC"
-	oe_runmake -f GNUmakefile
-	oe_runmake libcryptopp.so
+    sed -i -e 's/^CXXFLAGS/#CXXFLAGS/' GNUmakefile
+    export CXXFLAGS="${CXXFLAGS} -DNDEBUG -fPIC"
+    oe_runmake -f GNUmakefile
+    oe_runmake libcryptopp.so
 }
 
+do_install_prepend() {
+    export PREFIX=${prefix}
+}
+
+do_install_append() {
+    if [ -f "${D}/usr/lib/libcryptopp.so" ] && [ ! -e "${D}/usr/lib/libcryptopp.so.${PV}" ]
+    then
+        mv ${D}/usr/lib/libcryptopp.so  ${D}/usr/lib/libcryptopp.so.${PV}
+        ln -fs libcryptopp.so.${PV} ${D}/usr/lib/libcryptopp.so.5
+        ln -fs libcryptopp.so.${PV} ${D}/usr/lib/libcryptopp.so
+    fi
+}
