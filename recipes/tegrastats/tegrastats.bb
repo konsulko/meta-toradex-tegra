@@ -8,10 +8,12 @@ SRC_URI =  "file://tegrastats \
 
 S = "${WORKDIR}"
 
-PACKAGES = "${PN}"
+PACKAGES = "${PN} ${PN}-gtk"
 
 # Inhibit warnings about files being stripped.
-INSANE_SKIP_${PN} = "already-stripped"
+# Inhibit warnings about missing DEPENDS, Files are provided in binary form"
+WARN_QA_remove = "already-stripped build-deps"
+WARN_QA-gtk_remove = "already-stripped build-deps"
 
 do_install() {
     install -d ${D}${bindir}/ ${D}/home/root/Desktop/
@@ -19,6 +21,8 @@ do_install() {
     install -m 0755 ${S}/Tegrastats-gtk.desktop ${D}/home/root/Desktop/
 }
 
-FILES_${PN} = " \
-	${bindir}/tegrastats* \
+FILES_${PN}-gtk = " \
+	${bindir}/tegrastats-gtk \
 	/home/root/Desktop/Tegra* "
+
+FILES_${PN} = "${bindir}/tegrastats"
