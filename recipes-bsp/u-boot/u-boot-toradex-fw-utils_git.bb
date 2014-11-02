@@ -39,7 +39,7 @@ SRCREV_apalis-t30 = "${SRCREV_T30}"
 S = "${WORKDIR}/git"
 
 #actually this depend on the upstream U-Boot version and not on the machine
-EXTRA_OEMAKE_tegra3 = 'CROSS_COMPILE=${TARGET_PREFIX} CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS}"'
+EXTRA_OEMAKE_tegra3 = 'CC="${CC}"'
 EXTRA_OEMAKE_tegra2 = 'HOSTCC="${CC}" HOSTSTRIP="true"'
 
 INSANE_SKIP_${PN} = "already-stripped"
