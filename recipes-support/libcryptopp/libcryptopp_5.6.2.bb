@@ -11,16 +11,13 @@ BBCLASSEXTEND = "native nativesdk"
 PR = "r1"
 
 PVSHORT = "${@'${PV}'.replace('.','')}"
-SRC_URI = "${SOURCEFORGE_MIRROR}/cryptopp/${PV}/cryptopp${PVSHORT}.zip \
+SRC_URI = "${SOURCEFORGE_MIRROR}/cryptopp/${PV}/cryptopp${PVSHORT}.zip;subdir=libcryptopp-${PV} \
 	    file://makefile_fix_destdir.patch \
           "
 SRC_URI[md5sum] = "7ed022585698df48e65ce9218f6c6a67"
 SRC_URI[sha256sum] = "5cbfd2fcb4a6b3aab35902e2e0f3b59d9171fee12b3fc2b363e1801dfec53574"
 
-#S = "${WORKDIR}/libcryptopp-${PV}"
-S = "${WORKDIR}"
-
-inherit autotools pkgconfig
+inherit autotools-brokensep pkgconfig
 
 EXTRA_OECONF = "--libdir=${base_libdir}"
 
