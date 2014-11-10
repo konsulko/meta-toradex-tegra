@@ -15,6 +15,9 @@ PV = "1.6"
 
 EXTRA_OEMAKE='PREFIX="${prefix}" LIBDIR="${libdir}"'
 
+#we want tegrarcm binary to run on a 32-bit architecture, on x86_64 this requires the 32-bit compatibility libs
+EXTRA_OEMAKE_class-native = "CC='${CC} -m32' CXX='${CXX} -m32'"
+
 do_compile () {
     oe_runmake CPPFLAGS=-I${includedir}/cryptopp || die "make failed"
 }
