@@ -4,11 +4,11 @@ require recipes-kernel/linux/linux-toradex.inc
 LINUX_VERSION ?= "3.1.10"
 
 SRCREV_colibri-t20 = "169a233f4779a7617179f825723d38f9832238f8"
-PR_colibri-t20 = "V2.3b3"
+PR_colibri-t20 = "V2.3b4"
 SRCREV_colibri-t30 = "169a233f4779a7617179f825723d38f9832238f8"
-PR_colibri-t30 = "V2.3b3"
+PR_colibri-t30 = "V2.3b4"
 SRCREV_apalis-t30 = "169a233f4779a7617179f825723d38f9832238f8"
-PR_apalis-t30 = "V2.3b3"
+PR_apalis-t30 = "V2.3b4"
 SRCREV_colibri-pxa = "169a233f4779a7617179f825723d38f9832238f8"
 PR_colibri-pxa = "V2.3a1"
 
