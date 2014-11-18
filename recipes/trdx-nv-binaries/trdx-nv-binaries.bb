@@ -1,6 +1,6 @@
-DESCRIPTION = "binary files from Nvidia along with there configuration"
+DESCRIPTION = "binary files from Nvidia along with their configuration"
 LICENSE = "CLOSED SGI Khronos"
-PR = "r17"
+PR = "r18"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "(tegra)"
@@ -9,21 +9,21 @@ PROVIDES += "virtual/egl virtual/libgles1 virtual/libgles2"
 DEPENDS = "virtual/xserver"
 
 LIC_DIR = "${datadir}/common-licenses"
-#gstnvvidconf.tar.bz2 will hopefully be integrated into the public L4T packages
 
 # the khronos headers are taken from here: https://www.khronos.org/registry/khronos_headers.tgz
 # this tarball changes from time to time breaking the receipe, thus it is provided with the recipe
 SRC_COMMON =  " \
-    file://nvgstplayer.desktop \
     file://aplay.desktop \
-    file://mimeapps.list \
-    file://khronos_headers.tgz \
-    https://www.khronos.org/registry/omxil/api/1.1.2/OpenMAX_IL_1_1_2_Header.zip;name=openmax-h;unpack=no \
     file://egl.pc \
+    file://eglplatform.h \
     file://gles.pc \
     file://glesv2.pc \
-    file://eglplatform.h \
+    file://khronos_headers.tgz \
+    file://mimeapps.list \
+    file://nvgstplayer.desktop \
+    https://www.khronos.org/registry/omxil/api/1.1.2/OpenMAX_IL_1_1_2_Header.zip;name=openmax-h;unpack=no \
 "
+
 SRC_URI_tegra2 =  " \
     file://ventana_Tegra-Linux-codecs-R16.4.0_armhf.tbz2 \
     file://ventana_Tegra-Linux-R16.4.0_armhf.tbz2 \
@@ -31,16 +31,13 @@ SRC_URI_tegra2 =  " \
 "
 
 SRC_URI_tegra3 =  " \
-    file://cardhu_Tegra-Linux-codecs-R16.4.0_armhf.tbz2 \
-    file://cardhu_Tegra-Linux-R16.4.0_armhf.tbz2 \
+    file://Tegra30_Linux-codecs_R16.5_armhf.tbz2 \
+    file://Tegra30_Linux_R16.5_armhf.tbz2 \
     ${SRC_COMMON} \
 "
 
 SRC_URI[openmax-h.md5sum] = "f8ac8d7272abdbe1980eeac8d03338e8"
 SRC_URI[openmax-h.sha256sum] = "9e8aee85f37946202ff15a52836233f983e90a751c0816ba341ba0c1ffedf99e"
-#    https://www.khronos.org/registry/omxil/api/1.2.0/OpenMAX_IL_1_2.0_Header.zip;name=openmax-h;unpack=no \
-#SRC_URI[openmax-h.md5sum] = "a328b82e29d1e2abc1f20f070b9041a9"
-#SRC_URI[openmax-h.sha256sum] = "9a121921450497e5373abcda000daf52af2ee31097d59c0d299a522b66936fa7"
 
 # xserver-xorg driver ABI version to be used by the symlink, must match the required ABI version from the used xserver
 XSERVER_DRIVER_ABI_REQUIRED = "14"
@@ -84,7 +81,7 @@ INSANE_SKIP_${PN}-nv-gstapps = "dev-so ldflags already-stripped textrel"
 
 do_patch () {
     mkdir -p OpenMAX/il
-    unzip -d OpenMAX/il OpenMAX_IL_1_1_2_Header.zip
+    unzip -o -d OpenMAX/il OpenMAX_IL_1_1_2_Header.zip
 }
 
 do_compile () {
@@ -161,7 +158,7 @@ do_install () {
         install -m 0644 ${WORKDIR}/khronos_headers/$dir/* ${D}${includedir}/$dir
     done
 
-    #Override eglplatform.h that khrobos provide.
+    #Override eglplatform.h that khronos provide.
     install -m 0644 ${WORKDIR}/eglplatform.h ${D}${includedir}/EGL/
 
     dir="OpenMAX/il"
