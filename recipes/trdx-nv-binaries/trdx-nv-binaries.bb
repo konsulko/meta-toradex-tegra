@@ -6,7 +6,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "(tegra)"
 
 PROVIDES += "virtual/egl virtual/libgles1 virtual/libgles2"
-DEPENDS = "virtual/xserver"
+DEPENDS = "virtual/xserver libxv gstreamer libpcre alsa-lib gst-plugins-base"
 
 LIC_DIR = "${datadir}/common-licenses"
 
@@ -77,7 +77,7 @@ FILES_${PN}-nv-gstapps += " \
 #we have symlinks ending in .so, skip QA ldflags for this package
 #inhibit warnings about files being stripped
 INSANE_SKIP_${PN} = "dev-so ldflags already-stripped textrel"
-INSANE_SKIP_${PN}-nv-gstapps = "dev-so ldflags already-stripped textrel"
+INSANE_SKIP_${PN}-nv-gstapps = "dev-so ldflags already-stripped textrel file-rdeps"
 
 do_patch () {
     mkdir -p OpenMAX/il
