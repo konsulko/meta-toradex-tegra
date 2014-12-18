@@ -1,6 +1,6 @@
 DESCRIPTION = "binary files from Nvidia along with their configuration"
 LICENSE = "CLOSED SGI Khronos"
-PR = "r18"
+PR = "r19"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "(tegra)"
@@ -25,8 +25,8 @@ SRC_COMMON =  " \
 "
 
 SRC_URI_tegra2 =  " \
-    file://ventana_Tegra-Linux-codecs-R16.4.0_armhf.tbz2 \
-    file://ventana_Tegra-Linux-R16.4.0_armhf.tbz2 \
+    file://Tegra20_Linux-codecs_R16.5_armhf.tbz2 \
+    file://Tegra20_Linux_R16.5_armhf.tbz2 \
     ${SRC_COMMON} \
 "
 
