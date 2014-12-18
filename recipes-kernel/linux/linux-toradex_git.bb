@@ -3,18 +3,18 @@ require recipes-kernel/linux/linux-toradex.inc
 
 LINUX_VERSION ?= "3.1.10"
 
-SRCREV_colibri-t20 = "169a233f4779a7617179f825723d38f9832238f8"
-PR_colibri-t20 = "V2.3b4"
-SRCREV_colibri-t30 = "169a233f4779a7617179f825723d38f9832238f8"
-PR_colibri-t30 = "V2.3b4"
-SRCREV_apalis-t30 = "169a233f4779a7617179f825723d38f9832238f8"
-PR_apalis-t30 = "V2.3b4"
-SRCREV_colibri-pxa = "169a233f4779a7617179f825723d38f9832238f8"
+SRCREV_colibri-t20 = "38802c79a2ea9b0c69b937db94fe656a64581262"
+PR_colibri-t20 = "V2.3b5"
+SRCREV_colibri-t30 = "38802c79a2ea9b0c69b937db94fe656a64581262"
+PR_colibri-t30 = "V2.3b5"
+SRCREV_apalis-t30 = "38802c79a2ea9b0c69b937db94fe656a64581262"
+PR_apalis-t30 = "V2.3b5"
+SRCREV_colibri-pxa = "38802c79a2ea9b0c69b937db94fe656a64581262"
 PR_colibri-pxa = "V2.3a1"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"
-SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=tegra"
+SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=tegra-next"
 
 
 COMPATIBLE_MACHINE = "(colibri-t20|colibri-t30|apalis-t30|colibri-pxa)"
