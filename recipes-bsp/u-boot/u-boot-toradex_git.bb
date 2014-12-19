@@ -21,7 +21,7 @@ SRC_URI_T30 =  "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=201
 # This revision is based on upstream "v2011.06"
 SRCREV_T20 = "278ca22a59e3df4dd1e1494e8920a01c172118af"
 # This revision is based on upstream "v2014.10"
-SRCREV_T30 = "d69e7bbceb14e09f0af2cddeb68ee5734a1c2d45"
+SRCREV_T30 = "f7e57f71da1eecbf1ac28339868d15492c929925"
 
 PV_colibri-t20 = "${PR}+gitr${SRCREV}"
 PV_colibri-t30 = "${PR}+gitr${SRCREV}"

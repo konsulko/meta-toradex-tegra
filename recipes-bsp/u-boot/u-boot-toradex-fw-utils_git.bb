@@ -22,7 +22,7 @@ SRC_URI_T30 += "file://fw_env.config"
 # This revision is based on upstream "v2011.06"
 SRCREV_T20 = "278ca22a59e3df4dd1e1494e8920a01c172118af"
 # This revision is based on upstream "v2014.10"
-SRCREV_T30 = "7031ed747021815dd8303d8a70b8c070ba709c56"
+SRCREV_T30 = "f7e57f71da1eecbf1ac28339868d15492c929925"
 
 PV_colibri-t20 = "${PR}+gitr${SRCREV}"
 PV_colibri-t30 = "${PR}+gitr${SRCREV}"
