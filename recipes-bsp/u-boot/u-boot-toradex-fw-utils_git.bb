@@ -39,6 +39,7 @@ SRCREV_apalis-t30 = "${SRCREV_T30}"
 S = "${WORKDIR}/git"
 
 #actually this depend on the upstream U-Boot version and not on the machine
+CC_remove_tegra3 = "-mfpu=neon"
 EXTRA_OEMAKE_tegra3 = 'CC="${CC}"'
 EXTRA_OEMAKE_tegra2 = 'HOSTCC="${CC}" HOSTSTRIP="true"'
 
