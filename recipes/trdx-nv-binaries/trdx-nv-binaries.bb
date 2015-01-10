@@ -1,4 +1,4 @@
-DESCRIPTION = "binary files from Nvidia along with their configuration"
+SUMMARY = "binary files from Nvidia along with their configuration"
 LICENSE = "CLOSED SGI Khronos"
 PR = "r19"
 

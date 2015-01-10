@@ -1,4 +1,4 @@
-DESCRIPTION = "Linux Kernel"
+SUMMARY = "Linux Kernel for Toradex Tegra based modules"
 SECTION = "kernel"
 LICENSE = "GPLv2"
 

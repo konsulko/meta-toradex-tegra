@@ -1,4 +1,4 @@
-DESCRIPTION = "A free C++ class library of cryptographic schemes"
+SUMMARY = "A free C++ class library of cryptographic schemes"
 HOMEPAGE = "http://www.cryptopp.com/wiki/Main_Page"
 BUGTRACKER = "http://sourceforge.net/apps/trac/cryptopp/"
 SECTION = "libs"

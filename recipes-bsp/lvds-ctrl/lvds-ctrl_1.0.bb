@@ -1,4 +1,4 @@
-DESCRIPTION = "Scripts to enable the LVDS converter on Apalis-T30"
+SUMMARY = "Scripts to enable the LVDS converter on Apalis-T30"
 LICENSE = "Public Domain"
 PR = "r2"
 

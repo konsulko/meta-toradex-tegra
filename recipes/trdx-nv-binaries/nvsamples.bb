@@ -1,5 +1,5 @@
 SECTION = "graphical/utils"
-DESCRIPTION = "Nvidia samples for OpenGL ES, OpenGL ES  headers"
+SUMMARY = "Nvidia samples for OpenGL ES, OpenGL ES  headers"
 LICENSE = "CLOSED"
 DEPENDS = "trdx-nv-binaries"
 RDEPENDS_{PN} = "trdx-nv-binaries"
