@@ -110,8 +110,8 @@ typedef void                        *EGLNativeDisplayType;
 #if 1
 
 typedef struct _XDisplay *EGLNativeDisplayType;
-typedef khronos_uint32_t EGLNativePixmapType;
-typedef khronos_uint32_t EGLNativeWindowType;
+typedef unsigned long EGLNativePixmapType;
+typedef unsigned long EGLNativeWindowType;
 
 #else
 
