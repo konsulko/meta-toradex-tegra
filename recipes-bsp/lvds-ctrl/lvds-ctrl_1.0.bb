@@ -1,5 +1,5 @@
 SUMMARY = "Scripts to enable the LVDS converter on Apalis-T30"
-LICENSE = "Public Domain"
+LICENSE = "PD"
 PR = "r2"
 
 SRC_URI =  " \

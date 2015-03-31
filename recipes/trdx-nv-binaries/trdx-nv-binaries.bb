@@ -1,5 +1,5 @@
 SUMMARY = "binary files from Nvidia along with their configuration"
-LICENSE = "CLOSED SGI Khronos"
+LICENSE = "CLOSED & SGI & Khronos"
 PR = "r19"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
