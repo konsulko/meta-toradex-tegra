@@ -20,15 +20,14 @@ SRCREV = "06ee8db6422e02337242e43b8573359443db59ea"
 
 PV = "${PR}+gitr${SRCREV}"
 
-# override the solution passed in from u-boot.inc as we want to set additional flags
-EXTRA_OEMAKE = "CROSS_COMPILE=${TARGET_PREFIX}"
+# apalis/colibri-t30: require u-boot-dtb-tegra.bin to be used
+UBOOT_IMAGE_tegra3 = "u-boot-dtb-tegra-${MACHINE}-${PV}-${PR}.${UBOOT_SUFFIX}"
+UBOOT_BINARY_tegra3 = "u-boot-dtb-tegra.${UBOOT_SUFFIX}"
+UBOOT_SYMLINK_tegra3 = "u-boot-dtb-tegra-${MACHINE}.${UBOOT_SUFFIX}"
 
 # require u-boot-dtb-tegra.bin to be used
 UBOOT_IMAGE = "u-boot-dtb-tegra-${MACHINE}-${PV}-${PR}.${UBOOT_SUFFIX}"
 UBOOT_BINARY = "u-boot-dtb-tegra.${UBOOT_SUFFIX}"
 UBOOT_SYMLINK = "u-boot-dtb-tegra-${MACHINE}.${UBOOT_SUFFIX}"
-
-#do_install_append() {
-#}
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
