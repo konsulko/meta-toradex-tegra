@@ -1,6 +1,6 @@
 require recipes-bsp/u-boot/u-boot.inc
 
-PROVIDES = "u-boot"
+PROVIDES = "u-boot virtual/bootloader"
 DEPENDS += "dtc-native"
 
 LICENSE = "GPLv2+"
