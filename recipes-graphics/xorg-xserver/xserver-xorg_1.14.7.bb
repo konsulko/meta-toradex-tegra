@@ -10,7 +10,9 @@ SRC_URI += "file://crosscompile.patch \
             file://mips64-compiler.patch \
             file://aarch64.patch \
             file://xorg-CVE-2013-6424.patch \
-           "
+            file://0001-sdksyms.sh-Make-sdksyms.sh-work-with-gcc5.patch \
+"
+
 SRC_URI[md5sum] = "0c285a813a6c3291c88d5a2b710aecb1"
 SRC_URI[sha256sum] = "fcf66fa6ad86227613d2d3e8ae13ded297e2a1e947e9060a083eaf80d323451f"
 
