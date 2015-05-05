@@ -8,8 +8,11 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=395fe5affb633ad84474e42989a8e5be"
 
 BBCLASSEXTEND = "native nativesdk"
 
-SRC_URI = "git://github.com/NVIDIA/tegrarcm.git \
-	  "
+SRC_URI = " \
+    git://github.com/NVIDIA/tegrarcm.git \
+    file://0001-configure.ac-link-crypotpp-as-a-static-library.patch \
+"
+
 SRCREV = "12b9718fc6b5be374d252be691733837e756d816"
 PV = "1.6"
 

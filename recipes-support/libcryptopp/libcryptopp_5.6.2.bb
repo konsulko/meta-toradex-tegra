@@ -21,11 +21,14 @@ inherit autotools-brokensep pkgconfig
 
 EXTRA_OECONF = "--libdir=${base_libdir}"
 
+#we want tegrarcm binary to run on a 32-bit architecture, on x86_64 this requires the 32-bit compatibility libs
+EXTRA_OEMAKE_class-native = "CC='${CC} -m32' CXX='${CXX} -m32'"
+
 do_compile() {
     sed -i -e 's/^CXXFLAGS/#CXXFLAGS/' GNUmakefile
     export CXXFLAGS="${CXXFLAGS} -DNDEBUG -fPIC"
     oe_runmake -f GNUmakefile
-    oe_runmake libcryptopp.so
+    oe_runmake libcryptopp.a
 }
 
 do_install_prepend() {
