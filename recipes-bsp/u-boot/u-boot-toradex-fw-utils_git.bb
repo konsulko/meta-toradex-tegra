@@ -49,7 +49,7 @@ pkg_postinst_${PN}_colibri-t20 () {
     if [ "x$D" != "x" ]; then
         exit 1
     fi
-    grep u-boot-env /proc/mtd | awk '{print "/dev/" substr($1,0,4) " 0x00000000 0x00001000 0x" $3 " 1" >> "/etc/fw_env.config" }'
+    grep u-boot-env /proc/mtd | awk '{print "/dev/" substr($1,0,4) " 0x00000000 0x00010000 0x" $3 " 1" >> "/etc/fw_env.config" }'
 }
 
 pkg_postinst_${PN}_tegra3 () {
