@@ -16,7 +16,7 @@ S="${WORKDIR}/git"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=2015.04-toradex-next"
 SRC_URI += "file://fw_env.config"
 # This revision is based on upstream "v2015.04"
-SRCREV = "5fd93c2b8f262b9cd61c038b07fe1d0496280cc3"
+SRCREV = "c6d4d70e04873101f64370edfe3163075daae89d"
 
 PV_apalis-t30 = "${PR}+gitr${SRCREV}"
 PV_colibri-t20 = "${PR}+gitr${SRCREV}"
