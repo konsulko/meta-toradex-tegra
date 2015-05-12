@@ -3,18 +3,18 @@ require recipes-kernel/linux/linux-toradex.inc
 
 LINUX_VERSION ?= "3.1.10"
 
-SRCREV_apalis-t30 = "834b98d0367931d6bec5a48fe87fddd9b877f688"
+SRCREV_apalis-t30 = "6067e90bd06d55edbd3b1417369dda53ca11c0f0"
 PR_apalis-t30 = "V2.4"
-SRCREV_colibri-pxa = "a699c4f23852bad780b8ad5273d5a3171cd461f9"
+SRCREV_colibri-pxa = "6067e90bd06d55edbd3b1417369dda53ca11c0f0"
 PR_colibri-pxa = "V2.4a1"
-SRCREV_colibri-t20 = "834b98d0367931d6bec5a48fe87fddd9b877f688"
+SRCREV_colibri-t20 = "6067e90bd06d55edbd3b1417369dda53ca11c0f0"
 PR_colibri-t20 = "V2.4"
-SRCREV_colibri-t30 = "834b98d0367931d6bec5a48fe87fddd9b877f688"
+SRCREV_colibri-t30 = "6067e90bd06d55edbd3b1417369dda53ca11c0f0"
 PR_colibri-t30 = "V2.4"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"
-SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=tegra-nand-next"
+SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=tegra-next"
 
 
 COMPATIBLE_MACHINE = "(apalis-t30|colibri-pxa|colibri-t20|colibri-t30)"
