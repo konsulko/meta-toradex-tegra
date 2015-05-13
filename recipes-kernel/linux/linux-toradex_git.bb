@@ -14,7 +14,7 @@ PR_colibri-t30 = "V2.4"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"
-SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=tegra-next"
+SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=tegra"
 
 
 COMPATIBLE_MACHINE = "(apalis-t30|colibri-pxa|colibri-t20|colibri-t30)"
