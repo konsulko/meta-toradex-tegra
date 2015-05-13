@@ -16,7 +16,7 @@ FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
 SRC_URI =  "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=2015.04-toradex-next"
 # This revision is based on upstream "v2015.04"
-SRCREV = "c6d4d70e04873101f64370edfe3163075daae89d"
+SRCREV = "0de8d62ff5cb24d72206d9bee5ad42d517ee530e"
 
 PV = "${PR}+gitr${SRCREV}"
 
