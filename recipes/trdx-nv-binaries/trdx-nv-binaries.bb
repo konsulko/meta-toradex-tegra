@@ -33,6 +33,7 @@ SRC_URI_tegra2 =  " \
 SRC_URI_tegra3 =  " \
     file://Tegra30_Linux-codecs_R16.5_armhf.tbz2 \
     file://Tegra30_Linux_R16.5_armhf.tbz2 \
+    file://libgstomx.so \
     ${SRC_COMMON} \
 "
 
@@ -167,6 +168,11 @@ do_install () {
 
     install -d  ${D}/usr/lib/pkgconfig
     install -m 0644 ${WORKDIR}/*.pc ${D}/usr/lib/pkgconfig/
+}
+
+do_install_append_tegra3 () {
+    #OpenMAX-IL implementation library, evaluation version with fix to validate input frame rate
+    install -m 0644 ${WORKDIR}/libgstomx.so ${D}/usr/lib/gstreamer-0.10/
 }
 
 # Add the ABI dependency at package generation time, as otherwise bitbake will
