@@ -14,7 +14,8 @@ DEFAULT_PREFERENCE_colibri-t30 = "1"
 FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=2015.04-toradex"
-SRC_URI += "file://fw_env.config"
+SRC_URI += "file://fw_env.config \
+    file://fw_unlock_mmc.sh"
 # This revision is based on upstream "v2015.04"
 SRCREV = "06ee8db6422e02337242e43b8573359443db59ea"
 
@@ -42,6 +43,11 @@ do_install () {
     install -m 755 ${S}/tools/env/fw_printenv ${D}${base_sbindir}/fw_printenv
     ln -s fw_printenv ${D}${base_sbindir}/fw_setenv
     install -m 644 ${WORKDIR}/fw_env.config ${D}${sysconfdir}/
+}
+
+do_install_append_tegra3() {
+    install -d ${D}${sysconfdir}/profile.d/
+    install -m 0644 ${WORKDIR}/fw_unlock_mmc.sh ${D}${sysconfdir}/profile.d/fw_unlock_mmc.sh
 }
 
 pkg_postinst_${PN}_colibri-t20 () {
