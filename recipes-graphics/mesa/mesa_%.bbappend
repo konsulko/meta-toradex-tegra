@@ -5,4 +5,4 @@ PACKAGECONFIG_remove_tegra = "egl gles"
 
 PROVIDES_remove_tegra = "virtual/libgles1 virtual/libgles2 virtual/egl"
 
-PACKAGE_ARCH = "${MACHINE_ARCH}"
+PACKAGE_ARCH_tegra = "${MACHINE_ARCH}"
