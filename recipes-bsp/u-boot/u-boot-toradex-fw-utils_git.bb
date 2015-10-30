@@ -18,7 +18,8 @@ SRCREV = "06ee8db6422e02337242e43b8573359443db59ea"
 SRCBRANCH = "2015.04-toradex"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
            file://fw_env.config \
-           file://fw_unlock_mmc.sh \
+"
+SRC_URI_append_tegra3 = " file://fw_unlock_mmc.sh \
 "
 
 PV_apalis-t30 = "${PR}+gitr${SRCREV}"
@@ -65,11 +66,11 @@ pkg_postinst_${PN}_tegra3 () {
     if [ "x$D" != "x" ]; then
         exit 1
     fi
-    # Environment in eMMC, at the end of 2nd "boot sector"
-    DISK="mmcblk0boot1"
+    # Environment in eMMC, before the configblock at the end of 1st "boot sector"
+    DISK="mmcblk0boot0"
     DISK_SIZE=`cat /sys/block/$DISK/size`
     CONFIG_ENV_SIZE=8192 # 0x2000
-    CONFIG_ENV_OFFSET=`expr $DISK_SIZE \* 512 - $CONFIG_ENV_SIZE`
+    CONFIG_ENV_OFFSET=`expr $DISK_SIZE \* 512 - $CONFIG_ENV_SIZE - 512`
     printf "/dev/%s\t0x%X\t0x%X\n" $DISK $CONFIG_ENV_OFFSET $CONFIG_ENV_SIZE >> "/etc/fw_env.config"
 }
 
