@@ -24,8 +24,8 @@ COMPATIBLE_MACHINE = "(apalis-t30|colibri-pxa|colibri-t20|colibri-t30)"
 config_script () {
 #    #example change to the .config
 #    #sets CONFIG_TEGRA_CAMERA unconditionally to 'y'
-#    sed -i -e /CONFIG_TEGRA_CAMERA/d ${S}/.config
-#    echo "CONFIG_TEGRA_CAMERA=y" >> ${S}/.config
+#    sed -i -e /CONFIG_TEGRA_CAMERA/d ${B}/.config
+#    echo "CONFIG_TEGRA_CAMERA=y" >> ${B}/.config
     echo "dummy" > /dev/null
 }
 
