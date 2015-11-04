@@ -3,6 +3,7 @@ require recipes-kernel/linux/linux-toradex.inc
 
 LINUX_VERSION ?= "3.1.10"
 
+LOCALVERSION = "-${PR}"
 SRCREV_apalis-t30 = "a2d16785572f10d08693b3cb6d45555909fc7b83"
 PR_apalis-t30 = "V2.5b2"
 SRCREV_colibri-pxa = "a2d16785572f10d08693b3cb6d45555909fc7b83"
@@ -38,7 +39,15 @@ do_configure_prepend () {
     oe_runmake $DEFCONFIG
 
     #maybe change some configuration
-    config_script 
+    config_script
+
+    #Add Toradex BSP Version as LOCALVERSION
+    sed -i -e /CONFIG_LOCALVERSION/d ${B}/.config
+    echo "CONFIG_LOCALVERSION=\"${LOCALVERSION}\"" >> ${B}/.config
+
+    #Add GIT revision to the local version
+    head=`git --git-dir=${S}/.git rev-parse --verify --short HEAD 2> /dev/null`
+    printf "%s%s" +g $head > ${S}/.scmversion
 }
 
 kernel_do_compile() {
