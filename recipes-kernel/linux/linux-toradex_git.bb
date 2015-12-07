@@ -4,19 +4,13 @@ require recipes-kernel/linux/linux-toradex.inc
 LINUX_VERSION ?= "3.1.10"
 
 LOCALVERSION = "-${PR}"
-SRCREV_apalis-t30 = "d8eb1dde264c7b55d25209de26a08471e2f566f6"
-PR_apalis-t30 = "V2.5b2"
-SRCREV_colibri-pxa = "d8eb1dde264c7b55d25209de26a08471e2f566f6"
-PR_colibri-pxa = "V2.5b2"
-SRCREV_colibri-t20 = "d8eb1dde264c7b55d25209de26a08471e2f566f6"
-PR_colibri-t20 = "V2.5b2"
-SRCREV_colibri-t30 = "d8eb1dde264c7b55d25209de26a08471e2f566f6"
-PR_colibri-t30 = "V2.5b2"
+SRCREV = "c8ead507f45de63a125b40096f0d59cb0aaa6780"
+PR = "V2.5b3"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"
-SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=tegra"
-
+SRCBRANCH = "tegra"
+SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRANCH}"
 
 COMPATIBLE_MACHINE = "(apalis-t30|colibri-pxa|colibri-t20|colibri-t30)"
 
@@ -51,20 +45,20 @@ do_configure_prepend () {
 }
 
 kernel_do_compile() {
-	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MACHINE
-        export CC="`echo "${KERNEL_CC}" | sed 's/-mfloat-abi=hard//g'`"
-	oe_runmake ${KERNEL_IMAGETYPE_FOR_MAKE} ${KERNEL_ALT_IMAGETYPE} LD="${KERNEL_LD}"
-	if test "${KERNEL_IMAGETYPE_FOR_MAKE}.gz" = "${KERNEL_IMAGETYPE}"; then
-		gzip -9c < "${KERNEL_IMAGETYPE_FOR_MAKE}" > "${KERNEL_OUTPUT}"
-	fi
+    unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MACHINE
+    export CC="`echo "${KERNEL_CC}" | sed 's/-mfloat-abi=hard//g'`"
+    oe_runmake ${KERNEL_IMAGETYPE_FOR_MAKE} ${KERNEL_ALT_IMAGETYPE} LD="${KERNEL_LD}"
+    if test "${KERNEL_IMAGETYPE_FOR_MAKE}.gz" = "${KERNEL_IMAGETYPE}"; then
+        gzip -9c < "${KERNEL_IMAGETYPE_FOR_MAKE}" > "${KERNEL_OUTPUT}"
+    fi
 }
 
 do_compile_kernelmodules() {
-	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MACHINE
-        export CC="`echo "${KERNEL_CC}" | sed 's/-mfloat-abi=hard//g'`"
-	if (grep -q -i -e '^CONFIG_MODULES=y$' .config); then
-		oe_runmake ${PARALLEL_MAKE} modules LD="${KERNEL_LD}"
-	else
-		bbnote "no modules to compile"
-	fi
+    unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MACHINE
+    export CC="`echo "${KERNEL_CC}" | sed 's/-mfloat-abi=hard//g'`"
+    if (grep -q -i -e '^CONFIG_MODULES=y$' .config); then
+        oe_runmake ${PARALLEL_MAKE} modules LD="${KERNEL_LD}"
+    else
+        bbnote "no modules to compile"
+    fi
 }
