@@ -37,3 +37,8 @@ RCONFLICTS_${PN} = "${PN}-extension-dri \
                     ${PN}-extension-extmod \
                     ${PN}-extension-dbe \
                    "
+
+# provided by xf86-input-evdev_2.10.0
+do_install_append () {
+    rm -f ${D}/usr/share/X11/xorg.conf.d/10-evdev.conf
+}
