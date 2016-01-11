@@ -8,5 +8,6 @@ SRC_URI_append_tegra = " file://Revert_Use_new_pixman_glyph_cache_t_API_that_wil
 # so we set the recipe epoch here. Thus for our architecture we're
 # always latest and greatest.
 PE_tegra = "99"
+PROVIDES_${PN} = "virtual/xserver"
 
 PACKAGE_ARCH_tegra = "${MACHINE_ARCH}"
