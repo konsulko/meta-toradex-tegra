@@ -6,7 +6,6 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "(tegra)"
 
 PROVIDES += "virtual/egl virtual/libgles1 virtual/libgles2"
-DEPENDS = "virtual/xserver libxv gstreamer libpcre alsa-lib gst-plugins-base"
 
 # the khronos headers are taken from here: https://www.khronos.org/registry/khronos_headers.tgz
 # this tarball changes from time to time breaking the receipe, thus it is provided with the recipe
@@ -77,8 +76,8 @@ FILES_${PN}-nv-gstapps += " \
 #no gnu_hash in NVIDIA binaries, skip QA dev-so for this package
 #we have symlinks ending in .so, skip QA ldflags for this package
 #inhibit warnings about files being stripped
-INSANE_SKIP_${PN} = "dev-so ldflags already-stripped textrel"
-INSANE_SKIP_${PN}-nv-gstapps = "dev-so ldflags already-stripped textrel file-rdeps"
+INSANE_SKIP_${PN} = "build-deps dev-so ldflags already-stripped textrel"
+INSANE_SKIP_${PN}-nv-gstapps = "build-deps dev-so ldflags already-stripped textrel file-rdeps"
 
 do_patch () {
     mkdir -p OpenMAX/il
