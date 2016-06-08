@@ -4,18 +4,18 @@ BUGTRACKER = "http://sourceforge.net/apps/trac/cryptopp/"
 SECTION = "libs"
 
 LICENSE = "PD"
-LIC_FILES_CHKSUM = "file://License.txt;md5=15bb91b85c60bac932e0a3f550bad6a3"
+LIC_FILES_CHKSUM = "file://License.txt;md5=48e7e415ea7fcc35278d8e7dc8e70b5d"
 
 BBCLASSEXTEND = "native nativesdk"
 
 PR = "r1"
 
 PVSHORT = "${@'${PV}'.replace('.','')}"
-SRC_URI = "${SOURCEFORGE_MIRROR}/cryptopp/${PV}/cryptopp${PVSHORT}.zip;subdir=libcryptopp-${PV} \
-	    file://makefile_fix_destdir.patch \
-          "
-SRC_URI[md5sum] = "7ed022585698df48e65ce9218f6c6a67"
-SRC_URI[sha256sum] = "5cbfd2fcb4a6b3aab35902e2e0f3b59d9171fee12b3fc2b363e1801dfec53574"
+SRC_URI = "https://sourceforge.net/projects/cryptopp/files/cryptopp/5.6.3/cryptopp563.zip;subdir=libcryptopp-${PV} \
+           file://0001-Fix-cross-compilation.patch \
+	  "
+SRC_URI[md5sum] = "3c5b70e2ec98b7a24988734446242d07"
+SRC_URI[sha256sum] = "9390670a14170dd0f48a6b6b06f74269ef4b056d4718a1a329f6f6069dc957c9"
 
 inherit autotools-brokensep pkgconfig
 
