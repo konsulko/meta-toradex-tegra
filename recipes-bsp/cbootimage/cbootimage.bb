@@ -10,8 +10,8 @@ BBCLASSEXTEND = "native nativesdk"
 
 SRC_URI = "git://github.com/NVIDIA/cbootimage.git \
 	  "
-SRCREV = "57f67537af9cdf34ae9edb76f351c7df277a55b4"
-PV = "1.4"
+SRCREV = "a64c3f12b1b048096d90c44db74d3d110cea6fff"
+PV = "1.7"
 
 EXTRA_OEMAKE='PREFIX="${prefix}" LIBDIR="${libdir}"'
 
