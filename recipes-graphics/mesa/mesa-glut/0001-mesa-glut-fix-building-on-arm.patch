@@ -1,0 +1,89 @@
+From 051b05b30dc0fce0585ee16d1d1a7f6f959794a6 Mon Sep 17 00:00:00 2001
+From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Date: Tue, 14 Jun 2016 14:55:48 +0200
+Subject: [PATCH] mesa-glut: fix building on arm
+
+Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+---
+ bin/mklib    | 30 ------------------------------
+ configure.ac |  9 ---------
+ 2 files changed, 39 deletions(-)
+
+diff --git a/bin/mklib b/bin/mklib
+index 2c7ed38..e29a404 100755
+--- a/bin/mklib
++++ b/bin/mklib
+@@ -330,14 +330,6 @@ case $ARCH in
+ 	    ;;
+ 	    esac
+ 
+-	    # Check if objects are 32-bit and we're running in 64-bit
+-	    # environment.  If so, pass -m32 flag to linker.
+-	    set ${OBJECTS}
+-	    ABI32=`file $1 | grep 32-bit`
+-	    if [ "${ABI32}" -a `uname -m` = "x86_64" ] ; then
+-		OPTS="-m32 ${OPTS}"
+-	    fi
+-
+             if [ "${ALTOPTS}" ] ; then
+                 OPTS=${ALTOPTS}
+             fi
+@@ -387,17 +379,6 @@ case $ARCH in
+ 		# exptmp is removed below
+ 	    fi
+ 
+-	    # Check if objects are 32-bit and we're running in 64-bit
+-	    # environment.  If so, pass -m32 flag to linker.
+-	    set ${OBJECTS}
+-	    ABI32=`file $1 | grep 32-bit`
+-	    if [ "${ABI32}" -a `uname -m` = "x86_64" ] ; then
+-		OPTS="-m32 ${OPTS}"
+-	    fi
+-            if [ "${ALTOPTS}" ] ; then
+-                OPTS=${ALTOPTS}
+-            fi
+-
+ 	    if [ x${PATCH} = "x" ] ; then
+ 		VERSION="${MAJOR}.${MINOR}"
+ 	    else
+@@ -457,17 +438,6 @@ case $ARCH in
+ 	    if [ ${LINK} = "ld" -o ${LINK} = "cc" -o ${LINK} = "CC" ] ; then
+ 		# SunOS tools, -G to make shared libs
+ 		OPTS="-G"
+-	    else
+-		# gcc linker
+-		# Check if objects are 32-bit and we're running in 64-bit
+-		# environment.  If so, pass -m32 flag to linker.
+-		set ${OBJECTS}
+-		ABI32=`file $1 | grep 32-bit`
+-		if [ "${ABI32}" ] ; then
+-		    OPTS="-m32 -shared -Wl,-Bdynamic"
+-		else
+-		    OPTS="-m64 -shared -Wl,-Bdynamic"
+-		fi
+ 	    fi
+ 
+ 	    # If using Sun C++ compiler, need to tell it not to add runpaths
+diff --git a/configure.ac b/configure.ac
+index d42b5c6..af40093 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -204,15 +204,6 @@ AC_ARG_ENABLE([32-bit],
+     [enable_32bit="$enableval"],
+     [enable_32bit=auto]
+ )
+-if test "x$enable_32bit" = xyes; then
+-    if test "x$GCC" = xyes; then
+-        CFLAGS="$CFLAGS -m32"
+-        ARCH_FLAGS="$ARCH_FLAGS -m32"
+-    fi
+-    if test "x$GXX" = xyes; then
+-        CXXFLAGS="$CXXFLAGS -m32"
+-    fi
+-fi
+ AC_ARG_ENABLE([64-bit],
+     [AS_HELP_STRING([--enable-64-bit],
+         [build 64-bit libraries @<:@default=auto@:>@])],
+-- 
+2.5.5
+
