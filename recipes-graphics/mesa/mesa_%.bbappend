@@ -6,3 +6,15 @@ PACKAGECONFIG_remove_tegra = "egl gles"
 PROVIDES_remove_tegra = "virtual/libgles1 virtual/libgles2 virtual/egl"
 
 PACKAGE_ARCH_tegra = "${MACHINE_ARCH}"
+
+#####
+
+PACKAGE_ARCH_apalis-tk1 = "${MACHINE_ARCH}"
+
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+
+DEPENDS_REMOVE = "linux-driver-package"
+
+DEPENDS_REMOVE_apalis-tk1 = ""
+
+DEPENDS_remove = "${DEPENDS_REMOVE}"
