@@ -25,23 +25,7 @@ LOGO_SIZE ?= "."
 
 FILES_kernel-devicetree = "/boot/devicetree*"
 
-KERNEL_DEVICETREE_boc01 = "${WORKDIR}/boc01.dts"
-KERNEL_DEVICETREE_calamari = "arch/${ARCH}/boot/dts/mpc8536ds.dts"
-KERNEL_DEVICETREE_canyonlands = "arch/${ARCH}/boot/dts/canyonlands.dts"
-KERNEL_DEVICETREE_kilauea = "arch/${ARCH}/boot/dts/kilauea.dts"
-KERNEL_DEVICETREE_lite5200 = "arch/${ARCH}/boot/dts/lite5200.dts"
-KERNEL_DEVICETREE_lsppchd = "arch/${ARCH}/boot/dts/kuroboxHD.dts"
-KERNEL_DEVICETREE_lsppchg = "arch/${ARCH}/boot/dts/kuroboxHG.dts"
-KERNEL_DEVICETREE_mpc8313e-rdb = "arch/${ARCH}/boot/dts/mpc8313erdb.dts"
-KERNEL_DEVICETREE_mpc8315e-rdb = "arch/${ARCH}/boot/dts/mpc8315erdb.dts"
-KERNEL_DEVICETREE_mpc8323e-rdb = "arch/${ARCH}/boot/dts/mpc832x_rdb.dts"
-KERNEL_DEVICETREE_mpc8544ds = "arch/${ARCH}/boot/dts/mpc8544ds.dts"
-KERNEL_DEVICETREE_mpc8641-hpcn = "arch/${ARCH}/boot/dts/mpc8641_hpcn.dts"
-KERNEL_DEVICETREE_p1020rdb = "arch/${ARCH}/boot/dts/p1020rdb.dts"
-KERNEL_DEVICETREE_p2020ds = "arch/${ARCH}/boot/dts/p2020ds.dts"
-KERNEL_DEVICETREE_sequoia = "arch/${ARCH}/boot/dts/sequoia.dts"
-KERNEL_DEVICETREE_tqm8540 = "arch/${ARCH}/boot/dts/tqm8540.dts"
-KERNEL_DEVICETREE_xilinx-ml507 = "arch/${ARCH}/boot/dts/virtex440-ml507.dts"
+#KERNEL_DEVICETREE to be specified from machine configuration
 
 KERNEL_DEVICETREE_FLAGS = "-R 8 -S 0x3000"
 
@@ -89,6 +73,9 @@ do_devicetree_image() {
         ln -sf ${KERNEL_IMAGE_BASE_NAME}.dtb ${KERNEL_IMAGE_SYMLINK_NAME}.dtb
         package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGE_SYMLINK_NAME}.dtb
     fi
+}
+
+do_devicetree_image_tegra124() {
 }
 
 addtask devicetree_image after do_install before do_package do_deploy
