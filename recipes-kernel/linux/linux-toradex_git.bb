@@ -4,12 +4,12 @@ require recipes-kernel/linux/linux-toradex.inc
 LINUX_VERSION ?= "3.1.10"
 
 LOCALVERSION = "-${PR}"
-SRCREV = "5fbc1bb403097445f743847605341b6e503bb7f6"
+SRCREV = "be10973d1498e39431e82ad2a70f19a7872cd4b6"
 PR = "V2.6b2"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"
-SRCBRANCH = "tegra-next"
+SRCBRANCH = "tegra"
 SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRANCH}"
 
 COMPATIBLE_MACHINE = "(apalis-t30|colibri-pxa|colibri-t20|colibri-t30)"
