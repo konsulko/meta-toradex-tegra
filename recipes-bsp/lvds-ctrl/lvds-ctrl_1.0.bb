@@ -1,6 +1,5 @@
-SUMMARY = "Scripts to enable the LVDS converter on Apalis-T30"
+SUMMARY = "Scripts to enable the LVDS converter on Apalis T30"
 LICENSE = "PD"
-PR = "r2"
 
 SRC_URI =  " \
     file://lvds-dual-channel.sh \
@@ -9,9 +8,6 @@ SRC_URI =  " \
 "
 
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=1c3a7fb45253c11c74434676d84fe7dd"
-
-do_compile () {
-}
 
 do_install () {
     install -d ${D}/${bindir}
@@ -23,6 +19,6 @@ pkg_postinst_${PN}() {
     echo "${bindir}/lvds-dual-channel.sh" >> ${sysconfdir}/xdg/lxsession/LXDE/autostart
 }
 
-pkg_postremove_${PN}() {
-    sed -i /${bindir}/lvds-dual-channel.sh/d ${sysconfdir}/xdg/lxsession/LXDE/autostart || true
+pkg_postrm_${PN}() {
+    sed -i lvds-dual-channel.sh/d ${sysconfdir}/xdg/lxsession/LXDE/autostart || true
 }
