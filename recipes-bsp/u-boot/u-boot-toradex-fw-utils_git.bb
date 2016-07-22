@@ -15,8 +15,8 @@ DEFAULT_PREFERENCE_colibri-t30 = "1"
 FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
 # This revision is based on upstream "v2015.04"
-SRCREV = "10bc451b6948e842e24799fe7fb037d335714b36"
-SRCBRANCH = "2015.04-toradex"
+SRCREV = "476fa4400d2cc32279c7ae7e73e7c4ab1bff4327"
+SRCBRANCH = "2015.04-toradex-next"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
            file://fw_env.config \
 "
@@ -68,32 +68,6 @@ pkg_postinst_${PN}_colibri-t20 () {
         exit 1
     fi
     grep u-boot-env /proc/mtd | awk '{print "/dev/" substr($1,0,4) " 0x00000000 0x00010000 0x" $3 " 1" >> "/etc/fw_env.config" }'
-}
-
-pkg_postinst_${PN}_tegra3 () {
-    # can't do this offline
-    if [ "x$D" != "x" ]; then
-        exit 1
-    fi
-    # Environment in eMMC, before the configblock at the end of 1st "boot sector"
-    DISK="mmcblk0boot0"
-    DISK_SIZE=`cat /sys/block/$DISK/size`
-    CONFIG_ENV_SIZE=8192 # 0x2000
-    CONFIG_ENV_OFFSET=`expr $DISK_SIZE \* 512 - $CONFIG_ENV_SIZE - 512`
-    printf "/dev/%s\t0x%X\t0x%X\n" $DISK $CONFIG_ENV_OFFSET $CONFIG_ENV_SIZE >> "/etc/fw_env.config"
-}
-
-pkg_postinst_${PN}_tegra124 () {
-    # can't do this offline
-    if [ "x$D" != "x" ]; then
-        exit 1
-    fi
-    # Environment in eMMC, before the configblock at the end of 1st "boot sector"
-    DISK="mmcblk0boot0"
-    DISK_SIZE=`cat /sys/block/$DISK/size`
-    CONFIG_ENV_SIZE=8192 # 0x2000
-    CONFIG_ENV_OFFSET=`expr $DISK_SIZE \* 512 - $CONFIG_ENV_SIZE - 512`
-    printf "/dev/%s\t0x%X\t0x%X\n" $DISK $CONFIG_ENV_OFFSET $CONFIG_ENV_SIZE >> "/etc/fw_env.config"
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
