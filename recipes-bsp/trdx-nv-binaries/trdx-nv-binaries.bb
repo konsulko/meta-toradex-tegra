@@ -58,7 +58,7 @@ FILES_${PN} += " \
     ${sysconfdir}/init/* \
     ${sysconfdir}/udev/rules.d/* \
     ${sysconfdir}/init/nv* \
-    ${sysconfdir}/init/wpa* \	
+    ${sysconfdir}/init/wpa* \
     /lib/firmware/* \
     /usr/lib/lib* \
     /usr/lib/xorg/* \
@@ -146,7 +146,7 @@ do_install () {
     #khronos headers for EGL/GLES/GLES2/OpenMax
     for dir in EGL GLES GLES2 KD KHR
     do
-        install -d ${D}${includedir}/$dir 
+        install -d ${D}${includedir}/$dir
         install -m 0644 ${WORKDIR}/khronos_headers/$dir/* ${D}${includedir}/$dir
     done
 
