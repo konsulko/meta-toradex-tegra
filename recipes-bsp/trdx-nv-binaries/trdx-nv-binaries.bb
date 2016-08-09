@@ -22,20 +22,33 @@ SRC_COMMON =  " \
 "
 
 SRC_URI_tegra2 =  " \
-    file://Tegra20_Linux-codecs_R16.5_armhf.tbz2 \
-    file://Tegra20_Linux_R16.5_armhf.tbz2 \
+    http://developer.download.nvidia.com/mobile/tegra/l4t/r16.5.0/ventana_release_armhf/Tegra20_Linux-codecs_R16.5_armhf.tbz2;name=t20codecs \
+    http://developer.download.nvidia.com/mobile/tegra/l4t/r16.5.0/ventana_release_armhf/Tegra20_Linux_R16.5_armhf.tbz2;name=t20drivers \
     ${SRC_COMMON} \
 "
 
 SRC_URI_tegra3 =  " \
-    file://Tegra30_Linux-codecs_R16.5_armhf.tbz2 \
-    file://Tegra30_Linux_R16.5_armhf.tbz2 \
-    file://libgstomx.so \
+    http://developer.download.nvidia.com/mobile/tegra/l4t/r16.5.0/cardhu_release_armhf/Tegra30_Linux-codecs_R16.5_armhf.tbz2;name=t30codecs \
+    http://developer.download.nvidia.com/mobile/tegra/l4t/r16.5.0/cardhu_release_armhf/Tegra30_Linux_R16.5_armhf.tbz2;name=t30drivers \
+    http://developer.toradex.com/files/toradex-dev/uploads/media/Colibri/Linux/Extra/libgstomx.so;name=libgstomx \
     ${SRC_COMMON} \
 "
 
 SRC_URI[openmax-h.md5sum] = "f8ac8d7272abdbe1980eeac8d03338e8"
 SRC_URI[openmax-h.sha256sum] = "9e8aee85f37946202ff15a52836233f983e90a751c0816ba341ba0c1ffedf99e"
+
+SRC_URI[t20codecs.md5sum] = "03da7451b755094c61dade6250f1ad0a"
+SRC_URI[t20codecs.sha256sum] = "0c5fe818d5e0bdc83c24b7cb0db4f87705244258bfe1925d0a0a0698e3bf712b"
+SRC_URI[t20drivers.md5sum] = "5252b747668c14376b3f82d08debad2c"
+SRC_URI[t20drivers.sha256sum] = "02b7a83b29cec59cf275b98f0de0fc87a24ffa25593af6af729cd2e881c41587"
+
+SRC_URI[t30codecs.md5sum] = "03a0b726f18a26ed379c62b83119e497"
+SRC_URI[t30codecs.sha256sum] = "640df86c47d0dd6cbfc15eff49ee146a964c2a0362fe52ee6880c84e08b7a98b"
+SRC_URI[t30drivers.md5sum] = "8759be1c7b93511cf70939df28b8af51"
+SRC_URI[t30drivers.sha256sum] = "2288ad9ce30239975208cbd5fd896791c9d37d87ca8d30b51f04bacc74835427"
+SRC_URI[libgstomx.md5sum] = "faa6ee38fb1b7aba7c6c7f98f6b2cedd"
+SRC_URI[libgstomx.sha256sum] = "844c2f3ecb8498a9b287c2b2bc6184de75c2cf7d76f64f0a7749e76e1a37a1dc"
+
 
 # xserver-xorg driver ABI version to be used by the symlink, must match the required ABI version from the used xserver
 XSERVER_DRIVER_ABI_REQUIRED = "14"
