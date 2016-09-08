@@ -1,4 +1,4 @@
-SUMMARY = "Disable LVDS output in favour of primary HDMI one on Apalis TK1"
+SUMMARY = "Configure LVDS output as extended mode in favour of primary HDMI one on Apalis TK1"
 LICENSE = "PD"
 
 SRC_URI =  " \
@@ -11,7 +11,8 @@ ALLOW_EMPTY_${PN} = "1"
 
 pkg_postinst_${PN}() {
     mkdir -p ${sysconfdir}/xdg/lxsession/LXDE
-    echo "${bindir}/xrandr --output LVDS-0 --off" >> ${sysconfdir}/xdg/lxsession/LXDE/autostart
+    echo "@xrandr --output HDMI-0 --auto --primary --output LVDS-0 --auto --right-of HDMI-0" >> ${sysconfdir}/xdg/lxsession/LXDE/autostart
+    echo "#@xrandr --output LVDS-0 --auto --primary --output HDMI-0 --auto --right-of LVDS-0" >> ${sysconfdir}/xdg/lxsession/LXDE/autostart
 }
 
 pkg_postrm_${PN}() {
