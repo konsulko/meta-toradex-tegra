@@ -68,3 +68,9 @@ do_compile_kernelmodules() {
         bbnote "no modules to compile"
     fi
 }
+
+do_uboot_mkimage_prepend() {
+    cd ${B}
+    mkdir -p ${B}/arch/${ARCH}/boot/ || true
+}
+
