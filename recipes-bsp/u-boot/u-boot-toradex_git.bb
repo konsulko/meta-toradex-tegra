@@ -16,11 +16,11 @@ DEFAULT_PREFERENCE_colibri-t30 = "1"
 FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
 # This revision is based on upstream "v2015.04"
-SRCREV = "10bc451b6948e842e24799fe7fb037d335714b36"
+SRCREV = "46aa70c402efec7d89f6c93531a767a1771e2192"
 SRCBRANCH = "2015.04-toradex"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH}"
 
-PV = "${PR}+gitr${SRCREV}"
+PV = "v2015.04-v2.6.1b1+git${SRCPV}"
 
 # require u-boot-dtb-tegra.bin to be used
 UBOOT_IMAGE = "u-boot-dtb-tegra-${MACHINE}-${PV}-${PR}.${UBOOT_SUFFIX}"

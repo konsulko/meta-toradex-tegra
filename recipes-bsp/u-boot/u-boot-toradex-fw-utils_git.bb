@@ -15,8 +15,8 @@ DEFAULT_PREFERENCE_colibri-t30 = "1"
 FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
 # This revision is based on upstream "v2015.04"
-SRCREV = "476fa4400d2cc32279c7ae7e73e7c4ab1bff4327"
-SRCBRANCH = "2015.04-toradex-next"
+SRCREV = "46aa70c402efec7d89f6c93531a767a1771e2192"
+SRCBRANCH = "2015.04-toradex"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
            file://fw_env.config \
 "
@@ -25,10 +25,7 @@ SRC_URI_append_tegra3 = " file://fw_unlock_mmc.sh \
 SRC_URI_append_tegra124 = " file://fw_unlock_mmc.sh \
 "
 
-PV_apalis-t30 = "${PR}+gitr${SRCREV}"
-PV_apalis-tk1 = "${PR}+gitr${SRCREV}"
-PV_colibri-t20 = "${PR}+gitr${SRCREV}"
-PV_colibri-t30 = "${PR}+gitr${SRCREV}"
+PV = "v2015.04-v2.6.1b1+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
