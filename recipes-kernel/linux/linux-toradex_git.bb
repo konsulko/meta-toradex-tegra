@@ -4,8 +4,8 @@ require recipes-kernel/linux/linux-toradex.inc
 LINUX_VERSION ?= "3.1.10"
 
 LOCALVERSION = "-${PR}"
-SRCREV = "be10973d1498e39431e82ad2a70f19a7872cd4b6"
-PR = "V2.6b2"
+SRCREV = "d2f03874e7b3c7c173dc6977f8df5232515ad282"
+PR = "V2.6.1b1"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"
