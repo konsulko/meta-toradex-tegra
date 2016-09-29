@@ -10,6 +10,11 @@ do_install_append_apalis-tk1 () {
 PACKAGES_prepend = "${PN}-gstnvcamera ${PN}-gstnvvidconv ${PN}-nvgstjpeg ${PN}-nvgstapps "
 RRECOMMENDS_${PN}_append = " ${PN}-gstnvcamera ${PN}-gstnvvidconv ${PN}-nvgstjpeg ${PN}-nvgstapps"
 
+RDEPENDS_${PN}-gstnvcamera = "libgstvideo-1.0"
+RDEPENDS_${PN}-gst-gstnvvidconv = "libgstvideo-1.0"
+RDEPENDS_${PN}-nvgstjpeg = "libgstvideo-1.0"
+RDEPENDS_${PN}-nvgstapps = "libgstpbutils-1.0"
+
 FILES_${PN}-gstnvcamera = " \
     ${libdir}/gstreamer-1.0/libgstnvcamera.so \
 "
@@ -24,6 +29,13 @@ FILES_${PN}-nvgstapps = " \
     ${bindir}/nvgstplayer-1.0 \
     ${docdir}/nvgst*README.txt \
 "
+#no gnu_hash in NVIDIA binaries, skip QA dev-so for this package
+#we have symlinks ending in .so, skip QA ldflags for this package
+#inhibit warnings about files being stripped
+INSANE_SKIP_${PN}-gstnvcamera = "build-deps dev-so ldflags already-stripped textrel"
+INSANE_SKIP_${PN}-gstnvvidconv = "build-deps dev-so ldflags already-stripped textrel"
+INSANE_SKIP_${PN}-nvgstjpeg = "build-deps dev-so ldflags already-stripped textrel"
+INSANE_SKIP_${PN}-nvgstapps = "build-deps dev-so ldflags already-stripped textrel"
 
 do_install_append () {
     NV_SAMPLE=${WORKDIR}/Linux_for_Tegra/nv_tegra/nv_sample_apps
