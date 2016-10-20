@@ -18,3 +18,6 @@ DEPENDS_REMOVE = "linux-driver-package"
 DEPENDS_REMOVE_apalis-tk1 = ""
 
 DEPENDS_remove = "${DEPENDS_REMOVE}"
+
+# until meta-jetson-tk1 adds it through its bbappend:
+DEPENDS_append_apalis-tk1 = "linux-driver-package "
