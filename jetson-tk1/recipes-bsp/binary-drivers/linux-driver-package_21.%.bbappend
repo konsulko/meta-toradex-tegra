@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/linux-driver-package-${PV}:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/linux-driver-package:"
 
 SRC_URI_append_apalis-tk1 = " file://xorg.conf"
 
