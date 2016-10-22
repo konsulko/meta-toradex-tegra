@@ -4,12 +4,12 @@ require recipes-kernel/linux/linux-toradex.inc
 LINUX_VERSION ?= "3.1.10"
 
 LOCALVERSION = "-${PR}"
-SRCREV = "d2f03874e7b3c7c173dc6977f8df5232515ad282"
-PR = "V2.6.1b1"
+SRCREV = "7e628fdb597e82e877ef10d22352a79f0a411221"
+PR = "v2.7b1"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"
-SRCBRANCH = "tegra"
+SRCBRANCH = "tegra-next"
 SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRANCH}"
 
 COMPATIBLE_MACHINE = "(apalis-t30|colibri-pxa|colibri-t20|colibri-t30)"
@@ -28,7 +28,7 @@ do_configure_prepend () {
     #assume its called ${MACHINE}_defconfig, but with '_' instead of '-'
     DEFCONFIG="`echo ${MACHINE} | sed -e 's/\-/\_/g' -e 's/$/_defconfig/'`"
 
-    cd ${S}
+    pushd ${S}
     export KBUILD_OUTPUT=${B}
     oe_runmake $DEFCONFIG
 
@@ -42,23 +42,10 @@ do_configure_prepend () {
     #Add GIT revision to the local version
     head=`git --git-dir=${S}/.git rev-parse --verify --short HEAD 2> /dev/null`
     printf "%s%s" +g $head > ${S}/.scmversion
+
+    popd
 }
 
-kernel_do_compile() {
-    unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MACHINE
-    export CC="`echo "${KERNEL_CC}" | sed 's/-mfloat-abi=hard//g'`"
-    oe_runmake ${KERNEL_IMAGETYPE_FOR_MAKE} ${KERNEL_ALT_IMAGETYPE} LD="${KERNEL_LD}"
-    if test "${KERNEL_IMAGETYPE_FOR_MAKE}.gz" = "${KERNEL_IMAGETYPE}"; then
-        gzip -9c < "${KERNEL_IMAGETYPE_FOR_MAKE}" > "${KERNEL_OUTPUT}"
-    fi
-}
-
-do_compile_kernelmodules() {
-    unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MACHINE
-    export CC="`echo "${KERNEL_CC}" | sed 's/-mfloat-abi=hard//g'`"
-    if (grep -q -i -e '^CONFIG_MODULES=y$' .config); then
-        oe_runmake ${PARALLEL_MAKE} modules LD="${KERNEL_LD}"
-    else
-        bbnote "no modules to compile"
-    fi
+do_uboot_mkimage_prepend () {
+    cd ${B}
 }
