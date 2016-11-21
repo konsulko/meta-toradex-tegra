@@ -10,8 +10,8 @@ require recipes-kernel/linux/linux-dtb.inc
 LINUX_VERSION ?= "3.10.40"
 
 LOCALVERSION = "-${PR}"
-SRCREV = "0e41a93380ffc4f75dde31d2c62aaf2c8292bf8e"
-PR = "V2.6.1b1"
+SRCREV = "774e3704de94c329d3319c30bb2fcade9a6a8dd9"
+PR = "V2.6.1b2"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"
