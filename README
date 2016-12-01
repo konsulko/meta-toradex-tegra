@@ -14,23 +14,23 @@ Dependencies
 This layer depends on:
 
   URI: git://git.openembedded.org/bitbake
-  branch: 1.28
+  branch: 1.32
   revision: HEAD
 
   URI: git://git.openembedded.org/openembedded-core
   layers: meta
-  branch: jethro
+  branch: morty
   revision: HEAD
 
   URI: git://git.toradex.com/meta-toradex-bsp-common
-  branch: jethro
+  branch: morty
   revision: HEAD
 
 If used for the TK1 based machine apalis-tk1 the following is additonally
 needed.
 
   URI: https://github.com/watatuki/meta-jetson-tk1
-  branch: jethro
+  branch: morty
   revision: HEAD
 
 Patches
