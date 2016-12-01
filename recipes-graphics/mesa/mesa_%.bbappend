@@ -23,3 +23,5 @@ DEPENDS_remove = "${DEPENDS_REMOVE}"
 
 # until meta-jetson-tk1 adds it through its bbappend:
 DEPENDS_append_tegra124= " linux-driver-package "
+
+SRC_URI_append_tegra123 = " tegra-path-add.patch"
