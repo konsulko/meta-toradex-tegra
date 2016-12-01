@@ -4,7 +4,7 @@ PROVIDES = "u-boot virtual/bootloader"
 DEPENDS += "dtc-native"
 
 LICENSE = "GPLv2+"
-LIC_FILES_CHKSUM = "file://Licenses/README;md5=c7383a594871c03da76b3707929d2919"
+LIC_FILES_CHKSUM = "file://Licenses/README;md5=a2c678cfd4a4d97135585cad908541c6"
 
 COMPATIBLE_MACHINE = "(apalis-t30|apalis-tk1|colibri-t20|colibri-t30)"
 
@@ -15,12 +15,12 @@ DEFAULT_PREFERENCE_colibri-t30 = "1"
 
 FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
-# This revision is based on upstream "v2015.04"
-SRCREV = "95b2e908c6aecaefccbad3f3fa808f8ffe1b3a92"
-SRCBRANCH = "2015.04-toradex"
+# This revision is based on upstream "v2016.11"
+SRCREV = "2cb59d1289cb7994c98f9c91f94ed7bd7b279d93"
+SRCBRANCH = "2016.11-toradex-next"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH}"
 
-PV = "v2015.04-v2.6.1b2+git${SRCPV}"
+PV = "v2016.11-v2.6.2b1+git${SRCPV}"
 
 # require u-boot-dtb-tegra.bin to be used
 UBOOT_IMAGE = "u-boot-dtb-tegra-${MACHINE}-${PV}-${PR}.${UBOOT_SUFFIX}"
