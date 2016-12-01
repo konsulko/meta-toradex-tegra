@@ -11,7 +11,7 @@ LINUX_VERSION ?= "3.10.40"
 
 LOCALVERSION = "-${PR}"
 SRCREV = "774e3704de94c329d3319c30bb2fcade9a6a8dd9"
-PR = "V2.6.1b2"
+PR = "V2.6.2b1"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"
@@ -34,7 +34,7 @@ do_configure_prepend () {
     #assume its called ${MACHINE}_defconfig, but with '_' instead of '-'
     DEFCONFIG="`echo ${MACHINE} | sed -e 's/$/_defconfig/'`"
 
-    cd ${S}
+    pushd ${S}
     export KBUILD_OUTPUT=${B}
     oe_runmake $DEFCONFIG
 
@@ -48,10 +48,10 @@ do_configure_prepend () {
     #Add GIT revision to the local version
     head=`git --git-dir=${S}/.git rev-parse --verify --short HEAD 2> /dev/null`
     printf "%s%s" +g $head > ${S}/.scmversion
+    popd
 }
 
 do_uboot_mkimage_prepend() {
     cd ${B}
-    mkdir -p ${B}/arch/${ARCH}/boot/ || true
 }
 
