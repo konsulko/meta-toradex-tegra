@@ -1,6 +1,5 @@
 # always latest and greatest.
 PE_tegra124 = "99"
-PROVIDES_${PN} = "virtual/xserver"
 
 PACKAGE_ARCH_tegra124 = "${MACHINE_ARCH}"
 
