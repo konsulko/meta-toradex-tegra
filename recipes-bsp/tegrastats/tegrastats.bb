@@ -3,7 +3,7 @@ DESCRIPTION = "NVIDIAS tegrastats in a commandline version and one with output t
 LICENSE = "CLOSED"
 PR = "r3"
 
-RDEPENDS_{PN}-gtk = "pango"
+RDEPENDS_{PN}-gtk = "pango libatk-1.0-0"
 
 SRC_URI =  "file://tegrastats \
             file://tegrastats-gtk \
@@ -11,11 +11,12 @@ SRC_URI =  "file://tegrastats \
 
 S = "${WORKDIR}"
 
-PACKAGES = "${PN} ${PN}-gtk"
+PACKAGES_prepend = "${PN}-gtk "
 
 # Inhibit warnings about files being stripped.
 # Inhibit warnings about missing DEPENDS, Files are provided in binary form"
 WARN_QA_remove = "already-stripped build-deps"
+WARN_QA_remove_tegra124 = "already-stripped build-deps ldflags"
 WARN_QA-gtk_remove = "already-stripped build-deps"
 
 do_install() {
@@ -29,3 +30,5 @@ FILES_${PN}-gtk = " \
 	/home/root/Desktop/Tegra* "
 
 FILES_${PN} = "${bindir}/tegrastats"
+
+PACKAGE_ARCH_tegra124 = "${MACHINE_ARCH}"
