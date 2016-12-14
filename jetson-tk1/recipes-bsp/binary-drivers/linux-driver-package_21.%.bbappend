@@ -15,6 +15,15 @@ RDEPENDS_${PN}-gst-gstnvvidconv = "libgstvideo-1.0"
 RDEPENDS_${PN}-nvgstjpeg = "libgstvideo-1.0"
 RDEPENDS_${PN}-nvgstapps = "libgstpbutils-1.0"
 
+# create the sysv sysmlinks also if sysvinit is not in DISTRO_FEATURES
+FILES_${PN}-boot += "${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', '', ' ${sysconfdir}/rcS.d/*nv', d)}"
+FILES_${PN}-firstboot += "${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', '', ' ${sysconfdir}/rcS.d/*nvfb', d)}"
+UPDATE_RC_CMD = "${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', '', \
+    ' update-rc.d -r ${D} ${INITSCRIPT_NAME_${PN}-boot} ${INITSCRIPT_PARAMS_${PN}-boot}; \
+      update-rc.d -r ${D} ${INITSCRIPT_NAME_${PN}-firstboot} ${INITSCRIPT_PARAMS_${PN}-firstboot}; \
+    ', d)}"
+
+
 FILES_${PN}-gstnvcamera = " \
     ${libdir}/gstreamer-1.0/libgstnvcamera.so \
 "
@@ -50,4 +59,6 @@ do_install_append () {
     install -m 0755 ${NV_SAMPLE}/usr/lib/arm-linux-gnueabihf/gstreamer-1.0/libgstnvcamera.so ${D}${libdir}/gstreamer-1.0
     install -m 0755 ${NV_SAMPLE}/usr/lib/arm-linux-gnueabihf/gstreamer-1.0/libgstnvvidconv.so ${D}${libdir}/gstreamer-1.0
     install -m 0755 ${NV_SAMPLE}/usr/lib/arm-linux-gnueabihf/gstreamer-1.0/libnvgstjpeg.so ${D}${libdir}/gstreamer-1.0
+
+    ${UPDATE_RC_CMD}
 }
