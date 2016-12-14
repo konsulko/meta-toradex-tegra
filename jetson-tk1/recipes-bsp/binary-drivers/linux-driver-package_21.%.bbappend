@@ -32,6 +32,7 @@ FILES_${PN}-nvgstapps = " \
 #no gnu_hash in NVIDIA binaries, skip QA dev-so for this package
 #we have symlinks ending in .so, skip QA ldflags for this package
 #inhibit warnings about files being stripped
+INSANE_SKIP_${PN} = "build-deps dev-so ldflags already-stripped textrel"
 INSANE_SKIP_${PN}-gstnvcamera = "build-deps dev-so ldflags already-stripped textrel"
 INSANE_SKIP_${PN}-gstnvvidconv = "build-deps dev-so ldflags already-stripped textrel"
 INSANE_SKIP_${PN}-nvgstjpeg = "build-deps dev-so ldflags already-stripped textrel"
