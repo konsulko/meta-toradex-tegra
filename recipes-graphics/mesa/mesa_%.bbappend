@@ -20,6 +20,10 @@ DEPENDS_REMOVE = "linux-driver-package"
 DEPENDS_REMOVE_tegra124 = ""
 
 DEPENDS_remove = "${DEPENDS_REMOVE}"
+#####
+## Tegra TK1 mainline kernel
+
+PACKAGECONFIG_append_tegra124m = "dri3 egl gles gallium "
 
 # until meta-jetson-tk1 adds it through its bbappend:
 DEPENDS_append_tegra124= " linux-driver-package "
