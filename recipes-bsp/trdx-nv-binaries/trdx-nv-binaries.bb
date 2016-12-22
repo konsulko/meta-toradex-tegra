@@ -34,8 +34,8 @@ SRC_URI_tegra3 =  " \
     ${SRC_COMMON} \
 "
 
-SRC_URI[openmax-h.md5sum] = "f8ac8d7272abdbe1980eeac8d03338e8"
-SRC_URI[openmax-h.sha256sum] = "9e8aee85f37946202ff15a52836233f983e90a751c0816ba341ba0c1ffedf99e"
+SRC_URI[openmax-h.md5sum] = "402a7600397c341895cfecbbe1f4e028"
+SRC_URI[openmax-h.sha256sum] = "e7159c88185df60a0dbb28583815067c31285a1f1d4652f6752a7329ccb534d1"
 
 SRC_URI[t20codecs.md5sum] = "03da7451b755094c61dade6250f1ad0a"
 SRC_URI[t20codecs.sha256sum] = "0c5fe818d5e0bdc83c24b7cb0db4f87705244258bfe1925d0a0a0698e3bf712b"
