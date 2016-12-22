@@ -25,7 +25,7 @@ SRC_URI_append_tegra3 = " file://fw_unlock_mmc.sh \
 SRC_URI_append_tegra124 = " file://fw_unlock_mmc.sh \
 "
 
-PV = "v2016.11-v2.6.2b1+git${SRCPV}"
+PV = "v2016.11-v2.7b1+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 

@@ -11,7 +11,7 @@ LINUX_VERSION ?= "3.10.40"
 
 LOCALVERSION = "-${PR}"
 SRCREV = "774e3704de94c329d3319c30bb2fcade9a6a8dd9"
-PR = "V2.6.2b1"
+PR = "v2.7b1"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"

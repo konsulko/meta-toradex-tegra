@@ -20,7 +20,7 @@ SRCREV = "2cb59d1289cb7994c98f9c91f94ed7bd7b279d93"
 SRCBRANCH = "2016.11-toradex-next"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH}"
 
-PV = "v2016.11-v2.6.2b1+git${SRCPV}"
+PV = "v2016.11-v2.7b1+git${SRCPV}"
 
 # require u-boot-dtb-tegra.bin to be used
 UBOOT_IMAGE = "u-boot-dtb-tegra-${MACHINE}-${PV}-${PR}.${UBOOT_SUFFIX}"

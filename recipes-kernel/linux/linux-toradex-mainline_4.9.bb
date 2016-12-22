@@ -10,7 +10,7 @@ require recipes-kernel/linux/linux-dtb.inc
 LINUX_VERSION ?= "4.9"
 
 LOCALVERSION = "-${PR}"
-PR = "V2.6.2b1"
+PR = "v2.7b1"
 
 PV = "${LINUX_VERSION}"
 S = "${WORKDIR}/linux-${PV}"
