@@ -13,8 +13,8 @@ SRC_URI = " \
     file://0001-configure.ac-link-crypotpp-as-a-static-library.patch \
 "
 
-SRCREV = "6bdc10e4712f7091a9ceb39f43f7311ee6fccc58"
-PV = "1.7"
+SRCREV = "ec1eeac53420de6b34e814ebd28e92099b257487"
+PV = "1.7+"
 
 EXTRA_OEMAKE='PREFIX="${prefix}" LIBDIR="${libdir}"'
 
