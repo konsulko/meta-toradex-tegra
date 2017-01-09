@@ -1,0 +1,48 @@
+From d2716d25609865bb31bb270ee2fdac3dec5047c6 Mon Sep 17 00:00:00 2001
+From: Alexandre Courbot <acourbot@nvidia.com>
+Date: Tue, 20 Dec 2016 15:20:20 +0900
+Subject: [PATCH 8/8] remove dependency on libdrm_tegra
+
+Functions provided by this library are not required as we perform ioctls
+directly.
+---
+ configure.ac                             | 2 --
+ src/gallium/winsys/tegra/drm/Makefile.am | 2 +-
+ 2 files changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 8a7d833..7df9674 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -77,7 +77,6 @@ LIBDRM_NOUVEAU_REQUIRED=2.4.66
+ LIBDRM_NVVIEUX_REQUIRED=2.4.66
+ LIBDRM_NOUVEAU_REQUIRED=2.4.66
+ LIBDRM_FREEDRENO_REQUIRED=2.4.67
+-LIBDRM_TEGRA_REQUIRED=2.4.68
+ DRI2PROTO_REQUIRED=2.6
+ DRI3PROTO_REQUIRED=1.0
+ PRESENTPROTO_REQUIRED=1.0
+@@ -2493,7 +2492,6 @@ if test -n "$with_gallium_drivers"; then
+             require_basic_egl "virgl"
+             ;;
+         xtegra)
+-            PKG_CHECK_MODULES([TEGRA], [libdrm_tegra >= $LIBDRM_TEGRA_REQUIRED])
+             HAVE_GALLIUM_TEGRA=yes
+             gallium_require_drm "tegra"
+             gallium_require_drm_loader
+diff --git a/src/gallium/winsys/tegra/drm/Makefile.am b/src/gallium/winsys/tegra/drm/Makefile.am
+index 39068fe..eada86a 100644
+--- a/src/gallium/winsys/tegra/drm/Makefile.am
++++ b/src/gallium/winsys/tegra/drm/Makefile.am
+@@ -26,7 +26,7 @@ include $(top_srcdir)/src/gallium/Automake.inc
+ AM_CFLAGS = \
+ 	-I$(top_srcdir)/src/gallium/drivers \
+ 	$(GALLIUM_WINSYS_CFLAGS) \
+-	$(TEGRA_CFLAGS)
++	$(LIBDRM_CFLAGS)
+ 
+ noinst_LTLIBRARIES = libtegradrm.la
+ 
+-- 
+2.9.3
+

@@ -1,0 +1,514 @@
+From 430452494ff5f3454290cb0c80f9d1dbd072ecff Mon Sep 17 00:00:00 2001
+From: Christian Gmeiner <christian.gmeiner@gmail.com>
+Date: Sun, 21 Aug 2016 22:10:12 +0200
+Subject: [PATCH 4/8] gallium: add tegra support
+
+Signed-off-by: Christian Gmeiner <christian.gmeiner@gmail.com>
+[acourbot@nvidia.com: port to latest branch]
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+---
+ configure.ac                                       | 13 ++++++-
+ src/gallium/Makefile.am                            |  4 +++
+ .../auxiliary/pipe-loader/pipe_loader_drm.c        |  5 +++
+ src/gallium/auxiliary/target-helpers/drm_helper.h  | 23 ++++++++++++
+ .../auxiliary/target-helpers/drm_helper_public.h   |  3 ++
+ src/gallium/drivers/nouveau/nouveau_buffer.c       |  3 ++
+ src/gallium/drivers/nouveau/nouveau_buffer.h       |  2 ++
+ src/gallium/drivers/nouveau/nouveau_screen.h       |  3 ++
+ src/gallium/drivers/nouveau/nv50/nv50_miptree.c    |  3 ++
+ src/gallium/drivers/nouveau/nvc0/nvc0_resource.c   | 18 ++++++++--
+ src/gallium/drivers/tegra/Automake.inc             |  9 +++++
+ src/gallium/drivers/tegra/Makefile.am              |  9 +++++
+ src/gallium/targets/dri/Makefile.am                |  2 ++
+ src/gallium/targets/dri/target.c                   | 11 ++++++
+ .../winsys/nouveau/drm/nouveau_drm_public.h        |  2 ++
+ .../winsys/nouveau/drm/nouveau_drm_winsys.c        | 10 ++++++
+ src/gallium/winsys/tegra/drm/Android.mk            | 33 +++++++++++++++++
+ src/gallium/winsys/tegra/drm/Makefile.am           | 33 +++++++++++++++++
+ src/gallium/winsys/tegra/drm/Makefile.sources      |  3 ++
+ src/gallium/winsys/tegra/drm/tegra_drm_public.h    |  8 +++++
+ src/gallium/winsys/tegra/drm/tegra_drm_winsys.c    | 41 ++++++++++++++++++++++
+ 21 files changed, 235 insertions(+), 3 deletions(-)
+ create mode 100644 src/gallium/drivers/tegra/Automake.inc
+ create mode 100644 src/gallium/drivers/tegra/Makefile.am
+ create mode 100644 src/gallium/winsys/tegra/drm/Android.mk
+ create mode 100644 src/gallium/winsys/tegra/drm/Makefile.am
+ create mode 100644 src/gallium/winsys/tegra/drm/Makefile.sources
+ create mode 100644 src/gallium/winsys/tegra/drm/tegra_drm_public.h
+ create mode 100644 src/gallium/winsys/tegra/drm/tegra_drm_winsys.c
+
+diff --git a/configure.ac b/configure.ac
+index c0f81ce..3d288e8 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -77,6 +77,7 @@ LIBDRM_NOUVEAU_REQUIRED=2.4.66
+ LIBDRM_NVVIEUX_REQUIRED=2.4.66
+ LIBDRM_NOUVEAU_REQUIRED=2.4.66
+ LIBDRM_FREEDRENO_REQUIRED=2.4.67
++LIBDRM_TEGRA_REQUIRED=2.4.68
+ DRI2PROTO_REQUIRED=2.6
+ DRI3PROTO_REQUIRED=1.0
+ PRESENTPROTO_REQUIRED=1.0
+@@ -1021,7 +1022,7 @@ GALLIUM_DRIVERS_DEFAULT="r300,r600,svga,swrast"
+ AC_ARG_WITH([gallium-drivers],
+     [AS_HELP_STRING([--with-gallium-drivers@<:@=DIRS...@:>@],
+         [comma delimited Gallium drivers list, e.g.
+-        "i915,ilo,nouveau,r300,r600,radeonsi,freedreno,svga,swrast,vc4,virgl"
++        "i915,ilo,nouveau,r300,r600,radeonsi,freedreno,svga,swrast,vc4,virgl,tegra"
+         @<:@default=r300,r600,svga,swrast@:>@])],
+     [with_gallium_drivers="$withval"],
+     [with_gallium_drivers="$GALLIUM_DRIVERS_DEFAULT"])
+@@ -2491,6 +2492,13 @@ if test -n "$with_gallium_drivers"; then
+             require_libdrm "virgl"
+             require_basic_egl "virgl"
+             ;;
++        xtegra)
++            PKG_CHECK_MODULES([TEGRA], [libdrm_tegra >= $LIBDRM_TEGRA_REQUIRED])
++            HAVE_GALLIUM_TEGRA=yes
++            gallium_require_drm "tegra"
++            gallium_require_drm_loader
++            require_egl_drm "tegra"
++            ;;
+         *)
+             AC_MSG_ERROR([Unknown Gallium driver: $driver])
+             ;;
+@@ -2582,6 +2590,7 @@ AM_CONDITIONAL(HAVE_GALLIUM_VC4, test "x$HAVE_GALLIUM_VC4" = xyes)
+                                          "x$HAVE_GALLIUM_SWR" = xyes)
+ AM_CONDITIONAL(HAVE_GALLIUM_VC4, test "x$HAVE_GALLIUM_VC4" = xyes)
+ AM_CONDITIONAL(HAVE_GALLIUM_VIRGL, test "x$HAVE_GALLIUM_VIRGL" = xyes)
++AM_CONDITIONAL(HAVE_GALLIUM_TEGRA, test "x$HAVE_GALLIUM_TEGRA" = xyes)
+ 
+ AM_CONDITIONAL(HAVE_GALLIUM_STATIC_TARGETS, test "x$enable_shared_pipe_drivers" = xno)
+ 
+@@ -2732,6 +2741,7 @@ AC_CONFIG_FILES([Makefile
+ 		src/gallium/drivers/imx/Makefile
+ 		src/gallium/drivers/vc4/Makefile
+ 		src/gallium/drivers/virgl/Makefile
++		src/gallium/drivers/tegra/Makefile
+ 		src/gallium/state_trackers/clover/Makefile
+ 		src/gallium/state_trackers/dri/Makefile
+ 		src/gallium/state_trackers/glx/xlib/Makefile
+@@ -2776,6 +2786,7 @@ AC_CONFIG_FILES([Makefile
+ 		src/gallium/winsys/vc4/drm/Makefile
+ 		src/gallium/winsys/virgl/drm/Makefile
+ 		src/gallium/winsys/virgl/vtest/Makefile
++		src/gallium/winsys/tegra/drm/Makefile
+ 		src/gbm/Makefile
+ 		src/gbm/main/gbm.pc
+ 		src/glx/Makefile
+diff --git a/src/gallium/Makefile.am b/src/gallium/Makefile.am
+index f910f31..0f887d2 100644
+--- a/src/gallium/Makefile.am
++++ b/src/gallium/Makefile.am
+@@ -100,6 +100,10 @@ if HAVE_GALLIUM_VIRGL
+ SUBDIRS += drivers/virgl winsys/virgl/drm winsys/virgl/vtest
+ endif
+ 
++if HAVE_GALLIUM_TEGRA
++SUBDIRS += drivers/tegra winsys/tegra/drm
++endif
++
+ ## the sw winsys'
+ SUBDIRS += winsys/sw/null
+ 
+diff --git a/src/gallium/auxiliary/pipe-loader/pipe_loader_drm.c b/src/gallium/auxiliary/pipe-loader/pipe_loader_drm.c
+index 6c89fe5..ff1166c 100644
+--- a/src/gallium/auxiliary/pipe-loader/pipe_loader_drm.c
++++ b/src/gallium/auxiliary/pipe-loader/pipe_loader_drm.c
+@@ -163,6 +163,12 @@ static const struct drm_driver_descriptor driver_descriptors[] = {
+         .create_screen = pipe_vc4_create_screen,
+         .configuration = configuration_query,
+     },
++    {
++        .name = "tegra",
++        .driver_name = "tegra",
++        .create_screen = pipe_tegra_create_screen,
++        .configuration = configuration_query,
++    },
+ };
+ #endif
+ 
+diff --git a/src/gallium/auxiliary/target-helpers/drm_helper.h b/src/gallium/auxiliary/target-helpers/drm_helper.h
+index fbb4ce4..22932d3 100644
+--- a/src/gallium/auxiliary/target-helpers/drm_helper.h
++++ b/src/gallium/auxiliary/target-helpers/drm_helper.h
+@@ -312,4 +312,27 @@ pipe_imx_drm_create_screen(int fd)
+ 
+ #endif
+ 
++#ifdef GALLIUM_TEGRA
++#include "tegra/drm/tegra_drm_public.h"
++
++struct pipe_screen *
++pipe_tegra_create_screen(int fd)
++{
++   struct pipe_screen *screen;
++
++   screen = tegra_drm_screen_create(fd);
++   return screen ? debug_screen_wrap(screen) : NULL;
++}
++
++#else
++
++struct pipe_screen *
++pipe_tegra_create_screen(int fd)
++{
++   fprintf(stderr, "tegra: driver missing\n");
++   return NULL;
++}
++
++#endif
++
+ #endif /* DRM_HELPER_H */
+diff --git a/src/gallium/auxiliary/target-helpers/drm_helper_public.h b/src/gallium/auxiliary/target-helpers/drm_helper_public.h
+index bc12b21..5525bdf 100644
+--- a/src/gallium/auxiliary/target-helpers/drm_helper_public.h
++++ b/src/gallium/auxiliary/target-helpers/drm_helper_public.h
+@@ -40,4 +40,7 @@ pipe_etna_create_screen(int fd);
+ struct pipe_screen *
+ pipe_imx_drm_create_screen(int fd);
+ 
++struct pipe_screen *
++pipe_tegra_create_screen(int fd);
++
+ #endif /* _DRM_HELPER_PUBLIC_H */
+diff --git a/src/gallium/drivers/nouveau/nouveau_buffer.c b/src/gallium/drivers/nouveau/nouveau_buffer.c
+index 17052b2..95dcaad 100644
+--- a/src/gallium/drivers/nouveau/nouveau_buffer.c
++++ b/src/gallium/drivers/nouveau/nouveau_buffer.c
+@@ -128,6 +128,9 @@ nouveau_buffer_destroy(struct pipe_screen *pscreen,
+ 
+    util_range_destroy(&res->valid_buffer_range);
+ 
++   if (res->scanout)
++       renderonly_scanout_destroy(res->scanout);
++
+    FREE(res);
+ 
+    NOUVEAU_DRV_STAT(nouveau_screen(pscreen), buf_obj_current_count, -1);
+diff --git a/src/gallium/drivers/nouveau/nouveau_buffer.h b/src/gallium/drivers/nouveau/nouveau_buffer.h
+index 3a33fae..c01fda4 100644
+--- a/src/gallium/drivers/nouveau/nouveau_buffer.h
++++ b/src/gallium/drivers/nouveau/nouveau_buffer.h
+@@ -50,6 +50,8 @@ struct nv04_resource {
+ 
+    /* buffer range that has been initialized */
+    struct util_range valid_buffer_range;
++
++   struct renderonly_scanout *scanout;
+ };
+ 
+ void
+diff --git a/src/gallium/drivers/nouveau/nouveau_screen.h b/src/gallium/drivers/nouveau/nouveau_screen.h
+index 28c4760..e0ec614 100644
+--- a/src/gallium/drivers/nouveau/nouveau_screen.h
++++ b/src/gallium/drivers/nouveau/nouveau_screen.h
+@@ -2,6 +2,7 @@
+ #define __NOUVEAU_SCREEN_H__
+ 
+ #include "pipe/p_screen.h"
++#include "renderonly/renderonly.h"
+ #include "util/u_memory.h"
+ 
+ #ifdef DEBUG
+@@ -59,6 +60,8 @@ struct nouveau_screen {
+       unsigned profiles_present;
+    } firmware_info;
+ 
++   struct renderonly *ro;
++
+ #ifdef NOUVEAU_ENABLE_DRIVER_STATISTICS
+    union {
+       uint64_t v[29];
+diff --git a/src/gallium/drivers/nouveau/nv50/nv50_miptree.c b/src/gallium/drivers/nouveau/nv50/nv50_miptree.c
+index f2e304f..29e95a6 100644
+--- a/src/gallium/drivers/nouveau/nv50/nv50_miptree.c
++++ b/src/gallium/drivers/nouveau/nv50/nv50_miptree.c
+@@ -189,6 +189,9 @@ nv50_miptree_get_handle(struct pipe_screen *pscreen,
+    if (!mt || !mt->base.bo)
+       return false;
+ 
++   if (renderonly_get_handle(mt->base.scanout, whandle))
++      return TRUE;
++
+    stride = mt->level[0].pitch;
+ 
+    return nouveau_screen_bo_get_handle(pscreen,
+diff --git a/src/gallium/drivers/nouveau/nvc0/nvc0_resource.c b/src/gallium/drivers/nouveau/nvc0/nvc0_resource.c
+index 9bafe3d..adfd61c 100644
+--- a/src/gallium/drivers/nouveau/nvc0/nvc0_resource.c
++++ b/src/gallium/drivers/nouveau/nvc0/nvc0_resource.c
+@@ -8,12 +8,26 @@ static struct pipe_resource *
+ nvc0_resource_create(struct pipe_screen *screen,
+                      const struct pipe_resource *templ)
+ {
++   struct nouveau_screen *scr = nouveau_screen(screen);
++   struct pipe_resource *pres;
++
+    switch (templ->target) {
+    case PIPE_BUFFER:
+-      return nouveau_buffer_create(screen, templ);
++       pres = nouveau_buffer_create(screen, templ);
++       break;
+    default:
+-      return nvc0_miptree_create(screen, templ);
++       pres = nvc0_miptree_create(screen, templ);
++       break;
+    }
++
++   if (pres) {
++       struct nv04_resource *res = nv04_resource(pres);
++
++       if (templ->bind & PIPE_BIND_SCANOUT)
++           res->scanout = renderonly_scanout_for_resource(pres, scr->ro);
++   }
++
++   return pres;
+ }
+ 
+ static struct pipe_resource *
+diff --git a/src/gallium/drivers/tegra/Automake.inc b/src/gallium/drivers/tegra/Automake.inc
+new file mode 100644
+index 0000000..89e0441
+--- /dev/null
++++ b/src/gallium/drivers/tegra/Automake.inc
+@@ -0,0 +1,9 @@
++if HAVE_GALLIUM_TEGRA
++
++TARGET_DRIVERS += tegra
++TARGET_CPPFLAGS += -DGALLIUM_TEGRA
++TARGET_LIB_DEPS += \
++    $(top_builddir)/src/gallium/winsys/tegra/drm/libtegradrm.la \
++    $(LIBDRM_LIBS)
++
++endif
+diff --git a/src/gallium/drivers/tegra/Makefile.am b/src/gallium/drivers/tegra/Makefile.am
+new file mode 100644
+index 0000000..30f4689
+--- /dev/null
++++ b/src/gallium/drivers/tegra/Makefile.am
+@@ -0,0 +1,9 @@
++include $(top_srcdir)/src/gallium/Automake.inc
++
++AM_CPPFLAGS = \
++	$(GALLIUM_CFLAGS) \
++	$(TEGRA_CFLAGS)
++
++noinst_LTLIBRARIES = libtegra.la
++
++libtegra_la_SOURCES =
+diff --git a/src/gallium/targets/dri/Makefile.am b/src/gallium/targets/dri/Makefile.am
+index 06ade45..ed412d7 100644
+--- a/src/gallium/targets/dri/Makefile.am
++++ b/src/gallium/targets/dri/Makefile.am
+@@ -91,6 +91,8 @@ include $(top_srcdir)/src/gallium/drivers/vc4/Automake.inc
+ 
+ include $(top_srcdir)/src/gallium/drivers/virgl/Automake.inc
+ 
++include $(top_srcdir)/src/gallium/drivers/tegra/Automake.inc
++
+ include $(top_srcdir)/src/gallium/drivers/softpipe/Automake.inc
+ include $(top_srcdir)/src/gallium/drivers/llvmpipe/Automake.inc
+ include $(top_srcdir)/src/gallium/drivers/swr/Automake.inc
+diff --git a/src/gallium/targets/dri/target.c b/src/gallium/targets/dri/target.c
+index 01532e2..126cadf 100644
+--- a/src/gallium/targets/dri/target.c
++++ b/src/gallium/targets/dri/target.c
+@@ -162,3 +162,14 @@ PUBLIC const __DRIextension **__driDriverGetExtensions_i965(void)
+ }
+ #endif
+ #endif
++
++#if defined(GALLIUM_TEGRA)
++
++const __DRIextension **__driDriverGetExtensions_tegra(void);
++
++PUBLIC const __DRIextension **__driDriverGetExtensions_tegra(void)
++{
++   globalDriverAPI = &galliumdrm_driver_api;
++   return galliumdrm_driver_extensions;
++}
++#endif
+diff --git a/src/gallium/winsys/nouveau/drm/nouveau_drm_public.h b/src/gallium/winsys/nouveau/drm/nouveau_drm_public.h
+index 67b7c44..455ea77 100644
+--- a/src/gallium/winsys/nouveau/drm/nouveau_drm_public.h
++++ b/src/gallium/winsys/nouveau/drm/nouveau_drm_public.h
+@@ -3,7 +3,9 @@
+ #define __NOUVEAU_DRM_PUBLIC_H__
+ 
+ struct pipe_screen;
++struct renderonly;
+ 
+ struct pipe_screen *nouveau_drm_screen_create(int drmFD);
++struct pipe_screen *nouveau_drm_screen_create_renderonly(int fd, struct renderonly *ro);
+ 
+ #endif
+diff --git a/src/gallium/winsys/nouveau/drm/nouveau_drm_winsys.c b/src/gallium/winsys/nouveau/drm/nouveau_drm_winsys.c
+index cc9dfa7..acbd3fe 100644
+--- a/src/gallium/winsys/nouveau/drm/nouveau_drm_winsys.c
++++ b/src/gallium/winsys/nouveau/drm/nouveau_drm_winsys.c
+@@ -157,3 +157,13 @@ err:
+ 	pipe_mutex_unlock(nouveau_screen_mutex);
+ 	return NULL;
+ }
++
++struct pipe_screen *nouveau_drm_screen_create_renderonly(int fd, struct renderonly *ro)
++{
++   struct nouveau_screen *screen = nouveau_drm_screen_create(fd);
++
++   if (screen)
++      screen->ro = ro;
++
++   return screen;
++}
+diff --git a/src/gallium/winsys/tegra/drm/Android.mk b/src/gallium/winsys/tegra/drm/Android.mk
+new file mode 100644
+index 0000000..a48dca48
+--- /dev/null
++++ b/src/gallium/winsys/tegra/drm/Android.mk
+@@ -0,0 +1,33 @@
++# Copyright (C) 2014 Emil Velikov <emil.l.velikov@gmail.com>
++#
++# Permission is hereby granted, free of charge, to any person obtaining a
++# copy of this software and associated documentation files (the "Software"),
++# to deal in the Software without restriction, including without limitation
++# the rights to use, copy, modify, merge, publish, distribute, sublicense,
++# and/or sell copies of the Software, and to permit persons to whom the
++# Software is furnished to do so, subject to the following conditions:
++#
++# The above copyright notice and this permission notice shall be included
++# in all copies or substantial portions of the Software.
++#
++# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
++# DEALINGS IN THE SOFTWARE.
++
++LOCAL_PATH := $(call my-dir)
++
++# get C_SOURCES
++include $(LOCAL_PATH)/Makefile.sources
++
++include $(CLEAR_VARS)
++
++LOCAL_SRC_FILES := $(C_SOURCES)
++
++LOCAL_MODULE := libmesa_winsys_tegra
++
++include $(GALLIUM_COMMON_MK)
++include $(BUILD_STATIC_LIBRARY)
+diff --git a/src/gallium/winsys/tegra/drm/Makefile.am b/src/gallium/winsys/tegra/drm/Makefile.am
+new file mode 100644
+index 0000000..39068fe
+--- /dev/null
++++ b/src/gallium/winsys/tegra/drm/Makefile.am
+@@ -0,0 +1,33 @@
++# Copyright © 2012 Intel Corporation
++#
++# Permission is hereby granted, free of charge, to any person obtaining a
++# copy of this software and associated documentation files (the "Software"),
++# to deal in the Software without restriction, including without limitation
++# the rights to use, copy, modify, merge, publish, distribute, sublicense,
++# and/or sell copies of the Software, and to permit persons to whom the
++# Software is furnished to do so, subject to the following conditions:
++#
++# The above copyright notice and this permission notice (including the next
++# paragraph) shall be included in all copies or substantial portions of the
++# Software.
++#
++# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++# NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
++# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
++# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
++# DEALINGS IN THE SOFTWARE.
++
++include Makefile.sources
++include $(top_srcdir)/src/gallium/Automake.inc
++
++AM_CFLAGS = \
++	-I$(top_srcdir)/src/gallium/drivers \
++	$(GALLIUM_WINSYS_CFLAGS) \
++	$(TEGRA_CFLAGS)
++
++noinst_LTLIBRARIES = libtegradrm.la
++
++libtegradrm_la_SOURCES = $(C_SOURCES)
+diff --git a/src/gallium/winsys/tegra/drm/Makefile.sources b/src/gallium/winsys/tegra/drm/Makefile.sources
+new file mode 100644
+index 0000000..29a0edc
+--- /dev/null
++++ b/src/gallium/winsys/tegra/drm/Makefile.sources
+@@ -0,0 +1,3 @@
++C_SOURCES := \
++	tegra_drm_public.h \
++	tegra_drm_winsys.c
+diff --git a/src/gallium/winsys/tegra/drm/tegra_drm_public.h b/src/gallium/winsys/tegra/drm/tegra_drm_public.h
+new file mode 100644
+index 0000000..813268f
+--- /dev/null
++++ b/src/gallium/winsys/tegra/drm/tegra_drm_public.h
+@@ -0,0 +1,8 @@
++#ifndef __TEGRA_DRM_PUBLIC_H__
++#define __TEGRA_DRM_PUBLIC_H__
++
++struct pipe_screen;
++
++struct pipe_screen *tegra_drm_screen_create(int drmFD);
++
++#endif /* __TEGRA_DRM_PUBLIC_H__ */
+diff --git a/src/gallium/winsys/tegra/drm/tegra_drm_winsys.c b/src/gallium/winsys/tegra/drm/tegra_drm_winsys.c
+new file mode 100644
+index 0000000..361370d
+--- /dev/null
++++ b/src/gallium/winsys/tegra/drm/tegra_drm_winsys.c
+@@ -0,0 +1,41 @@
++#include "tegra_drm_public.h"
++
++#include "renderonly/renderonly.h"
++#include "../winsys/nouveau/drm/nouveau_drm_public.h"
++
++#include <fcntl.h>
++#include <libdrm/tegra_drm.h>
++#include <xf86drm.h>
++
++static struct pipe_screen *
++tegra_create(struct renderonly *ro)
++{
++   int fd = open("/dev/dri/renderD128", O_RDWR | O_CLOEXEC);
++
++   if (fd == -1)
++      return NULL;
++
++   return nouveau_drm_screen_create_renderonly(fd, ro);
++}
++
++static int
++tegra_tiling(int fd, uint32_t handle)
++{
++   struct drm_tegra_gem_set_tiling args = {
++      .handle = handle,
++      .mode = DRM_TEGRA_GEM_TILING_MODE_BLOCK,
++      .value = 4
++   };
++
++   return drmIoctl(fd, DRM_IOCTL_TEGRA_GEM_SET_TILING, &args);
++}
++
++static const struct renderonly_ops ro_ops = {
++   .create = tegra_create,
++   .tiling = tegra_tiling
++};
++
++struct pipe_screen *tegra_drm_screen_create(int fd)
++{
++   return renderonly_screen_create(fd, &ro_ops, NULL);
++}
+-- 
+2.9.3
+

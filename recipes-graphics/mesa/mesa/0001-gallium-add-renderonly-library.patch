@@ -1,0 +1,365 @@
+From f8bf6404b0133a355a58c72fb4381943a0022959 Mon Sep 17 00:00:00 2001
+From: Christian Gmeiner <christian.gmeiner@gmail.com>
+Date: Sun, 27 Nov 2016 22:27:18 +0100
+Subject: [PATCH 1/8] gallium: add renderonly library
+
+This a very lightweight library to add basic support for
+renderonly GPUs. It does all the magic regarding in/exporting
+buffers etc. This library will likely break android support and
+hopefully will get replaced with a better solution based on gbm2.
+
+Signed-off-by: Christian Gmeiner <christian.gmeiner@gmail.com>
+---
+ src/gallium/Automake.inc                      |   5 +
+ src/gallium/auxiliary/Makefile.am             |  10 ++
+ src/gallium/auxiliary/Makefile.sources        |   4 +
+ src/gallium/auxiliary/renderonly/renderonly.c | 199 ++++++++++++++++++++++++++
+ src/gallium/auxiliary/renderonly/renderonly.h |  81 +++++++++++
+ 5 files changed, 299 insertions(+)
+ create mode 100644 src/gallium/auxiliary/renderonly/renderonly.c
+ create mode 100644 src/gallium/auxiliary/renderonly/renderonly.h
+
+diff --git a/src/gallium/Automake.inc b/src/gallium/Automake.inc
+index 6fe2e22..6aadcb9 100644
+--- a/src/gallium/Automake.inc
++++ b/src/gallium/Automake.inc
+@@ -50,6 +50,11 @@ GALLIUM_COMMON_LIB_DEPS = \
+ 	$(PTHREAD_LIBS) \
+ 	$(DLOPEN_LIBS)
+ 
++if HAVE_LIBDRM
++GALLIUM_COMMON_LIB_DEPS += \
++	$(LIBDRM_LIBS)
++endif
++
+ GALLIUM_WINSYS_CFLAGS = \
+ 	-I$(top_srcdir)/src \
+ 	-I$(top_srcdir)/include \
+diff --git a/src/gallium/auxiliary/Makefile.am b/src/gallium/auxiliary/Makefile.am
+index 4a4a4fb..6b63cf1 100644
+--- a/src/gallium/auxiliary/Makefile.am
++++ b/src/gallium/auxiliary/Makefile.am
+@@ -20,6 +20,16 @@ libgallium_la_SOURCES = \
+ 	$(NIR_SOURCES) \
+ 	$(GENERATED_SOURCES)
+ 
++if HAVE_LIBDRM
++
++AM_CFLAGS += \
++	$(LIBDRM_CFLAGS)
++
++libgallium_la_SOURCES += \
++	$(RENDERONLY_SOURCES)
++
++endif
++
+ if HAVE_MESA_LLVM
+ 
+ AM_CFLAGS += \
+diff --git a/src/gallium/auxiliary/Makefile.sources b/src/gallium/auxiliary/Makefile.sources
+index 5d4fe30..8d3e4a9 100644
+--- a/src/gallium/auxiliary/Makefile.sources
++++ b/src/gallium/auxiliary/Makefile.sources
+@@ -435,3 +435,7 @@ GALLIVM_SOURCES := \
+ 	draw/draw_llvm_sample.c \
+ 	draw/draw_pt_fetch_shade_pipeline_llvm.c \
+ 	draw/draw_vs_llvm.c
++
++RENDERONLY_SOURCES := \
++	renderonly/renderonly.c \
++	renderonly/renderonly.h
+diff --git a/src/gallium/auxiliary/renderonly/renderonly.c b/src/gallium/auxiliary/renderonly/renderonly.c
+new file mode 100644
+index 0000000..c4ea784
+--- /dev/null
++++ b/src/gallium/auxiliary/renderonly/renderonly.c
+@@ -0,0 +1,199 @@
++/*
++ * Copyright (C) 2016 Christian Gmeiner <christian.gmeiner@gmail.com>
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the next
++ * paragraph) shall be included in all copies or substantial portions of the
++ * Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++ * SOFTWARE.
++ *
++ * Authors:
++ *    Christian Gmeiner <christian.gmeiner@gmail.com>
++ */
++
++#include "renderonly/renderonly.h"
++
++#include <errno.h>
++#include <fcntl.h>
++#include <stdio.h>
++#include <sys/ioctl.h>
++#include <xf86drm.h>
++
++#include "state_tracker/drm_driver.h"
++#include "pipe/p_screen.h"
++#include "util/u_memory.h"
++
++struct pipe_screen *
++renderonly_screen_create(int fd, const struct renderonly_ops *ops, void *priv)
++{
++   struct renderonly *ro;
++
++   ro = CALLOC_STRUCT(renderonly);
++   if (!ro)
++      return NULL;
++
++   ro->kms_fd = fd;
++   ro->ops = ops;
++   ro->priv = priv;
++
++   ro->screen = ops->create(ro);
++   if (!ro->screen)
++      goto cleanup;
++
++   return ro->screen;
++
++cleanup:
++   FREE(ro);
++
++   return NULL;
++}
++
++static bool
++use_kms_bumb_buffer(struct renderonly_scanout *scanout,
++      struct pipe_resource *rsc, struct renderonly *ro)
++{
++   struct winsys_handle handle;
++   int prime_fd, err;
++   struct drm_mode_create_dumb create_dumb = {
++      .width = rsc->width0,
++      .height = rsc->height0,
++      .bpp = 32,
++   };
++   struct drm_mode_destroy_dumb destroy_dumb = { };
++
++   /* create dumb buffer at scanout GPU */
++   err = ioctl(ro->kms_fd, DRM_IOCTL_MODE_CREATE_DUMB, &create_dumb);
++   if (err < 0) {
++      fprintf(stderr, "DRM_IOCTL_MODE_CREATE_DUMB failed: %s\n",
++            strerror(errno));
++      return false;
++   }
++
++   scanout->handle = create_dumb.handle;
++   scanout->stride = create_dumb.pitch;
++
++   /* export dumb buffer */
++   err = drmPrimeHandleToFD(ro->kms_fd, create_dumb.handle, O_CLOEXEC,
++         &prime_fd);
++   if (err < 0) {
++      fprintf(stderr, "failed to export dumb buffer: %s\n", strerror(errno));
++      goto out_free_dumb;
++   }
++
++   /* import dumb buffer */
++   handle.type = DRM_API_HANDLE_TYPE_FD;
++   handle.handle = prime_fd;
++   handle.stride = create_dumb.pitch;
++
++   scanout->prime = ro->screen->resource_from_handle(ro->screen, rsc,
++         &handle, PIPE_HANDLE_USAGE_READ_WRITE);
++
++   if (!scanout->prime) {
++      fprintf(stderr, "failed to create resource_from_handle: %s\n", strerror(errno));
++      goto out_free_dumb;
++   }
++
++   return true;
++
++out_free_dumb:
++   destroy_dumb.handle = scanout->handle;
++   ioctl(ro->kms_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &destroy_dumb);
++
++   return false;
++}
++
++static bool
++import_gpu_scanout(struct renderonly_scanout *scanout,
++      struct pipe_resource *rsc, struct renderonly *ro)
++{
++   struct pipe_screen *screen = ro->screen;
++   boolean status;
++   int fd, err;
++   struct winsys_handle handle = {
++      .type = DRM_API_HANDLE_TYPE_FD
++   };
++
++   status = screen->resource_get_handle(screen, rsc, &handle,
++         PIPE_HANDLE_USAGE_READ_WRITE);
++   if (!status)
++      return false;
++
++   scanout->stride = handle.stride;
++   fd = handle.handle;
++
++   err = drmPrimeFDToHandle(ro->kms_fd, fd, &scanout->handle);
++   close(fd);
++
++   if (err < 0) {
++      fprintf(stderr, "drmPrimeFDToHandle() failed: %s\n", strerror(errno));
++      return false;
++   }
++
++   if (ro->ops->tiling) {
++      err = ro->ops->tiling(ro->kms_fd, scanout->handle);
++      if (err < 0) {
++         fprintf(stderr, "failed to set tiling parameters: %s\n", strerror(errno));
++         close(scanout->handle);
++         return false;
++      }
++   }
++
++   return true;
++}
++
++struct renderonly_scanout *
++renderonly_scanout_for_resource(struct pipe_resource *rsc, struct renderonly *ro)
++{
++   struct renderonly_scanout *scanout;
++   bool ret;
++
++   scanout = CALLOC_STRUCT(renderonly_scanout);
++   if (!scanout)
++      return NULL;
++
++   if (ro->ops->intermediate_rendering)
++       ret = use_kms_bumb_buffer(scanout, rsc, ro);
++   else
++       ret = import_gpu_scanout(scanout, rsc, ro);
++
++   if (!ret) {
++      FREE(scanout);
++      scanout = NULL;
++   }
++
++   return scanout;
++}
++
++struct renderonly_scanout *
++renderonly_scanout_for_prime(struct pipe_resource *rsc, struct renderonly *ro)
++{
++   struct renderonly_scanout *scanout;
++
++   scanout = CALLOC_STRUCT(renderonly_scanout);
++   if (!scanout)
++      return NULL;
++
++   scanout->prime = rsc;
++
++   return scanout;
++}
++
++void
++renderonly_scanout_destroy(struct renderonly_scanout *scanout)
++{
++   close(scanout->handle);
++   FREE(scanout);
++}
+diff --git a/src/gallium/auxiliary/renderonly/renderonly.h b/src/gallium/auxiliary/renderonly/renderonly.h
+new file mode 100644
+index 0000000..5a98992
+--- /dev/null
++++ b/src/gallium/auxiliary/renderonly/renderonly.h
+@@ -0,0 +1,81 @@
++/*
++ * Copyright (C) 2016 Christian Gmeiner <christian.gmeiner@gmail.com>
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the next
++ * paragraph) shall be included in all copies or substantial portions of the
++ * Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++ * SOFTWARE.
++ *
++ * Authors:
++ *    Christian Gmeiner <christian.gmeiner@gmail.com>
++ */
++
++#ifndef RENDERONLY_H
++#define RENDERONLY_H
++
++#include <stdint.h>
++#include "state_tracker/drm_driver.h"
++#include "pipe/p_state.h"
++
++struct renderonly;
++
++struct renderonly_ops {
++   struct pipe_screen *(*create)(struct renderonly *ctx);
++   int (*tiling)(int fd, uint32_t handle);
++   bool intermediate_rendering;
++};
++
++struct renderonly {
++   int kms_fd;
++   const struct renderonly_ops *ops;
++   struct pipe_screen *screen;
++   void *priv;
++};
++
++struct pipe_screen *
++renderonly_screen_create(int fd, const struct renderonly_ops *ops, void *priv);
++
++struct renderonly_scanout {
++   uint32_t handle;
++   uint32_t stride;
++
++   struct pipe_resource *prime;
++};
++
++struct renderonly_scanout *
++renderonly_scanout_for_resource(struct pipe_resource *rsc, struct renderonly *ro);
++
++struct renderonly_scanout *
++renderonly_scanout_for_prime(struct pipe_resource *rsc, struct renderonly *ro);
++
++void
++renderonly_scanout_destroy(struct renderonly_scanout *scanout);
++
++static inline boolean
++renderonly_get_handle(struct renderonly_scanout *scanout,
++      struct winsys_handle *handle)
++{
++   if (!scanout)
++      return FALSE;
++
++   handle->handle = scanout->handle;
++   handle->stride = scanout->stride;
++
++   return TRUE;
++}
++
++#endif /* RENDERONLY_H_ */
+-- 
+2.9.3
+

@@ -27,6 +27,7 @@ SRC_URI = "https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz \
            file://0002-igb-integrate-tools-only-device-support.patch \
            file://0003-apalis_t30-tk1-igb-no-nvm-and-Ethernet-MAC-address-h.patch \
            file://0004-mmc-tegra-apalis-tk1-hack-to-make-sd1-functional.patch \
+           file://0001-drm-tegra-add-tiling-FB-modifiers.patch \
            "
 
 COMPATIBLE_MACHINE = "(apalis-tk1-mainline|apalis-t30-mainline)"
