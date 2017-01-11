@@ -15,8 +15,8 @@ DEFAULT_PREFERENCE_colibri-t30 = "1"
 FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
 # This revision is based on upstream "v2016.11"
-SRCREV = "2cb59d1289cb7994c98f9c91f94ed7bd7b279d93"
-SRCBRANCH = "2016.11-toradex-next"
+SRCREV = "22e68cbd1fa28e0a9df45cfbfb43f0c606370f32"
+SRCBRANCH = "2016.11-toradex"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
            file://fw_env.config \
 "
