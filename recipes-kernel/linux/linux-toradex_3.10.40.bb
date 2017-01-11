@@ -10,12 +10,12 @@ require recipes-kernel/linux/linux-dtb.inc
 LINUX_VERSION ?= "3.10.40"
 
 LOCALVERSION = "-${PR}"
-SRCREV = "88e2411d4fa3f60c40cc672ff04bf80521f0d325"
+SRCREV = "19722d4d90e711d7826ec7f6461216aa61f2f937"
 PR = "v2.7b1"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"
-SRCBRANCH = "toradex_tk1_l4t_r21.5-next"
+SRCBRANCH = "toradex_tk1_l4t_r21.5"
 SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRANCH}"
 
 COMPATIBLE_MACHINE = "apalis-tk1"
