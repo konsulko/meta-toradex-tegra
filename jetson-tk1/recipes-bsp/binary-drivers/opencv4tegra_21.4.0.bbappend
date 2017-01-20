@@ -7,6 +7,17 @@ LIC_FILES_CHKSUM = "file://usr/share/doc/libopencv4tegra-repo/copyright;md5=99d8
 SRC_URI[md5sum] = "ee3ad8fb8eaafc357d5e228d61ad7123"
 SRC_URI[sha256sum] = "096fb80a83c53f5e946c8106985eb147c8791b0cbe1e1fc38ebc49a3b932bf19"
 
+INSANE_SKIP_${PN} += "already-stripped"
+
+python do_unpack () {
+    locals = d.getVar('WORKDIR', True)
+    s = d.getVar('S', True)
+    d.setVar('WORKDIR', s)
+    d.setVar('S', s)
+    bb.build.exec_func('base_do_unpack', d)
+    d.setVar('WORKDIR', locals)
+}
+
 do_install () {
     cp -r ${WORKDIR}/opencv4tegra/usr ${D}
     dpkg -x ${WORKDIR}/opencv4tegra/var/opencv4tegra-repo/libopencv4tegra_2.4.12.3_armhf.deb ${D}
