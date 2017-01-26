@@ -39,7 +39,7 @@ config_script () {
 }
 
 do_configure_prepend () {
-    pushd ${S}
+    cd ${S}
     export KBUILD_OUTPUT=${B}
     oe_runmake ${KERNEL_DEFCONFIG}
 
@@ -50,7 +50,7 @@ do_configure_prepend () {
     sed -i -e /CONFIG_LOCALVERSION/d ${B}/.config
     echo "CONFIG_LOCALVERSION=\"${LOCALVERSION}\"" >> ${B}/.config
 
-    popd
+    cd - > /dev/null
 }
 
 do_uboot_mkimage_prepend() {

@@ -28,7 +28,7 @@ do_configure_prepend () {
     #assume its called ${MACHINE}_defconfig, but with '_' instead of '-'
     DEFCONFIG="`echo ${MACHINE} | sed -e 's/\-/\_/g' -e 's/$/_defconfig/'`"
 
-    pushd ${S}
+    cd ${S}
     export KBUILD_OUTPUT=${B}
     oe_runmake $DEFCONFIG
 
@@ -43,7 +43,7 @@ do_configure_prepend () {
     head=`git --git-dir=${S}/.git rev-parse --verify --short HEAD 2> /dev/null`
     printf "%s%s" +g $head > ${S}/.scmversion
 
-    popd
+    cd - > /dev/null
 }
 
 do_uboot_mkimage_prepend () {
