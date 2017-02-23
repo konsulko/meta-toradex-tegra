@@ -11,6 +11,14 @@ XSERVER = "xserver-xorg \
            xf86-video-fbdev \
            xf86-input-keyboard"
 
+PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
+KERNEL_IMAGETYPE = "uImage"
+# The kernel lives in a seperate FAT or UBI partition, don't deploy it in /boot
+RDEPENDS_kernel-base = ""
+
+PREFERRED_PROVIDER_u-boot = "u-boot-toradex"
+PREFERRED_PROVIDER_virtual/bootloader = "u-boot-toradex"
+
 PREFERRED_PROVIDER_virtual/mesa = "mesa"
 PREFERRED_PROVIDER_virtual/egl = "trdx-nv-binaries"
 PREFERRED_PROVIDER_virtual/libgles1 = "trdx-nv-binaries"
