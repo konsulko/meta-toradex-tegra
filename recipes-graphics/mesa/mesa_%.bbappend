@@ -20,6 +20,12 @@ DEPENDS_REMOVE = "linux-driver-package"
 DEPENDS_REMOVE_tegra124 = ""
 
 DEPENDS_remove = "${DEPENDS_REMOVE}"
+
+# until meta-jetson-tk1 adds it through its bbappend:
+DEPENDS_append_tegra124= " linux-driver-package "
+
+SRC_URI_append_tegra124 = " file://tegra-path-add.patch"
+
 #####
 ## Tegra TK1 mainline kernel
 
@@ -45,9 +51,3 @@ DRIDRIVERS_tegra124m = " "
 GALLIUMDRIVERS_tegra124m = "tegra"
 
 COMPATIBLE_MACHINE_tegra124m = "(apalis-tk1-mainline)"
-
-
-# until meta-jetson-tk1 adds it through its bbappend:
-DEPENDS_append_tegra124= " linux-driver-package "
-
-SRC_URI_append_tegra123 = " tegra-path-add.patch"
