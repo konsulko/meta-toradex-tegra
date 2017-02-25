@@ -6,6 +6,9 @@ SRC_URI_append_apalis-tk1 = " file://xorg.conf \
 inherit systemd
 
 do_install_append_apalis-tk1 () {
+    rm ${D}/usr/lib/libGL.so
+    ln -sf ./arm-linux-gnueabihf/tegra/libGL.so.1 ${D}/usr/lib/arm-linux-gnueabihf/tegra/libGL.so
+
     cp ${WORKDIR}/xorg.conf ${D}/etc/X11/
     install -d ${D}${systemd_unitdir}/system/
     install -m 0755 ${WORKDIR}/nvfb.service ${D}${systemd_unitdir}/system
