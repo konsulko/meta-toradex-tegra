@@ -3,8 +3,6 @@ DESCRIPTION = "NVIDIAS tegrastats in a commandline version and one with output t
 LICENSE = "CLOSED"
 PR = "r3"
 
-RDEPENDS_${PN}-gtk = "pango atk"
-
 SRC_URI =  "file://tegrastats \
             file://tegrastats-gtk \
 	    file://Tegrastats-gtk.desktop "

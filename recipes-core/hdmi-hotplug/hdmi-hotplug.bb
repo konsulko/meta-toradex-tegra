@@ -1,6 +1,5 @@
 SECTION = "core"
 SUMMARY = "Use xrandr after a HDMI hotplug event to switch the display on"
-RDEPENDS_${PN} = ""
 # The license is meant for this recipe and the files it installs.
 # RNDIS is part of the kernel, udhcpd is part of busybox
 LICENSE = "MIT"
