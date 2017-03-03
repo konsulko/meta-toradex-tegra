@@ -35,7 +35,7 @@ EXTRA_OEMAKE = 'CC="${CC}"'
 
 INSANE_SKIP_${PN} = "already-stripped ldflags"
 
-inherit uboot-config
+inherit pkgconfig uboot-config
 
 do_compile () {
     oe_runmake ${UBOOT_MACHINE}
