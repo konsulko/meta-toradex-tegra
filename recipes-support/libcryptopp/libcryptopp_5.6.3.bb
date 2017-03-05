@@ -21,6 +21,7 @@ SRC_URI[sha256sum] = "9390670a14170dd0f48a6b6b06f74269ef4b056d4718a1a329f6f6069d
 inherit autotools-brokensep pkgconfig
 
 EXTRA_OECONF = "--libdir=${base_libdir}"
+TARGET_CC_ARCH += "${LDFLAGS}"
 
 #we want tegrarcm binary to run on a 32-bit architecture, on x86_64 this requires the 32-bit compatibility libs
 EXTRA_OEMAKE_class-native = "CC='${CC} -m32' CXX='${CXX} -m32'"
