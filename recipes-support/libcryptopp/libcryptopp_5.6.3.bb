@@ -31,8 +31,7 @@ EXTRA_OEMAKE_class-native = "CC='${CC} -m32' CXX='${CXX} -m32'"
 do_compile() {
     sed -i -e 's/^CXXFLAGS/#CXXFLAGS/' GNUmakefile
     export CXXFLAGS="${CXXFLAGS} -DNDEBUG -fPIC"
-    oe_runmake -f GNUmakefile
-    oe_runmake libcryptopp.a
+    oe_runmake all libcryptopp.so
 }
 
 do_install_prepend() {
