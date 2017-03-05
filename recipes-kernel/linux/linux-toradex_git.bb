@@ -49,3 +49,17 @@ do_configure_prepend () {
 do_uboot_mkimage_prepend () {
     cd ${B}
 }
+
+# glibc 2.24 set the oldest kernel to 3.2.0, however the downstream L4T 3.1.10
+# kernel provides all needed interfaces, so override the check_oldest_kernel to
+# disable the warning
+python check_oldest_kernel() {
+    oldest_kernel = d.getVar('OLDEST_KERNEL', True)
+    kernel_version = "3.2.0"
+    tclibc = d.getVar('TCLIBC', True)
+    if tclibc == 'glibc':
+        kernel_version = kernel_version.split('-', 1)[0]
+        if oldest_kernel and kernel_version:
+            if bb.utils.vercmp_string(kernel_version, oldest_kernel) < 0:
+                bb.warn('%s: OLDEST_KERNEL is "%s" but the version of the kernel you are building is "%s" - therefore %s as built may not be compatible with this kernel. Either set OLDEST_KERNEL to an older version, or build a newer kernel.' %(d.getVar('PN', True), oldest_kernel, kernel_version, tclibc))
+}
