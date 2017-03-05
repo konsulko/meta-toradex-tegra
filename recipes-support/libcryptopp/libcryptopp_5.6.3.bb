@@ -20,6 +20,8 @@ SRC_URI[sha256sum] = "9390670a14170dd0f48a6b6b06f74269ef4b056d4718a1a329f6f6069d
 
 inherit autotools-brokensep pkgconfig
 
+PACKAGES_prepend = "${PN}-test "
+
 EXTRA_OECONF = "--libdir=${base_libdir}"
 TARGET_CC_ARCH += "${LDFLAGS}"
 
@@ -45,3 +47,5 @@ do_install_append() {
         ln -fs libcryptopp.so.${PV} ${D}/usr/lib/libcryptopp.so
     fi
 }
+
+FILES_${PN}-test = "${bindir}"
