@@ -34,7 +34,7 @@ do_compile() {
 }
 
 do_install_prepend() {
-    export PREFIX=${prefix}
+    export PREFIX=${D}${prefix}
 }
 
 do_install_append() {
