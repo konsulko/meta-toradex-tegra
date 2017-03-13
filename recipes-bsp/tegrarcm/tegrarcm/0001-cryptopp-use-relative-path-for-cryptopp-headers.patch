@@ -1,0 +1,105 @@
+From 42e6130629fef6802839df51911f76a66da9c986 Mon Sep 17 00:00:00 2001
+From: Max Krummenacher <max.krummenacher@toradex.com>
+Date: Mon, 13 Mar 2017 22:02:59 +0100
+Subject: [PATCH] cryptopp: use relative path for cryptopp headers
+
+This works around having to specify an additional include directory
+into the native recipe specific sysroot.
+
+Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+---
+ src/aes-cmac.cpp | 12 ++++++------
+ src/rsa-pss.cpp  | 20 ++++++++++----------
+ 2 files changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/src/aes-cmac.cpp b/src/aes-cmac.cpp
+index 24c89f8..f8171da 100644
+--- a/src/aes-cmac.cpp
++++ b/src/aes-cmac.cpp
+@@ -40,26 +40,26 @@ using std::string;
+ #include <cstdlib>
+ using std::exit;
+ 
+-#include "cryptlib.h"
++#include "cryptopp/cryptlib.h"
+ using CryptoPP::Exception;
+ 
+-#include "cmac.h"
++#include "cryptopp/cmac.h"
+ using CryptoPP::CMAC;
+ 
+-#include "aes.h"
++#include "cryptopp/aes.h"
+ using CryptoPP::AES;
+ 
+-#include "hex.h"
++#include "cryptopp/hex.h"
+ using CryptoPP::HexEncoder;
+ using CryptoPP::HexDecoder;
+ 
+-#include "filters.h"
++#include "cryptopp/filters.h"
+ using CryptoPP::StringSink;
+ using CryptoPP::StringSource;
+ using CryptoPP::HashFilter;
+ using CryptoPP::HashVerificationFilter;
+ 
+-#include "secblock.h"
++#include "cryptopp/secblock.h"
+ using CryptoPP::SecByteBlock;
+ 
+ extern "C" int cmac_hash(const unsigned char *msg, int len, unsigned char *cmac_buf)
+diff --git a/src/rsa-pss.cpp b/src/rsa-pss.cpp
+index ab0a680..1025cc3 100644
+--- a/src/rsa-pss.cpp
++++ b/src/rsa-pss.cpp
+@@ -40,36 +40,36 @@ using std::string;
+ #include <cstdlib>
+ using std::exit;
+ 
+-#include "cryptlib.h"
++#include "cryptopp/cryptlib.h"
+ using CryptoPP::Exception;
+ 
+-#include "integer.h"
++#include "cryptopp/integer.h"
+ using CryptoPP::Integer;
+ 
+-#include "files.h"
++#include "cryptopp/files.h"
+ using CryptoPP::FileSource;
+ 
+-#include "filters.h"
++#include "cryptopp/filters.h"
+ using CryptoPP::StringSink;
+ using CryptoPP::SignerFilter;
+ 
+-#include "queue.h"
++#include "cryptopp/queue.h"
+ using CryptoPP::ByteQueue;
+ 
+-#include "rsa.h"
++#include "cryptopp/rsa.h"
+ using CryptoPP::RSA;
+ using CryptoPP::RSASS;
+ 
+-#include "pssr.h"
++#include "cryptopp/pssr.h"
+ using CryptoPP::PSS;
+ 
+-#include "sha.h"
++#include "cryptopp/sha.h"
+ using CryptoPP::SHA256;
+ 
+-#include "secblock.h"
++#include "cryptopp/secblock.h"
+ using CryptoPP::SecByteBlock;
+ 
+-#include "osrng.h"
++#include "cryptopp/osrng.h"
+ using CryptoPP::AutoSeededRandomPool;
+ 
+ #include "rsa-pss.h"
+-- 
+2.6.6
+

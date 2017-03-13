@@ -1,0 +1,27 @@
+From 06b764d9d9503c3ec8c7635ec9a6128d7904cfe5 Mon Sep 17 00:00:00 2001
+From: Max Krummenacher <max.krummenacher@toradex.com>
+Date: Mon, 6 Mar 2017 00:20:46 +0100
+Subject: [PATCH] makefile: specify cryptopp include path relative to sysroot
+
+That way, neither for native nor target compilation the hosts
+cryptopp headers are picked up.
+
+Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+---
+ src/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 3dad0e6..5e9b110 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -1,5 +1,5 @@
+ AM_CFLAGS = -Wall -std=c99
+-AM_CPPFLAGS = -isystem /usr/include/$(CRYPTOLIB) $(LIBUSB_CFLAGS)
++AM_CPPFLAGS = -I=$(prefix)/include/$(CRYPTOLIB) $(LIBUSB_CFLAGS)
+ 
+ bin_PROGRAMS = tegrarcm
+ tegrarcm_SOURCES = \
+-- 
+2.6.6
+
