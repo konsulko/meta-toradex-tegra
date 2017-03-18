@@ -1,8 +1,10 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/linux-driver-package:"
 
-SRC_URI_append_apalis-tk1 = " file://xorg.conf \
-                              file://nvfb.service \
-                              file://nv.service"
+SRC_URI_append_apalis-tk1 = " \
+    file://xorg.conf \
+    file://nvfb.service \
+    file://nv.service \
+"
 inherit systemd
 
 do_install_append_apalis-tk1 () {

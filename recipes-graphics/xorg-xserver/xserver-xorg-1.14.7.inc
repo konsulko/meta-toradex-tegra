@@ -16,8 +16,10 @@ PE = "2"
 INC_PR = "r8"
 
 XORG_PN = "xorg-server"
-SRC_URI = "${XORG_MIRROR}/individual/xserver/${XORG_PN}-${PV}.tar.bz2"
-SRC_URI += "file://macro_tweak.patch"
+SRC_URI = " \
+    ${XORG_MIRROR}/individual/xserver/${XORG_PN}-${PV}.tar.bz2 \
+    file://macro_tweak.patch \
+"
 
 S = "${WORKDIR}/${XORG_PN}-${PV}"
 

@@ -5,12 +5,13 @@ COMPATIBLE_MACHINE = "(tegra2|tegra3)"
 LIC_FILES_CHKSUM = "file://COPYING;md5=bc098b9774ed096943f6c37b5beeef13"
 
 # Misc build failure for master HEAD
-SRC_URI += "file://crosscompile.patch \
-            file://fix_open_max_preprocessor_error.patch \
-            file://mips64-compiler.patch \
-            file://aarch64.patch \
-            file://xorg-CVE-2013-6424.patch \
-            file://0001-sdksyms.sh-Make-sdksyms.sh-work-with-gcc5.patch \
+SRC_URI += "\
+    file://crosscompile.patch \
+    file://fix_open_max_preprocessor_error.patch \
+    file://mips64-compiler.patch \
+    file://aarch64.patch \
+    file://xorg-CVE-2013-6424.patch \
+    file://0001-sdksyms.sh-Make-sdksyms.sh-work-with-gcc5.patch \
 "
 SRC_URI_append_tegra = " file://Revert_Use_new_pixman_glyph_cache_t_API_that_will_be_in_pixman0.28.0.patch"
 

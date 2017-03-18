@@ -14,7 +14,7 @@ DEFAULT_PREFERENCE_colibri-t20 = "1"
 DEFAULT_PREFERENCE_colibri-t30 = "1"
 
 FILESPATHPKG =. "git:"
-S="${WORKDIR}/git"
+S = "${WORKDIR}/git"
 # This revision is based on upstream "v2016.11"
 SRCREV = "cedf55d098b4b0af2815c92ee40576a4c899fcfb"
 SRCBRANCH = "2016.11-toradex-next"

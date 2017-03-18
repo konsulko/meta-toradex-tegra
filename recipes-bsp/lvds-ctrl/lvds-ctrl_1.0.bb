@@ -1,7 +1,7 @@
 SUMMARY = "Scripts to enable the LVDS converter on Apalis T30"
 LICENSE = "PD"
 
-SRC_URI =  " \
+SRC_URI = " \
     file://lvds-dual-channel.sh \
     file://lvds-single-channel.sh \
     file://COPYING \

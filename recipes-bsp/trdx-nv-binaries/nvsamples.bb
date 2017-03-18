@@ -7,10 +7,11 @@ PR = "r1"
 
 PARALLEL_MAKE = ""
 
-SRC_URI = "http://developer.toradex.com/files/toradex-dev/uploads/media/Colibri/Linux/Samples/nvsamples.tar.bz2 \
-           file://nvsamples-oe.patch \
-           file://nvsamples-no-binary-shaders.patch \
-           file://nvsamples-hardfp.patch \
+SRC_URI = " \
+    http://developer.toradex.com/files/toradex-dev/uploads/media/Colibri/Linux/Samples/nvsamples.tar.bz2 \
+    file://nvsamples-oe.patch \
+    file://nvsamples-no-binary-shaders.patch \
+    file://nvsamples-hardfp.patch \
 "
 
 S = "${WORKDIR}/nvsamples"

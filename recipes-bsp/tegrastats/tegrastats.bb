@@ -3,9 +3,11 @@ DESCRIPTION = "NVIDIAS tegrastats in a commandline version and one with output t
 LICENSE = "CLOSED"
 PR = "r3"
 
-SRC_URI =  "file://tegrastats \
-            file://tegrastats-gtk \
-	    file://Tegrastats-gtk.desktop "
+SRC_URI = " \
+    file://tegrastats \
+    file://tegrastats-gtk \
+    file://Tegrastats-gtk.desktop \
+"
 
 S = "${WORKDIR}"
 
@@ -24,8 +26,9 @@ do_install() {
 }
 
 FILES_${PN}-gtk = " \
-	${bindir}/tegrastats-gtk \
-	/home/root/Desktop/Tegra* "
+    ${bindir}/tegrastats-gtk \
+    /home/root/Desktop/Tegra* \
+"
 
 FILES_${PN} = "${bindir}/tegrastats"
 

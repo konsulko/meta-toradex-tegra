@@ -9,9 +9,7 @@ PR = "r1"
 
 PACKAGE_ARCH = "all"
 
-SRC_URI = " \
-    file://hdmi.rules \
-"
+SRC_URI = "file://hdmi.rules"
 
 do_install() {
     install -d ${D}/${sysconfdir}/udev/rules.d

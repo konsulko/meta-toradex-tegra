@@ -8,6 +8,4 @@ EGLINFO_DEVICE_tegra = "generic"
 
 SRCREV = "223817ee37988042db7873cfb5b2e899dfe35c10"
 
-SRC_URI_append_tegra = " \
-    file://eglinfo.patch \
-"
+SRC_URI_append_tegra = " file://eglinfo.patch"

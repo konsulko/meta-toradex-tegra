@@ -2,7 +2,7 @@ DESCRIPTION = "Toradex Apalis TK1 K20 MCU Firmware"
 HOMEPAGE = "https://developer.toradex.com/"
 LICENSE = "GPLv2"
 
-SRC_URI = " file://apalis-tk1-k20.bin"
+SRC_URI = "file://apalis-tk1-k20.bin"
 
 LIC_FILES_CHKSUM = "file://LICENCE;md5=f711eb988c2634cf4f4184914b8174cf"
 

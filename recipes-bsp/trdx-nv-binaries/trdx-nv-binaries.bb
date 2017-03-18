@@ -9,7 +9,7 @@ PROVIDES += "virtual/egl virtual/libgles1 virtual/libgles2"
 
 # the khronos headers are taken from here: https://www.khronos.org/registry/khronos_headers.tgz
 # this tarball changes from time to time breaking the receipe, thus it is provided with the recipe
-SRC_COMMON =  " \
+SRC_COMMON = " \
     file://aplay.desktop \
     file://egl.pc \
     file://eglplatform.h \
@@ -21,13 +21,13 @@ SRC_COMMON =  " \
     https://www.khronos.org/registry/omxil/api/1.1.2/OpenMAX_IL_1_1_2_Header.zip;name=openmax-h;unpack=no \
 "
 
-SRC_URI_tegra2 =  " \
+SRC_URI_tegra2 = " \
     http://developer.download.nvidia.com/mobile/tegra/l4t/r16.5.0/ventana_release_armhf/Tegra20_Linux-codecs_R16.5_armhf.tbz2;name=t20codecs \
     http://developer.download.nvidia.com/mobile/tegra/l4t/r16.5.0/ventana_release_armhf/Tegra20_Linux_R16.5_armhf.tbz2;name=t20drivers \
     ${SRC_COMMON} \
 "
 
-SRC_URI_tegra3 =  " \
+SRC_URI_tegra3 = " \
     http://developer.download.nvidia.com/mobile/tegra/l4t/r16.5.0/cardhu_release_armhf/Tegra30_Linux-codecs_R16.5_armhf.tbz2;name=t30codecs \
     http://developer.download.nvidia.com/mobile/tegra/l4t/r16.5.0/cardhu_release_armhf/Tegra30_Linux_R16.5_armhf.tbz2;name=t30drivers \
     http://developer.toradex.com/files/toradex-dev/uploads/media/Colibri/Linux/Extra/libgstomx.so;name=libgstomx \

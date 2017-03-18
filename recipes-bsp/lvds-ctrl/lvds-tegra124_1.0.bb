@@ -1,9 +1,7 @@
 SUMMARY = "Configure LVDS output as extended mode in favour of primary HDMI one on Apalis TK1"
 LICENSE = "PD"
 
-SRC_URI =  " \
-    file://COPYING \
-"
+SRC_URI = "file://COPYING"
 
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=1c3a7fb45253c11c74434676d84fe7dd"
 

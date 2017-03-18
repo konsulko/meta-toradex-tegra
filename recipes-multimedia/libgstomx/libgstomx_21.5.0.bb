@@ -4,8 +4,8 @@ LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=4fbd65380cdd255951079008b364516c"
 
 SRC_URI = " \
-	http://developer.download.nvidia.com/embedded/L4T/r21_Release_v5.0/source/gstomx1_src.tbz2 \
-	file://gstomx.patch \
+    http://developer.download.nvidia.com/embedded/L4T/r21_Release_v5.0/source/gstomx1_src.tbz2 \
+    file://gstomx.patch \
 "
 
 SRC_URI[md5sum] = "d5714a9533b210b30ef0e97e28ebc77d"
@@ -24,19 +24,19 @@ CXXFLAGS += " -I${S}/omx/openmax "
 CFLAGS += " -I${S}/omx/openmax "
 
 do_configure_prepend() {
-	export NOCONFIGURE="true"
-	export GST_EGL_LIBS="-lgstnvegl-1.0 -lEGL -lX11 -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0"
-	export GST_EGL_CFLAGS="-I${STAGING_INCDIR}/libdrm "
-#	export GST_EGL_CFLAGS="-pthread -I${STAGING_INCDIR}/gstreamer-1.0 -I${STAGING_INCDIR}/libdrm -I${STAGING_INCDIR}/glib-2.0 -I${STAGING_LIBDIR}/glib-2.0/include"
+    export NOCONFIGURE="true"
+    export GST_EGL_LIBS="-lgstnvegl-1.0 -lEGL -lX11 -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0"
+    export GST_EGL_CFLAGS="-I${STAGING_INCDIR}/libdrm "
+#   export GST_EGL_CFLAGS="-pthread -I${STAGING_INCDIR}/gstreamer-1.0 -I${STAGING_INCDIR}/libdrm -I${STAGING_INCDIR}/glib-2.0 -I${STAGING_LIBDIR}/glib-2.0/include"
 }
 
 FILES_${PN}-dbg = " \
-	/usr/src/debug/* \
-	/usr/lib/gstreamer-1.0/.debug/* \
-	/usr/lib/.debug/* \
+    /usr/src/debug/* \
+    /usr/lib/gstreamer-1.0/.debug/* \
+    /usr/lib/.debug/* \
 "
 
 FILES_${PN} = " \
-	/usr/lib/gstreamer-1.0/libgstomx.la \
-	/usr/lib/gstreamer-1.0/libgstomx.so \
-	"
+    /usr/lib/gstreamer-1.0/libgstomx.la \
+    /usr/lib/gstreamer-1.0/libgstomx.so \
+"
