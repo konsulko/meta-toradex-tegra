@@ -12,25 +12,24 @@ PACKAGE_ARCH_tegra = "${MACHINE_ARCH}"
 #####
 # tegra tk1
 
-PACKAGE_ARCH_tegra124 = "${MACHINE_ARCH}"
-
 DEPENDS_REMOVE = "linux-driver-package"
 DEPENDS_REMOVE_tegra124 = ""
 DEPENDS_remove = "${DEPENDS_REMOVE}"
 
+SRC_URI_append_tegra124 = " file://tegra-path-add.patch"
+
+PACKAGE_ARCH_tegra124 = "${MACHINE_ARCH}"
+
 # until meta-jetson-tk1 adds it through its bbappend:
 DEPENDS_append_tegra124= " linux-driver-package "
-
-SRC_URI_append_tegra124 = " file://tegra-path-add.patch"
 
 #####
 ## Tegra TK1 mainline kernel
 
 PACKAGECONFIG_append_tegra124m = "dri3 egl gles gallium gbm "
-
-PE_tegra124m = "99"
-
 EXTRA_OECONF_append_tegra124m = " --enable-texture-float --without-dri-drivers --enable-glx --enable-osmesa --enable-debug"
+DRIDRIVERS_tegra124m = " "
+GALLIUMDRIVERS_tegra124m = "tegra"
 
 SRC_URI_append_tegra124m = "\
             file://0001-gallium-add-renderonly-library.patch \
@@ -39,10 +38,7 @@ SRC_URI_append_tegra124m = "\
             file://0006-HACK-make-DRI-work-under-X.patch \
             file://0008-remove-dependency-on-libdrm_tegra.patch \
             "
+
 PACKAGE_ARCH_tegra124m = "${MACHINE_ARCH}"
+PE_tegra124m = "99"
 
-DRIDRIVERS_tegra124m = " "
-
-GALLIUMDRIVERS_tegra124m = "tegra"
-
-COMPATIBLE_MACHINE_tegra124m = "(apalis-tk1-mainline)"
