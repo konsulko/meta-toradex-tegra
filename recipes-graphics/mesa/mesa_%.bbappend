@@ -1,7 +1,8 @@
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+
 # tegra2, tegra3
 # we use binary only EGL, GL ES1, GL ES2 drivers (package trdx-nv-binaries)
 # adapted from meta-fsl-arm/recipes-graphics/mesa/
-# FIXME: We may need to disable EGL, GL ES1 and GL ES2
 PACKAGECONFIG_remove_tegra = "egl gles"
 
 PROVIDES_remove_tegra = "virtual/libgles1 virtual/libgles2 virtual/egl"
@@ -13,12 +14,8 @@ PACKAGE_ARCH_tegra = "${MACHINE_ARCH}"
 
 PACKAGE_ARCH_tegra124 = "${MACHINE_ARCH}"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
-
 DEPENDS_REMOVE = "linux-driver-package"
-
 DEPENDS_REMOVE_tegra124 = ""
-
 DEPENDS_remove = "${DEPENDS_REMOVE}"
 
 # until meta-jetson-tk1 adds it through its bbappend:
@@ -32,8 +29,6 @@ SRC_URI_append_tegra124 = " file://tegra-path-add.patch"
 PACKAGECONFIG_append_tegra124m = "dri3 egl gles gallium gbm "
 
 PE_tegra124m = "99"
-
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 EXTRA_OECONF_append_tegra124m = " --enable-texture-float --without-dri-drivers --enable-glx --enable-osmesa --enable-debug"
 
