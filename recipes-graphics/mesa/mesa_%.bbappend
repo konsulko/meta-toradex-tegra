@@ -26,7 +26,7 @@ DEPENDS_append_tegra124= " linux-driver-package "
 #####
 ## Tegra TK1 mainline kernel
 
-PACKAGECONFIG_append_tegra124m = "dri3 egl gles gallium gbm "
+PACKAGECONFIG_append_tegra124m = " dri3 egl gles gallium gbm "
 EXTRA_OECONF_append_tegra124m = " --enable-texture-float --without-dri-drivers --enable-glx --enable-osmesa --enable-debug"
 DRIDRIVERS_tegra124m = " "
 GALLIUMDRIVERS_tegra124m = "tegra"
