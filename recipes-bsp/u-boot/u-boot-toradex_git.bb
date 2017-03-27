@@ -1,4 +1,5 @@
 require recipes-bsp/u-boot/u-boot.inc
+include conf/tdx_version.conf
 
 PROVIDES = "u-boot virtual/bootloader"
 DEPENDS += "dtc-native"
@@ -20,7 +21,8 @@ SRCREV = "cedf55d098b4b0af2815c92ee40576a4c899fcfb"
 SRCBRANCH = "2016.11-toradex-next"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH}"
 
-PV = "v2016.11-v2.7b1+git${SRCPV}"
+PV = "2016.11"
+PR = "${TDX_VER_INT}-gitr${@d.getVar("SRCREV", False)[0:7]}"
 
 # require u-boot-dtb-tegra.bin to be used
 UBOOT_IMAGE = "u-boot-dtb-tegra-${MACHINE}-${PV}-${PR}.${UBOOT_SUFFIX}"

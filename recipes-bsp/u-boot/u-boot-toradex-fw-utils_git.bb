@@ -5,6 +5,8 @@ SECTION = "bootloader"
 PROVIDES = "u-boot-fw-utils"
 DEPENDS = "mtd-utils"
 
+include conf/tdx_version.conf
+
 COMPATIBLE_MACHINE = "(apalis-t30|apalis-tk1|colibri-t20|colibri-t30)"
 
 DEFAULT_PREFERENCE_apalis-t30 = "1"
@@ -24,7 +26,8 @@ SRC_URI = " \
 SRC_URI_append_tegra3 = " file://fw_unlock_mmc.sh"
 SRC_URI_append_tegra124 = " file://fw_unlock_mmc.sh"
 
-PV = "v2016.11-v2.7b1+git${SRCPV}"
+PV = "2016.11"
+PR = "${TDX_VER_INT}-gitr${@d.getVar("SRCREV", False)[0:7]}"
 
 S = "${WORKDIR}/git"
 
