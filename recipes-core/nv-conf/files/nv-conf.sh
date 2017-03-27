@@ -21,15 +21,4 @@ if [ -e /sys/module/cpuidle/parameters/lp2_in_idle ] ; then
 	echo "Y" > /sys/module/cpuidle/parameters/lp2_in_idle
 fi
 
-# mmc read ahead size
-if [ -e /sys/block/mmcblk0/queue/read_ahead_kb ]; then
-	echo 2048 > /sys/block/mmcblk0/queue/read_ahead_kb
-fi
-if [ -e /sys/block/mmcblk1/queue/read_ahead_kb ]; then
-	echo 2048 > /sys/block/mmcblk1/queue/read_ahead_kb
-fi
-if [ -e /sys/block/mmcblk2/queue/read_ahead_kb ]; then
-	echo 2048 > /sys/block/mmcblk2/queue/read_ahead_kb
-fi
-
 exit 0
