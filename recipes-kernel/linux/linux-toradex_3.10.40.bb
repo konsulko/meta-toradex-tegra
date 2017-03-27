@@ -6,12 +6,14 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
 inherit kernel siteinfo
 require recipes-kernel/linux/linux-dtb.inc
+include conf/tdx_version.conf
 
 LINUX_VERSION ?= "3.10.40"
 
 LOCALVERSION = "-${PR}"
+PR = "${TDX_VER_INT}"
+
 SRCREV = "b7874e0bdcaf97c808c1504cd61d2fa500ce250e"
-PR = "v2.7b1"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"

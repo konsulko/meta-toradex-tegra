@@ -6,11 +6,12 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
 inherit kernel siteinfo
 require recipes-kernel/linux/linux-dtb.inc
+include conf/tdx_version.conf
 
 LINUX_VERSION ?= "4.9"
 
 LOCALVERSION = "-${PR}"
-PR = "v2.7b1"
+PR = "${TDX_VER_INT}"
 
 PV = "${LINUX_VERSION}"
 S = "${WORKDIR}/linux-${PV}"

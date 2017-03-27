@@ -1,11 +1,13 @@
 inherit kernel
 require recipes-kernel/linux/linux-toradex.inc
+include conf/tdx_version.conf
 
 LINUX_VERSION ?= "3.1.10"
 
 LOCALVERSION = "-${PR}"
+PR = "${TDX_VER_INT}"
+
 SRCREV = "1d3366acba86c4c174c77778a23c34d992579909"
-PR = "v2.7b1"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"
