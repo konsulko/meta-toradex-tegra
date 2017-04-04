@@ -2,20 +2,21 @@ SUMMARY = "Linux Kernel for Toradex Apalis Tegra based modules"
 SECTION = "kernel"
 LICENSE = "GPLv2"
 
+FILESEXTRAPATHS_prepend := "${THISDIR}/linux-toradex-mainline-4.9:"
+
 LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
 inherit kernel siteinfo
 require recipes-kernel/linux/linux-dtb.inc
 include conf/tdx_version.conf
 
-LINUX_VERSION ?= "4.9"
+LINUX_VERSION ?= "4.9.21"
 
 LOCALVERSION = "-${PR}"
 PR = "${TDX_VER_INT}"
 
 PV = "${LINUX_VERSION}"
 S = "${WORKDIR}/linux-${PV}"
-SRC_URI[md5sum] = "0a68ef3615c64bd5ee54a3320e46667d"
 SRC_URI = " \
     https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz \
     file://0001-toradex_apalis_tk1_t30-customize-defconfig.patch \
@@ -31,6 +32,8 @@ SRC_URI = " \
     file://0004-mmc-tegra-apalis-tk1-hack-to-make-sd1-functional.patch \
     file://0001-drm-tegra-add-tiling-FB-modifiers.patch \
 "
+SRC_URI[md5sum] = "96304a3bdd6659b399276384e5b56249"
+SRC_URI[sha256sum] = "97503749bf7997b3e55a5126080df348e74c0bb0e10ad85b1b2ec9db7e5e6c24"
 
 COMPATIBLE_MACHINE = "(apalis-tk1-mainline|apalis-t30-mainline)"
 KERNEL_EXTRA_ARGS = " LOADADDR=0x80008000 "
