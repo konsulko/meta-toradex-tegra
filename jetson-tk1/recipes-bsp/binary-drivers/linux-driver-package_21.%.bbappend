@@ -22,7 +22,7 @@ PACKAGES_prepend = "${PN}-gstnvcamera ${PN}-gstnvvidconv ${PN}-nvgstjpeg ${PN}-n
 RRECOMMENDS_${PN}_append = " ${PN}-gstnvcamera ${PN}-gstnvvidconv ${PN}-nvgstjpeg ${PN}-nvgstapps"
 
 RDEPENDS_${PN}-gstnvcamera = "libgstvideo-1.0"
-RDEPENDS_${PN}-gst-gstnvvidconv = "libgstvideo-1.0"
+RDEPENDS_${PN}-gstnvvidconv = "libgstvideo-1.0"
 RDEPENDS_${PN}-nvgstjpeg = "libgstvideo-1.0"
 RDEPENDS_${PN}-nvgstapps = "libgstpbutils-1.0"
 
