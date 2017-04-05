@@ -1,5 +1,6 @@
 require recipes-bsp/u-boot/u-boot.inc
 include conf/tdx_version.conf
+inherit tegra-u-boot-localversion
 
 PROVIDES = "u-boot virtual/bootloader"
 DEPENDS += "dtc-native"

@@ -6,6 +6,7 @@ PROVIDES = "u-boot-fw-utils"
 DEPENDS = "mtd-utils"
 
 include conf/tdx_version.conf
+inherit tegra-u-boot-localversion
 
 COMPATIBLE_MACHINE = "(apalis-t30|apalis-tk1|colibri-t20|colibri-t30)"
 
