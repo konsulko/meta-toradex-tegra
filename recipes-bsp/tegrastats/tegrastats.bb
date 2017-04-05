@@ -15,9 +15,9 @@ PACKAGES_prepend = "${PN}-gtk "
 
 # Inhibit warnings about files being stripped.
 # Inhibit warnings about missing DEPENDS, Files are provided in binary form"
-WARN_QA_remove = "already-stripped build-deps"
-WARN_QA_remove_tegra124 = "already-stripped build-deps ldflags"
-WARN_QA-gtk_remove = "already-stripped build-deps"
+INSANE_SKIP_${PN} = "already-stripped build-deps file-rdeps ldflags"
+INSANE_SKIP_${PN}-gtk = "already-stripped build-deps file-rdeps"
+
 
 do_install() {
     install -d ${D}${bindir}/ ${D}/home/root/Desktop/
