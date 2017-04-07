@@ -20,9 +20,9 @@ PREFERRED_PROVIDER_u-boot = "u-boot-toradex"
 PREFERRED_PROVIDER_virtual/bootloader = "u-boot-toradex"
 
 PREFERRED_PROVIDER_virtual/mesa = "mesa"
-PREFERRED_PROVIDER_virtual/egl = "trdx-nv-binaries"
-PREFERRED_PROVIDER_virtual/libgles1 = "trdx-nv-binaries"
-PREFERRED_PROVIDER_virtual/libgles2 = "trdx-nv-binaries"
+PREFERRED_PROVIDER_virtual/egl = "tdx-nv-binaries"
+PREFERRED_PROVIDER_virtual/libgles1 = "tdx-nv-binaries"
+PREFERRED_PROVIDER_virtual/libgles2 = "tdx-nv-binaries"
 
 # Install NV binaries which contains tegra X-Server drivers when X11 is chosen
-MACHINE_EXTRA_RRECOMMENDS_append_tegra = " ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'trdx-nv-binaries', '', d)}"
+MACHINE_EXTRA_RRECOMMENDS_append_tegra = " ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'tdx-nv-binaries', '', d)}"

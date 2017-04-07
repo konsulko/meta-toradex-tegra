@@ -1,7 +1,7 @@
 SECTION = "graphical/utils"
 SUMMARY = "Nvidia samples for OpenGL ES, OpenGL ES  headers"
 LICENSE = "CLOSED"
-DEPENDS = "trdx-nv-binaries virtual/libx11 libsm libice"
+DEPENDS = "tdx-nv-binaries virtual/libx11 libsm libice"
 
 PR = "r1"
 
