@@ -32,7 +32,6 @@ DRIDRIVERS_tegra124m = " "
 GALLIUMDRIVERS_tegra124m = "tegra"
 
 SRC_URI_append_tegra124m = " \
-    file://0001-gallium-add-renderonly-library.patch \
     file://0004-gallium-add-tegra-support.patch \
     file://0005-tegra-open-card1-instead-of-renderD128.patch \
     file://0006-HACK-make-DRI-work-under-X.patch \

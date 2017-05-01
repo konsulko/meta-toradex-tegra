@@ -1,15 +1,18 @@
-From 430452494ff5f3454290cb0c80f9d1dbd072ecff Mon Sep 17 00:00:00 2001
+From b1f2a37552e3ff244e3c79b609c66a63c109915a Mon Sep 17 00:00:00 2001
 From: Christian Gmeiner <christian.gmeiner@gmail.com>
 Date: Sun, 21 Aug 2016 22:10:12 +0200
-Subject: [PATCH 4/8] gallium: add tegra support
+Subject: [PATCH 1/4] gallium: add tegra support
 
 Signed-off-by: Christian Gmeiner <christian.gmeiner@gmail.com>
 [acourbot@nvidia.com: port to latest branch]
 Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+
+forward port to mesa 17.0.2
+Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
 ---
  configure.ac                                       | 13 ++++++-
  src/gallium/Makefile.am                            |  4 +++
- .../auxiliary/pipe-loader/pipe_loader_drm.c        |  5 +++
+ .../auxiliary/pipe-loader/pipe_loader_drm.c        |  6 ++++
  src/gallium/auxiliary/target-helpers/drm_helper.h  | 23 ++++++++++++
  .../auxiliary/target-helpers/drm_helper_public.h   |  3 ++
  src/gallium/drivers/nouveau/nouveau_buffer.c       |  3 ++
@@ -28,7 +31,7 @@ Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
  src/gallium/winsys/tegra/drm/Makefile.sources      |  3 ++
  src/gallium/winsys/tegra/drm/tegra_drm_public.h    |  8 +++++
  src/gallium/winsys/tegra/drm/tegra_drm_winsys.c    | 41 ++++++++++++++++++++++
- 21 files changed, 235 insertions(+), 3 deletions(-)
+ 21 files changed, 236 insertions(+), 3 deletions(-)
  create mode 100644 src/gallium/drivers/tegra/Automake.inc
  create mode 100644 src/gallium/drivers/tegra/Makefile.am
  create mode 100644 src/gallium/winsys/tegra/drm/Android.mk
@@ -38,27 +41,27 @@ Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
  create mode 100644 src/gallium/winsys/tegra/drm/tegra_drm_winsys.c
 
 diff --git a/configure.ac b/configure.ac
-index c0f81ce..3d288e8 100644
+index ac110e8..f7f94ee 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -77,6 +77,7 @@ LIBDRM_NOUVEAU_REQUIRED=2.4.66
+@@ -74,6 +74,7 @@ LIBDRM_INTEL_REQUIRED=2.4.61
  LIBDRM_NVVIEUX_REQUIRED=2.4.66
  LIBDRM_NOUVEAU_REQUIRED=2.4.66
- LIBDRM_FREEDRENO_REQUIRED=2.4.67
+ LIBDRM_FREEDRENO_REQUIRED=2.4.74
 +LIBDRM_TEGRA_REQUIRED=2.4.68
+ LIBDRM_VC4_REQUIRED=2.4.69
+ LIBDRM_ETNAVIV_REQUIRED=2.4.74
  DRI2PROTO_REQUIRED=2.6
- DRI3PROTO_REQUIRED=1.0
- PRESENTPROTO_REQUIRED=1.0
-@@ -1021,7 +1022,7 @@ GALLIUM_DRIVERS_DEFAULT="r300,r600,svga,swrast"
+@@ -1228,7 +1229,7 @@ GALLIUM_DRIVERS_DEFAULT="r300,r600,svga,swrast"
  AC_ARG_WITH([gallium-drivers],
      [AS_HELP_STRING([--with-gallium-drivers@<:@=DIRS...@:>@],
          [comma delimited Gallium drivers list, e.g.
--        "i915,ilo,nouveau,r300,r600,radeonsi,freedreno,svga,swrast,vc4,virgl"
-+        "i915,ilo,nouveau,r300,r600,radeonsi,freedreno,svga,swrast,vc4,virgl,tegra"
+-        "i915,ilo,nouveau,r300,r600,radeonsi,freedreno,svga,swrast,vc4,virgl,etnaviv,imx"
++        "i915,ilo,nouveau,r300,r600,radeonsi,freedreno,svga,swrast,vc4,virgl,etnaviv,imx,tegra"
          @<:@default=r300,r600,svga,swrast@:>@])],
      [with_gallium_drivers="$withval"],
      [with_gallium_drivers="$GALLIUM_DRIVERS_DEFAULT"])
-@@ -2491,6 +2492,13 @@ if test -n "$with_gallium_drivers"; then
+@@ -2391,6 +2392,13 @@ if test -n "$with_gallium_drivers"; then
              require_libdrm "virgl"
              require_basic_egl "virgl"
              ;;
@@ -72,7 +75,7 @@ index c0f81ce..3d288e8 100644
          *)
              AC_MSG_ERROR([Unknown Gallium driver: $driver])
              ;;
-@@ -2582,6 +2590,7 @@ AM_CONDITIONAL(HAVE_GALLIUM_VC4, test "x$HAVE_GALLIUM_VC4" = xyes)
+@@ -2491,6 +2499,7 @@ AM_CONDITIONAL(HAVE_GALLIUM_SWRAST, test "x$HAVE_GALLIUM_SOFTPIPE" = xyes -o \
                                           "x$HAVE_GALLIUM_SWR" = xyes)
  AM_CONDITIONAL(HAVE_GALLIUM_VC4, test "x$HAVE_GALLIUM_VC4" = xyes)
  AM_CONDITIONAL(HAVE_GALLIUM_VIRGL, test "x$HAVE_GALLIUM_VIRGL" = xyes)
@@ -80,7 +83,7 @@ index c0f81ce..3d288e8 100644
  
  AM_CONDITIONAL(HAVE_GALLIUM_STATIC_TARGETS, test "x$enable_shared_pipe_drivers" = xno)
  
-@@ -2732,6 +2741,7 @@ AC_CONFIG_FILES([Makefile
+@@ -2639,6 +2648,7 @@ AC_CONFIG_FILES([Makefile
  		src/gallium/drivers/imx/Makefile
  		src/gallium/drivers/vc4/Makefile
  		src/gallium/drivers/virgl/Makefile
@@ -88,7 +91,7 @@ index c0f81ce..3d288e8 100644
  		src/gallium/state_trackers/clover/Makefile
  		src/gallium/state_trackers/dri/Makefile
  		src/gallium/state_trackers/glx/xlib/Makefile
-@@ -2776,6 +2786,7 @@ AC_CONFIG_FILES([Makefile
+@@ -2683,6 +2693,7 @@ AC_CONFIG_FILES([Makefile
  		src/gallium/winsys/vc4/drm/Makefile
  		src/gallium/winsys/virgl/drm/Makefile
  		src/gallium/winsys/virgl/vtest/Makefile
@@ -112,29 +115,28 @@ index f910f31..0f887d2 100644
  SUBDIRS += winsys/sw/null
  
 diff --git a/src/gallium/auxiliary/pipe-loader/pipe_loader_drm.c b/src/gallium/auxiliary/pipe-loader/pipe_loader_drm.c
-index 6c89fe5..ff1166c 100644
+index 6c89fe5..a08d00d 100644
 --- a/src/gallium/auxiliary/pipe-loader/pipe_loader_drm.c
 +++ b/src/gallium/auxiliary/pipe-loader/pipe_loader_drm.c
-@@ -163,6 +163,12 @@ static const struct drm_driver_descriptor driver_descriptors[] = {
-         .create_screen = pipe_vc4_create_screen,
+@@ -155,6 +155,11 @@ static const struct drm_driver_descriptor driver_descriptors[] = {
          .configuration = configuration_query,
      },
-+    {
-+        .name = "tegra",
+     {
 +        .driver_name = "tegra",
 +        .create_screen = pipe_tegra_create_screen,
 +        .configuration = configuration_query,
 +    },
- };
- #endif
- 
++    {
+         .driver_name = "etnaviv",
+         .create_screen = pipe_etna_create_screen,
+         .configuration = configuration_query,
 diff --git a/src/gallium/auxiliary/target-helpers/drm_helper.h b/src/gallium/auxiliary/target-helpers/drm_helper.h
-index fbb4ce4..22932d3 100644
+index f847b17..ae641b9 100644
 --- a/src/gallium/auxiliary/target-helpers/drm_helper.h
 +++ b/src/gallium/auxiliary/target-helpers/drm_helper.h
-@@ -312,4 +312,27 @@ pipe_imx_drm_create_screen(int fd)
- 
+@@ -313,4 +313,27 @@ pipe_imx_drm_create_screen(int fd)
  #endif
+ 
  
 +#ifdef GALLIUM_TEGRA
 +#include "tegra/drm/tegra_drm_public.h"
@@ -298,12 +300,12 @@ index 0000000..30f4689
 +
 +libtegra_la_SOURCES =
 diff --git a/src/gallium/targets/dri/Makefile.am b/src/gallium/targets/dri/Makefile.am
-index 06ade45..ed412d7 100644
+index bca747f..4236da1 100644
 --- a/src/gallium/targets/dri/Makefile.am
 +++ b/src/gallium/targets/dri/Makefile.am
-@@ -91,6 +91,8 @@ include $(top_srcdir)/src/gallium/drivers/vc4/Automake.inc
- 
- include $(top_srcdir)/src/gallium/drivers/virgl/Automake.inc
+@@ -94,6 +94,8 @@ include $(top_srcdir)/src/gallium/drivers/virgl/Automake.inc
+ include $(top_srcdir)/src/gallium/drivers/etnaviv/Automake.inc
+ include $(top_srcdir)/src/gallium/drivers/imx/Automake.inc
  
 +include $(top_srcdir)/src/gallium/drivers/tegra/Automake.inc
 +
@@ -311,12 +313,12 @@ index 06ade45..ed412d7 100644
  include $(top_srcdir)/src/gallium/drivers/llvmpipe/Automake.inc
  include $(top_srcdir)/src/gallium/drivers/swr/Automake.inc
 diff --git a/src/gallium/targets/dri/target.c b/src/gallium/targets/dri/target.c
-index 01532e2..126cadf 100644
+index 441a27f..5e4db62 100644
 --- a/src/gallium/targets/dri/target.c
 +++ b/src/gallium/targets/dri/target.c
-@@ -162,3 +162,14 @@ PUBLIC const __DRIextension **__driDriverGetExtensions_i965(void)
+@@ -181,3 +181,14 @@ PUBLIC const __DRIextension **__driDriverGetExtensions_etnaviv(void)
+    return galliumdrm_driver_extensions;
  }
- #endif
  #endif
 +
 +#if defined(GALLIUM_TEGRA)
@@ -363,7 +365,7 @@ index cc9dfa7..acbd3fe 100644
 +}
 diff --git a/src/gallium/winsys/tegra/drm/Android.mk b/src/gallium/winsys/tegra/drm/Android.mk
 new file mode 100644
-index 0000000..a48dca48
+index 0000000..a48dca4
 --- /dev/null
 +++ b/src/gallium/winsys/tegra/drm/Android.mk
 @@ -0,0 +1,33 @@
