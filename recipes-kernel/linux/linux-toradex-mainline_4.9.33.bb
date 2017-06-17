@@ -10,7 +10,7 @@ inherit kernel siteinfo
 require recipes-kernel/linux/linux-dtb.inc
 include conf/tdx_version.conf
 
-LINUX_VERSION ?= "4.9.21"
+LINUX_VERSION ?= "4.9.33"
 
 LOCALVERSION = "-${PR}"
 PR = "${TDX_VER_INT}"
@@ -32,8 +32,8 @@ SRC_URI = " \
     file://0004-mmc-tegra-apalis-tk1-hack-to-make-sd1-functional.patch \
     file://0001-drm-tegra-add-tiling-FB-modifiers.patch \
 "
-SRC_URI[md5sum] = "96304a3bdd6659b399276384e5b56249"
-SRC_URI[sha256sum] = "97503749bf7997b3e55a5126080df348e74c0bb0e10ad85b1b2ec9db7e5e6c24"
+SRC_URI[md5sum] = "7ed29fecc9775ecb5cf3ede79d6ed844"
+SRC_URI[sha256sum] = "f5ca2ba3d6ab5130bcca9c693aecafbd9813db11d450bd74ac7305bc46544c34"
 
 COMPATIBLE_MACHINE = "(apalis-tk1-mainline|apalis-t30-mainline)"
 KERNEL_EXTRA_ARGS = " LOADADDR=0x80008000 "
