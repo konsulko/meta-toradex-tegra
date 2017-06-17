@@ -7,7 +7,7 @@ LINUX_VERSION ?= "3.1.10"
 LOCALVERSION = "-${PR}"
 PR = "${TDX_VER_INT}"
 
-SRCREV = "e8678dd6bfbcf5598046fc6afd0a9a093500f652"
+SRCREV = "a24d47d56d9f5a6ed1ec3a42c6d9ccf5748bc2ba"
 
 PV = "${LINUX_VERSION}+gitr${SRCREV}"
 S = "${WORKDIR}/git"
