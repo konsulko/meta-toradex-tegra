@@ -31,6 +31,7 @@ SRC_URI = " \
     file://0003-apalis_t30-tk1-igb-no-nvm-and-Ethernet-MAC-address-h.patch \
     file://0004-mmc-tegra-apalis-tk1-hack-to-make-sd1-functional.patch \
     file://0001-drm-tegra-add-tiling-FB-modifiers.patch \
+    file://0001-tegra_defconfig-snapd-squashfs-configuration.patch \
 "
 SRC_URI[md5sum] = "7ed29fecc9775ecb5cf3ede79d6ed844"
 SRC_URI[sha256sum] = "f5ca2ba3d6ab5130bcca9c693aecafbd9813db11d450bd74ac7305bc46544c34"
