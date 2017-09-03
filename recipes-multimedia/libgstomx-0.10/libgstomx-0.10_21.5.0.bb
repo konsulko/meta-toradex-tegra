@@ -26,7 +26,7 @@ CFLAGS += " -DTEGRA_ARCH_124 -I${S}/omx/openmax -I${WORKDIR}/gstomx_src/nv_heade
 
 
 do_configure_prepend() {
-	export LIBS="-lEGL -lGLESv2 -lX11 -lgstreamer-0.10 "
+	export LIBS="-lEGL -lGLESv2 -lX11 -ldl -lgstreamer-0.10 "
 }
 
 FILES_${PN}-dbg = " \
