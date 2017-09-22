@@ -13,9 +13,9 @@ LINUX_VERSION ?= "3.10.40"
 LOCALVERSION = "-${PR}"
 PR = "${TDX_VER_INT}"
 
-SRCREV = "f328e55a793497870c533eac0ac21cb735a82e6d"
+SRCREV = "795eccdb989221b0d9ff32a34cd0f7127db89860"
 
-PV = "${LINUX_VERSION}+gitr${SRCREV}"
+PV = "${LINUX_VERSION}+gitr${SRCPV}"
 S = "${WORKDIR}/git"
 SRCBRANCH = "toradex_tk1_l4t_r21.5"
 SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRANCH}"
