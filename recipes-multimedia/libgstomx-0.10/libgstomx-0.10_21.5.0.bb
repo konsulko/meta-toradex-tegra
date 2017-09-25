@@ -20,8 +20,8 @@ inherit autotools pkgconfig
 
 EXTRA_OECONF = " --enable-tegra --enable-eglimage --enable-experimental --disable-static "
 
-CXXFLAGS += " -I${S}/omx/openmax -I${WORKDIR}/gstomx_src/nv_headers -Wl,--no-undefined "
-CFLAGS += " -I${S}/omx/openmax -I${WORKDIR}/gstomx_src/nv_headers -Wl,--no-undefined "
+CXXFLAGS += " -DTEGRA_ARCH_124 -I${S}/omx/openmax -I${WORKDIR}/gstomx_src/nv_headers -Wl,--no-undefined "
+CFLAGS += " -DTEGRA_ARCH_124 -I${S}/omx/openmax -I${WORKDIR}/gstomx_src/nv_headers -Wl,--no-undefined "
 
 
 do_configure_prepend() {
