@@ -6,6 +6,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=fbc093901857fcd118f065f900982c24"
 SRC_URI = " \
     http://developer.download.nvidia.com/embedded/L4T/r21_Release_v5.0/source/gstomx_src.tbz2 \
     file://0001-fix-gstomx-compilation-issues.patch \
+    file://0001-configure-don-t-use-gst-photography-even-if-it-is-in.patch \
 "
 
 SRC_URI[md5sum] = "457764edbcbe7239f93f6e1284d66b17"
