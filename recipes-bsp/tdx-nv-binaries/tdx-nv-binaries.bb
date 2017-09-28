@@ -6,6 +6,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "(tegra)"
 
 PROVIDES += "virtual/egl virtual/libgles1 virtual/libgles2"
+DEPENDS = "gstreamer gst-plugins-base"
 
 # the khronos headers are taken from here: https://www.khronos.org/registry/khronos_headers.tgz
 # this tarball changes from time to time breaking the receipe, thus it is provided with the recipe
