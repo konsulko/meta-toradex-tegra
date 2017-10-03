@@ -10,7 +10,10 @@ inherit kernel siteinfo
 require recipes-kernel/linux/linux-dtb.inc
 include conf/tdx_version.conf
 
-LINUX_VERSION ?= "4.9.33"
+LINUX_VERSION ?= "4.9.52"
+
+# For CI use one could limit LINUX_VERSION e.g. as done in linux-yocto-dev
+#LINUX_VERSION ?= "4.9"
 
 LOCALVERSION = "-${PR}"
 PR = "${TDX_VER_INT}"
@@ -32,9 +35,17 @@ SRC_URI = " \
     file://0004-mmc-tegra-apalis-tk1-hack-to-make-sd1-functional.patch \
     file://0001-drm-tegra-add-tiling-FB-modifiers.patch \
     file://0001-tegra_defconfig-snapd-squashfs-configuration.patch \
+    file://0001-ARM-tegra-apalis-tk1-support-v1.2-hardware-revision.patch \
 "
-SRC_URI[md5sum] = "7ed29fecc9775ecb5cf3ede79d6ed844"
-SRC_URI[sha256sum] = "f5ca2ba3d6ab5130bcca9c693aecafbd9813db11d450bd74ac7305bc46544c34"
+SRC_URI[md5sum] = "3752317fdacdb9b341ae3e500481eb3a"
+SRC_URI[sha256sum] = "ffdd034f1bf32fa41d1a66a347388c0dc4c3cff6f578a1e29d88b20fbae1048a"
+
+# For CI use one could use the following instead (plus patches still of course)
+#SRCREV = "${AUTOREV}"
+#PV = "${LINUX_VERSION}+git${SRCPV}"
+#S = "${WORKDIR}/git"
+#SRCBRANCH = "linux-4.9.y"
+#SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git;protocol=git;branch=${SRCBRANCH}"
 
 COMPATIBLE_MACHINE = "(apalis-tk1-mainline|apalis-t30-mainline)"
 KERNEL_EXTRA_ARGS = " LOADADDR=0x80008000 "
