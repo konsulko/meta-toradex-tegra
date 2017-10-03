@@ -21,6 +21,8 @@ do_install_append_apalis-tk1 () {
 PACKAGES_prepend = "${PN}-gstnvcamera ${PN}-gstnvvidconv-1.0 ${PN}-nvgstjpeg-1.0 ${PN}-gstnvvidconv-0.10 ${PN}-nvgstjpeg-0.10 ${PN}-nvgstapps "
 RRECOMMENDS_${PN}_append = " ${PN}-gstnvcamera ${PN}-gstnvvidconv-1.0 ${PN}-nvgstjpeg-1.0 ${PN}-gstnvvidconv-0.10 ${PN}-nvgstjpeg-0.10 ${PN}-nvgstapps"
 
+DEPENDS = "gst-plugins-base"
+
 RDEPENDS_${PN}-gstnvcamera = "libgstvideo-1.0"
 RDEPENDS_${PN}-gstnvvidconv-1.0 = "libgstvideo-1.0"
 RDEPENDS_${PN}-gstnvvidconv-0.10 = "gstreamer"
