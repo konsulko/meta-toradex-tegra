@@ -1,5 +1,5 @@
-From 0b118fd9faacf4990e83b8b60e6f49fc9f6f343f Mon Sep 17 00:00:00 2001
-Message-Id: <0b118fd9faacf4990e83b8b60e6f49fc9f6f343f.1507029151.git.marcel.ziswiler@toradex.com>
+From eb5979beac9aaa3be03f1fb3a6542b81f3da2c9f Mon Sep 17 00:00:00 2001
+Message-Id: <eb5979beac9aaa3be03f1fb3a6542b81f3da2c9f.1508244411.git.marcel.ziswiler@toradex.com>
 From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
 Date: Mon, 2 Oct 2017 09:27:16 +0200
 Subject: [PATCH] ARM: tegra: apalis-tk1: support v1.2 hardware revision
@@ -19,17 +19,17 @@ enable signals are now used as GPIO3 and GPIO4.
 Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
 ---
  arch/arm/boot/dts/Makefile                      |    1 +
- arch/arm/boot/dts/tegra124-apalis-v1.2-eval.dts |  300 ++++
+ arch/arm/boot/dts/tegra124-apalis-v1.2-eval.dts |  299 ++++
  arch/arm/boot/dts/tegra124-apalis-v1.2.dtsi     | 2070 +++++++++++++++++++++++
- 3 files changed, 2371 insertions(+)
+ 3 files changed, 2370 insertions(+)
  create mode 100644 arch/arm/boot/dts/tegra124-apalis-v1.2-eval.dts
  create mode 100644 arch/arm/boot/dts/tegra124-apalis-v1.2.dtsi
 
 diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index 9cf688d..50f9414 100644
+index 7037201..1c52eec 100644
 --- a/arch/arm/boot/dts/Makefile
 +++ b/arch/arm/boot/dts/Makefile
-@@ -968,6 +968,7 @@ dtb-$(CONFIG_ARCH_TEGRA_114_SOC) += \
+@@ -857,6 +857,7 @@ dtb-$(CONFIG_ARCH_TEGRA_114_SOC) += \
  	tegra114-tn7.dtb
  dtb-$(CONFIG_ARCH_TEGRA_124_SOC) += \
  	tegra124-apalis-eval.dtb \
@@ -39,10 +39,10 @@ index 9cf688d..50f9414 100644
  	tegra124-nyan-blaze.dtb \
 diff --git a/arch/arm/boot/dts/tegra124-apalis-v1.2-eval.dts b/arch/arm/boot/dts/tegra124-apalis-v1.2-eval.dts
 new file mode 100644
-index 0000000..dc9b28e
+index 0000000..c61eb59
 --- /dev/null
 +++ b/arch/arm/boot/dts/tegra124-apalis-v1.2-eval.dts
-@@ -0,0 +1,300 @@
+@@ -0,0 +1,299 @@
 +/*
 + * Copyright 2016-2017 Toradex AG
 + *
@@ -342,10 +342,9 @@ index 0000000..dc9b28e
 +		line-name = "RESET_MOCI_CTRL";
 +	};
 +};
-+
 diff --git a/arch/arm/boot/dts/tegra124-apalis-v1.2.dtsi b/arch/arm/boot/dts/tegra124-apalis-v1.2.dtsi
 new file mode 100644
-index 0000000..ba782e0
+index 0000000..c2b14e69
 --- /dev/null
 +++ b/arch/arm/boot/dts/tegra124-apalis-v1.2.dtsi
 @@ -0,0 +1,2070 @@
@@ -693,7 +692,7 @@ index 0000000..ba782e0
 +				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 +				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 +				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+				nvidia,rcv-sel = <TEGRA_PIN_DISABLE>;
++				nvidia,rcv-sel = <TEGRA_PIN_ENABLE>;
 +			};
 +			ddc_sda_pv5 {
 +				nvidia,pins = "ddc_sda_pv5";
@@ -701,7 +700,7 @@ index 0000000..ba782e0
 +				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 +				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 +				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+				nvidia,rcv-sel = <TEGRA_PIN_DISABLE>;
++				nvidia,rcv-sel = <TEGRA_PIN_ENABLE>;
 +			};
 +
 +			/* Apalis MMC1 */
