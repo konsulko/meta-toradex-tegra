@@ -12,16 +12,12 @@ include conf/tdx_version.conf
 
 LINUX_VERSION ?= "4.9.52"
 
-# For CI use one could limit LINUX_VERSION e.g. as done in linux-yocto-dev
-#LINUX_VERSION ?= "4.9"
-
 LOCALVERSION = "-${PR}"
 PR = "${TDX_VER_INT}"
 
 PV = "${LINUX_VERSION}"
 S = "${WORKDIR}/linux-${PV}"
-SRC_URI = " \
-    https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz \
+TK1-PATCHES = " \
     file://0001-toradex_apalis_tk1_t30-customize-defconfig.patch \
     file://0001-apalis-tk1-remove-spurious-new-lines.patch \
     file://0002-apalis-tk1-temp-alert-pull-up.patch \
@@ -37,15 +33,23 @@ SRC_URI = " \
     file://0001-tegra_defconfig-snapd-squashfs-configuration.patch \
     file://0001-ARM-tegra-apalis-tk1-support-v1.2-hardware-revision.patch \
 "
+SRC_URI = " \
+    https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz \
+    ${TK1-PATCHES} \
+"
 SRC_URI[md5sum] = "3752317fdacdb9b341ae3e500481eb3a"
 SRC_URI[sha256sum] = "ffdd034f1bf32fa41d1a66a347388c0dc4c3cff6f578a1e29d88b20fbae1048a"
 
 # For CI use one could use the following instead (plus patches still of course)
-#SRCREV = "${AUTOREV}"
-#PV = "${LINUX_VERSION}+git${SRCPV}"
-#S = "${WORKDIR}/git"
-#SRCBRANCH = "linux-4.9.y"
-#SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git;protocol=git;branch=${SRCBRANCH}"
+LINUX_VERSION_use-head-next ?= "4.9"
+SRCREV_use-head-next = "${AUTOREV}"
+PV_use-head-next = "${LINUX_VERSION}+git${SRCPV}"
+S_use-head-next = "${WORKDIR}/git"
+SRCBRANCH_use-head-next = "linux-4.9.y"
+SRC_URI_use-head-next = " \
+    git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git;protocol=git;branch=${SRCBRANCH} \
+    ${TK1-PATCHES} \
+"
 
 COMPATIBLE_MACHINE = "(apalis-tk1-mainline|apalis-t30-mainline)"
 KERNEL_EXTRA_ARGS = " LOADADDR=0x80008000 "

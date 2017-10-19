@@ -8,10 +8,12 @@ LOCALVERSION = "-${PR}"
 PR = "${TDX_VER_INT}"
 
 SRCREV = "7753763827bb50f4645622e83c47e192e0ba0194"
+SRCREV_use-head-next = "${AUTOREV}"
 
 PV = "${LINUX_VERSION}+gitr${SRCPV}"
 S = "${WORKDIR}/git"
 SRCBRANCH = "tegra"
+SRCBRANCH_use-head-next = "tegra-next"
 SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRANCH}"
 
 COMPATIBLE_MACHINE = "(apalis-t30|colibri-pxa|colibri-t20|colibri-t30)"
