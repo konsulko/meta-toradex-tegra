@@ -24,7 +24,7 @@ TK1-PATCHES = " \
     file://0003-apalis-tk1-optional-displayport-hot-plug-detect.patch \
     file://0004-apalis-tk1-adjust-pin-muxing-for-v1.1-hw.patch \
     file://0005-apalis-tk1-working-sd-card-detect-on-v1.1-hw.patch \
-    file://0006-apalis-tk1-update-compatibility-comment.patch\
+    file://0006-apalis-tk1-update-compatibility-comment.patch \
     file://0001-apalis_t30-tk1-fix-pcie-clock-and-reset-not-conformi.patch \
     file://0002-igb-integrate-tools-only-device-support.patch \
     file://0003-apalis_t30-tk1-igb-no-nvm-and-Ethernet-MAC-address-h.patch \

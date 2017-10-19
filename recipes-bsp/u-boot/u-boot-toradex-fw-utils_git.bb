@@ -20,6 +20,8 @@ FILESPATHPKG =. "git:"
 # This revision is based on upstream "v2016.11"
 SRCREV = "1b121c6ab548a9af0a27876e9eaa0c654c1dc3e1"
 SRCBRANCH = "2016.11-toradex"
+SRCREV_use-head-next = "${AUTOREV}"
+SRCBRANCH_use-head-next = "2016.11-toradex-next"
 SRC_URI = " \
     git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
     file://fw_env.config \
