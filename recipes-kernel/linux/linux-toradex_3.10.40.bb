@@ -13,13 +13,13 @@ LINUX_VERSION ?= "3.10.40"
 LOCALVERSION = "-${PR}"
 PR = "${TDX_VER_INT}"
 
-SRCREV = "e9636255d1a151de8903e952f64ed779e832f613"
+SRCREV = "22e0897658b3250d50dd7f37b80ff3e35c9518a2"
 SRCREV_use-head-next = "${AUTOREV}"
 
 PV = "${LINUX_VERSION}+gitr${SRCPV}"
 S = "${WORKDIR}/git"
-SRCBRANCH = "toradex_tk1_l4t_r21.5"
-SRCBRANCH_use-head-next = "toradex_tk1_l4t_r21.5-next"
+SRCBRANCH = "toradex_tk1_l4t_r21.6"
+SRCBRANCH_use-head-next = "toradex_tk1_l4t_r21.6-next"
 SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRANCH}"
 
 COMPATIBLE_MACHINE = "apalis-tk1"
