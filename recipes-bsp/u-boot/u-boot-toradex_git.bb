@@ -34,8 +34,8 @@ SRC_URI_append_apalis-tk1-mainline = " \
     file://PM375_Hynix_2GB_H5TC4G63AFR_RDA_924MHz.bct \
 "
 
-PV = "2016.11"
-PR = "${TDX_VER_INT}+gitr${SRCPV}"
+PV = "2016.11+git${SRCPV}"
+PR = "${TDX_VER_INT}"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
