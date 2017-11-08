@@ -25,6 +25,7 @@ SRCREV_use-head-next = "${AUTOREV}"
 SRCBRANCH_use-head-next = "2016.11-toradex-next"
 SRC_URI = " \
     git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
+    file://default-gcc.patch \
     file://fw_env.config \
 "
 SRC_URI_append_tegra3 = " file://fw_unlock_mmc.sh"
@@ -37,9 +38,9 @@ S = "${WORKDIR}/git"
 
 #actually this depend on the upstream U-Boot version and not on the machine
 CC_remove = "-mfpu=neon"
-EXTRA_OEMAKE = 'CC="${CC}"'
-
-INSANE_SKIP_${PN} = "already-stripped ldflags"
+INSANE_SKIP_${PN} = "already-stripped"
+EXTRA_OEMAKE_class-target = 'CROSS_COMPILE=${TARGET_PREFIX} CC="${CC} ${CFLAGS} ${LDFLAGS}" HOSTCC="${BUILD_CC} ${BUILD_CFLAGS} ${BUILD_LDFLAGS}" V=1'
+EXTRA_OEMAKE_class-cross = 'ARCH=${TARGET_ARCH} CC="${CC} ${CFLAGS} ${LDFLAGS}" V=1'
 
 inherit pkgconfig uboot-config
 
@@ -72,5 +73,13 @@ pkg_postinst_${PN}_colibri-t20 () {
     fi
     grep u-boot-env /proc/mtd | awk '{print "/dev/" substr($1,0,4) " 0x00000000 0x00010000 0x" $3 " 1" >> "/etc/fw_env.config" }'
 }
+
+do_install_class-cross () {
+	install -d ${D}${bindir_cross}
+	install -m 755 ${S}/tools/env/fw_printenv ${D}${bindir_cross}/fw_printenv
+	install -m 755 ${S}/tools/env/fw_printenv ${D}${bindir_cross}/fw_setenv
+}
+
+SYSROOT_DIRS_append_class-cross = " ${bindir_cross}"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
