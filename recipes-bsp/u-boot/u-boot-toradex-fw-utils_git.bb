@@ -27,9 +27,8 @@ SRC_URI = " \
     git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
     file://default-gcc.patch \
     file://fw_env.config \
+    file://fw_unlock_mmc.sh \
 "
-SRC_URI_append_tegra3 = " file://fw_unlock_mmc.sh"
-SRC_URI_append_tegra124 = " file://fw_unlock_mmc.sh"
 
 PV = "2016.11+git${SRCPV}"
 PR = "${TDX_VER_INT}"
@@ -56,14 +55,17 @@ do_install () {
     install -m 644 ${WORKDIR}/fw_env.config ${D}${sysconfdir}/
 }
 
-do_install_append_tegra3() {
+install_unlock_emmc() {
     install -d ${D}${sysconfdir}/profile.d/
     install -m 0644 ${WORKDIR}/fw_unlock_mmc.sh ${D}${sysconfdir}/profile.d/fw_unlock_mmc.sh
 }
 
+do_install_append_tegra3() {
+    install_unlock_emmc
+}
+
 do_install_append_tegra124() {
-    install -d ${D}${sysconfdir}/profile.d/
-    install -m 0644 ${WORKDIR}/fw_unlock_mmc.sh ${D}${sysconfdir}/profile.d/fw_unlock_mmc.sh
+    install_unlock_emmc
 }
 
 pkg_postinst_${PN}_colibri-t20 () {
