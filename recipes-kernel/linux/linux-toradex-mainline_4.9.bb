@@ -7,7 +7,6 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/linux-toradex-mainline-4.9:"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
 inherit kernel siteinfo
-require recipes-kernel/linux/linux-dtb.inc
 include conf/tdx_version.conf
 
 LINUX_VERSION ?= "4.9.52"
