@@ -1,0 +1,53 @@
+From 0a6205b902807ab567285048b5094bdbbca4d262 Mon Sep 17 00:00:00 2001
+Message-Id: <0a6205b902807ab567285048b5094bdbbca4d262.1510580437.git.marcel.ziswiler@toradex.com>
+In-Reply-To: <8d39626d07718220b426e9be045df8ed9d1fd707.1510580437.git.marcel.ziswiler@toradex.com>
+References: <8d39626d07718220b426e9be045df8ed9d1fd707.1510580437.git.marcel.ziswiler@toradex.com>
+From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Date: Thu, 15 Dec 2016 10:56:26 +0100
+Subject: [PATCH 5/8] mmc: tegra: apalis-tk1: hack to make sd1 functional
+
+Disable the external loopback and use the internal loopback as per
+SDMMC_VENDOR_MISC_CNTRL_0 register's SDMMC_SPARE1 bits being set to
+0xfffd according to the TRM.
+
+Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Acked-by: Dominik Sliwa <dominik.sliwa@toradex.com>
+
+(cherry picked from toradex_tk1_l4t_r21.5 commit
+fc14b7601e5ca587afd97936ef3fd599f4e9281c)
+---
+ drivers/mmc/host/sdhci-tegra.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
+index 0cd6fa8..327883d 100644
+--- a/drivers/mmc/host/sdhci-tegra.c
++++ b/drivers/mmc/host/sdhci-tegra.c
+@@ -43,6 +43,7 @@
+ #define SDHCI_MISC_CTRL_ENABLE_SDR50		0x10
+ #define SDHCI_MISC_CTRL_ENABLE_SDHCI_SPEC_300	0x20
+ #define SDHCI_MISC_CTRL_ENABLE_DDR50		0x200
++#define SDHCI_MISC_CTRL_ENABLE_EXT_LOOPBACK	0x20000
+ 
+ #define SDHCI_TEGRA_AUTO_CAL_CONFIG		0x1e4
+ #define SDHCI_AUTO_CAL_START			BIT(31)
+@@ -181,6 +182,16 @@ static void tegra_sdhci_reset(struct sdhci_host *host, u8 mask)
+ 			clk_ctrl |= SDHCI_CLOCK_CTRL_SDR50_TUNING_OVERRIDE;
+ 	}
+ 
++#define CONFIG_MACH_APALIS_TK1
++#ifdef CONFIG_MACH_APALIS_TK1
++	/*
++	 * Disable the external loopback and use the internal loopback as per
++	 * SDMMC_VENDOR_MISC_CNTRL_0 register's SDMMC_SPARE1 bits being set to
++	 * 0xfffd according to the TRM.
++	 */
++	misc_ctrl &= ~SDHCI_MISC_CTRL_ENABLE_EXT_LOOPBACK;
++#endif /* CONFIG_MACH_APALIS_TK1 */
++
+ 	sdhci_writel(host, misc_ctrl, SDHCI_TEGRA_VENDOR_MISC_CTRL);
+ 	sdhci_writel(host, clk_ctrl, SDHCI_TEGRA_VENDOR_CLOCK_CTRL);
+ 
+-- 
+2.9.5
+

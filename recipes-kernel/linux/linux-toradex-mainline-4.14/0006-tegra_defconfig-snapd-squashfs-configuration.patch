@@ -1,0 +1,36 @@
+From b05bf63df5d97e6260ea26ca90247613abc38c08 Mon Sep 17 00:00:00 2001
+Message-Id: <b05bf63df5d97e6260ea26ca90247613abc38c08.1510580437.git.marcel.ziswiler@toradex.com>
+In-Reply-To: <8d39626d07718220b426e9be045df8ed9d1fd707.1510580437.git.marcel.ziswiler@toradex.com>
+References: <8d39626d07718220b426e9be045df8ed9d1fd707.1510580437.git.marcel.ziswiler@toradex.com>
+From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Date: Sun, 18 Jun 2017 01:23:26 +0200
+Subject: [PATCH 6/8] tegra_defconfig: snapd squashfs configuration
+
+Prepare for snapd integration.
+
+Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+---
+ arch/arm/configs/tegra_defconfig | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/configs/tegra_defconfig b/arch/arm/configs/tegra_defconfig
+index cb97ea2..cfe997c 100644
+--- a/arch/arm/configs/tegra_defconfig
++++ b/arch/arm/configs/tegra_defconfig
+@@ -295,7 +295,12 @@ CONFIG_AUTOFS4_FS=y
+ CONFIG_VFAT_FS=y
+ CONFIG_TMPFS=y
+ CONFIG_TMPFS_POSIX_ACL=y
+-CONFIG_SQUASHFS=y
++CONFIG_SQUASHFS=m
++CONFIG_SQUASHFS_FILE_DIRECT=y
++CONFIG_SQUASHFS_DECOMP_MULTI_PERCPU=y
++CONFIG_SQUASHFS_XATTR=y
++CONFIG_SQUASHFS_ZLIB=y
++CONFIG_SQUASHFS_LZ4=y
+ CONFIG_SQUASHFS_LZO=y
+ CONFIG_SQUASHFS_XZ=y
+ CONFIG_NFS_FS=y
+-- 
+2.9.5
+
