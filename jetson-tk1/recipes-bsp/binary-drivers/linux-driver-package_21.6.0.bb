@@ -10,8 +10,8 @@ SRC_URI = "http://developer.download.nvidia.com/embedded/L4T/r21_Release_v6.0/Te
 
 LIC_FILES_CHKSUM = "file://nv_tegra/LICENSE;md5=60ad17cc726658e8cf73578bea47b85f"
 
-SRC_URI[md5sum] = "3ed3be6df77fafe6ccf6d35844376a29"
-SRC_URI[sha256sum] = "7550dc6fd9b9b293cde8b0ca38f91890adcc3d804492264fde813d076180cdc8"
+SRC_URI[md5sum] = "e82193b117171243ea21c908fbd347ed"
+SRC_URI[sha256sum] = "b9dfbdd0d21d6454e5e9668673a3494e7567698764673938d4c1ef83f42ee72d"
 
 PR = "r6"
 
