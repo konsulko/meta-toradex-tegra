@@ -35,7 +35,7 @@ SRC_URI_append_apalis-tk1-mainline = " \
 "
 
 PV = "2016.11+git${SRCPV}"
-PR = "${TDX_VER_INT}"
+PR = "${TDX_VER_ITEM}"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 

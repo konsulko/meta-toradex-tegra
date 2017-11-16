@@ -10,7 +10,7 @@ include conf/tdx_version.conf
 LINUX_VERSION ?= "3.10.40"
 
 LOCALVERSION = "-${PR}"
-PR = "${TDX_VER_INT}"
+PR = "${TDX_VER_ITEM}"
 
 SRCREV = "22e0897658b3250d50dd7f37b80ff3e35c9518a2"
 SRCREV_use-head-next = "${AUTOREV}"

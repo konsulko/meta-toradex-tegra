@@ -12,7 +12,7 @@
 # Copyright 2017 (C) Toradex Inc.
 
 SCMVERSION ??= "y"
-LOCALVERSION ??= "-${TDX_VER_INT}"
+LOCALVERSION ??= "-${TDX_VER_ITEM}"
 
 UBOOT_LOCALVERSION = "${LOCALVERSION}"
 

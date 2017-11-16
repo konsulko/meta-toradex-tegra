@@ -31,7 +31,7 @@ SRC_URI = " \
 "
 
 PV = "2016.11+git${SRCPV}"
-PR = "${TDX_VER_INT}"
+PR = "${TDX_VER_ITEM}"
 
 S = "${WORKDIR}/git"
 
