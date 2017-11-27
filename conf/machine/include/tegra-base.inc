@@ -19,6 +19,11 @@ RDEPENDS_kernel-base = ""
 PREFERRED_PROVIDER_u-boot = "u-boot-toradex"
 PREFERRED_PROVIDER_virtual/bootloader = "u-boot-toradex"
 
+# require u-boot-dtb-tegra.bin to be used
+UBOOT_IMAGE = "u-boot-dtb-tegra-${MACHINE}-${PV}-${PR}.${UBOOT_SUFFIX}"
+UBOOT_BINARY = "u-boot-dtb-tegra.${UBOOT_SUFFIX}"
+UBOOT_SYMLINK = "u-boot-dtb-tegra-${MACHINE}.${UBOOT_SUFFIX}"
+
 PREFERRED_PROVIDER_virtual/mesa = "mesa"
 PREFERRED_PROVIDER_virtual/egl = "tdx-nv-binaries"
 PREFERRED_PROVIDER_virtual/libgles1 = "tdx-nv-binaries"

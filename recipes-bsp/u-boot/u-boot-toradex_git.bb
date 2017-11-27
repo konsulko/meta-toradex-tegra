@@ -37,11 +37,6 @@ SRC_URI_append_apalis-tk1-mainline = " \
 PV = "2016.11"
 PR = "${TDX_VER_INT}+gitr${SRCPV}"
 
-# require u-boot-dtb-tegra.bin to be used
-UBOOT_IMAGE = "u-boot-dtb-tegra-${MACHINE}-${PV}-${PR}.${UBOOT_SUFFIX}"
-UBOOT_BINARY = "u-boot-dtb-tegra.${UBOOT_SUFFIX}"
-UBOOT_SYMLINK = "u-boot-dtb-tegra-${MACHINE}.${UBOOT_SUFFIX}"
-
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 do_deploy_append_apalis-tk1() {
