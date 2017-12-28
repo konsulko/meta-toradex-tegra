@@ -9,7 +9,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 inherit kernel siteinfo
 include conf/tdx_version.conf
 
-LINUX_VERSION ?= "4.14"
+LINUX_VERSION ?= "4.14.8"
 
 LOCALVERSION = "-${PR}"
 PR = "${TDX_VER_ITEM}"
@@ -30,8 +30,8 @@ SRC_URI = " \
     https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz \
     ${TK1-PATCHES} \
 "
-SRC_URI[md5sum] = "bacdb9ffdcd922aa069a5e1520160e24"
-SRC_URI[sha256sum] = "f81d59477e90a130857ce18dc02f4fbe5725854911db1e7ba770c7cd350f96a7"
+SRC_URI[md5sum] = "0a2120cc58fe9ff0cbb7330dd1acb82e"
+SRC_URI[sha256sum] = "6ebcc57ba31d714af872347184d1de32f4ab0b7096ef4e062d1ca6b3234d9333"
 
 # For CI use one could use the following instead (plus patches still of course)
 LINUX_VERSION_use-head-next ?= "4.14"
