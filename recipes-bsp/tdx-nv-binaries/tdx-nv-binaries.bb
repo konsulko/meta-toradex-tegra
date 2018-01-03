@@ -20,6 +20,7 @@ SRC_COMMON = " \
     file://mimeapps.list \
     file://nvgstplayer.desktop \
     https://www.khronos.org/registry/omxil/api/1.1.2/OpenMAX_IL_1_1_2_Header.zip;name=openmax-h;unpack=no \
+    file://0001-egl-Add-EGL_PLATFORM_X11_KHR-alias-to-EGL_PLATFORM_X.patch;apply=no \
 "
 
 SRC_URI_tegra2 = " \
@@ -96,6 +97,8 @@ INSANE_SKIP_${PN}-nv-gstapps = "build-deps dev-so ldflags already-stripped textr
 do_patch () {
     mkdir -p OpenMAX/il
     unzip -o -d OpenMAX/il OpenMAX_IL_1_1_2_Header.zip
+    cd ${WORKDIR}/khronos_headers
+    patch -p 1 < ${WORKDIR}/0001-egl-Add-EGL_PLATFORM_X11_KHR-alias-to-EGL_PLATFORM_X.patch
 }
 
 do_compile () {
