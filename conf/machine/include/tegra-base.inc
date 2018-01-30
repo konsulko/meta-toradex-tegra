@@ -12,7 +12,7 @@ XSERVER = "xserver-xorg \
            xf86-input-keyboard"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
-KERNEL_IMAGETYPE = "uImage"
+KERNEL_IMAGETYPE = "zImage"
 # The kernel lives in a seperate FAT or UBI partition, don't deploy it in /boot
 RDEPENDS_kernel-base = ""
 
