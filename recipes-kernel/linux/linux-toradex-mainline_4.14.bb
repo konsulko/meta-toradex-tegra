@@ -9,7 +9,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 inherit kernel siteinfo
 include conf/tdx_version.conf
 
-LINUX_VERSION ?= "4.14.8"
+LINUX_VERSION ?= "4.14.29"
 
 LOCALVERSION = "-${PR}"
 PR = "${TDX_VER_ITEM}"
@@ -25,6 +25,9 @@ TK1-PATCHES = " \
     file://0006-tegra_defconfig-snapd-squashfs-configuration.patch \
     file://0007-ARM-tegra-apalis-tk1-support-v1.2-hardware-revision.patch \
     file://0008-apalis-tk1-fix-pcie-reset-for-reliable-gigabit-ether.patch \
+    file://0009-drm-tegra-gem-Reshuffle-declarations.patch \
+    file://0010-drm-tegra-gem-Make-__tegra_gem_mmap-available-more-w.patch \
+    file://0011-drm-tegra-fb-Implement-fb_mmap-callback.patch \
 "
 SRC_URI = " \
     https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz \
