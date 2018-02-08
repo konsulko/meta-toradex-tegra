@@ -9,7 +9,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 inherit kernel siteinfo
 include conf/tdx_version.conf
 
-LINUX_VERSION ?= "4.14.8"
+LINUX_VERSION ?= "4.14.30"
 
 LOCALVERSION = "-${PR}"
 PR = "${TDX_VER_ITEM}"
@@ -25,13 +25,16 @@ TK1-PATCHES = " \
     file://0006-tegra_defconfig-snapd-squashfs-configuration.patch \
     file://0007-ARM-tegra-apalis-tk1-support-v1.2-hardware-revision.patch \
     file://0008-apalis-tk1-fix-pcie-reset-for-reliable-gigabit-ether.patch \
+    file://0009-drm-tegra-gem-Reshuffle-declarations.patch \
+    file://0010-drm-tegra-gem-Make-__tegra_gem_mmap-available-more-w.patch \
+    file://0011-drm-tegra-fb-Implement-fb_mmap-callback.patch \
 "
 SRC_URI = " \
     https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz \
     ${TK1-PATCHES} \
 "
-SRC_URI[md5sum] = "0a2120cc58fe9ff0cbb7330dd1acb82e"
-SRC_URI[sha256sum] = "6ebcc57ba31d714af872347184d1de32f4ab0b7096ef4e062d1ca6b3234d9333"
+SRC_URI[md5sum] = "1f25f5abe06404f9c3d41fbf25d8a22e"
+SRC_URI[sha256sum] = "7c5bb02feb48f1b7ab9a9c3ff051f325c0c6474fb0e25d9d7bcee91b2cfe6645"
 
 # For CI use one could use the following instead (plus patches still of course)
 LINUX_VERSION_use-head-next ?= "4.14"
