@@ -6,7 +6,8 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "(tegra)"
 
 PROVIDES += "virtual/egl virtual/libgles1 virtual/libgles2"
-DEPENDS = "gstreamer gst-plugins-base"
+DEPENDS = "gstreamer gst-plugins-base libpcre virtual/xserver virtual/libx11 libxdamage libxext libxfixes"
+RDEPENDS_${PN}-nv-gstapps = "libpcre libpcreposix"
 
 # the khronos headers are taken from here: https://www.khronos.org/registry/khronos_headers.tgz
 # this tarball changes from time to time breaking the receipe, thus it is provided with the recipe
@@ -85,14 +86,16 @@ FILES_${PN}-restricted-codecs += " \
 "
 FILES_${PN}-nv-gstapps += " \
     /usr/bin/* \
+    /usr/lib/libpcre* \
     /usr/share/doc/nv_gstapps/* \
 "
 
-#no gnu_hash in NVIDIA binaries, skip QA dev-so for this package
-#we have symlinks ending in .so, skip QA ldflags for this package
+#no gnu_hash in NVIDIA binaries, skip QA ldflags
+#we have symlinks ending in .so, skip QA dev-so
+#the qa check is not able to follow the libpcre symlink, skip QA file-rdeps
 #inhibit warnings about files being stripped
-INSANE_SKIP_${PN} = "build-deps dev-so ldflags already-stripped textrel"
-INSANE_SKIP_${PN}-nv-gstapps = "build-deps dev-so ldflags already-stripped textrel file-rdeps"
+INSANE_SKIP_${PN} = "dev-so ldflags already-stripped textrel"
+INSANE_SKIP_${PN}-nv-gstapps = "dev-so ldflags already-stripped textrel file-rdeps"
 
 do_patch () {
     mkdir -p OpenMAX/il
@@ -104,7 +107,7 @@ do_patch () {
 do_compile () {
     #unpack the different packages
     #nvidia drivers
-    mkdir nvidia_drivers
+    mkdir -p nvidia_drivers
     tar -C nvidia_drivers -xjf ${WORKDIR}/Linux_for_Tegra/nv_tegra/nvidia_drivers.tbz2
     tar -C nvidia_drivers -xjf ${WORKDIR}/Linux_for_Tegra/nv_tegra/config.tbz2
 
@@ -114,7 +117,7 @@ do_compile () {
     cp ${WORKDIR}/Linux_for_Tegra/nv_tegra/nv_sample_apps/nv*.txt nvgstapps/usr/share/doc/nv_gstapps/
 
     #restricted codecs
-    mkdir restricted_codecs
+    mkdir -p restricted_codecs
     tar -C restricted_codecs -xjf ${WORKDIR}/restricted_codecs.tbz2
 }
 
