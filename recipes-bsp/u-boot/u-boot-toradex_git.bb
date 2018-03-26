@@ -1,4 +1,5 @@
 require recipes-bsp/u-boot/u-boot.inc
+require recipes-bsp/u-boot/u-boot-toradex-env.inc
 include conf/tdx_version.conf
 inherit tegra-u-boot-localversion
 
