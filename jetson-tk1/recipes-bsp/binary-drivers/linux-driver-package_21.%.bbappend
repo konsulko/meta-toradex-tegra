@@ -2,7 +2,6 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/linux-driver-package:"
 
 SRC_URI_append_apalis-tk1 = " \
     file://xorg.conf \
-    file://nvfb.service \
     file://nv.service \
 "
 inherit systemd
@@ -13,7 +12,6 @@ do_install_append_apalis-tk1 () {
 
     cp ${WORKDIR}/xorg.conf ${D}/etc/X11/
     install -d ${D}${systemd_unitdir}/system/
-    install -m 0755 ${WORKDIR}/nvfb.service ${D}${systemd_unitdir}/system
     install -m 0755 ${WORKDIR}/nv.service ${D}${systemd_unitdir}/system
 }
 
@@ -61,12 +59,6 @@ FILES_${PN}-boot = " \
     ${bindir}/nv \
 "
 
-FILES_${PN}-firstboot = "\
-    ${systemd_unitdir}/system/nvfb.service \
-    ${bindir}/nvfb \
-    ${sysconfdir}/nv/nvfirstboot \
-"
-
 #no gnu_hash in NVIDIA binaries, skip QA dev-so for this package
 #we have symlinks ending in .so, skip QA ldflags for this package
 #inhibit warnings about files being stripped
@@ -99,11 +91,14 @@ do_install_append () {
     install -m 0755 ${NV_SAMPLE}/usr/lib/arm-linux-gnueabihf/gstreamer-0.10/libnvgstjpeg.so ${D}${libdir}/gstreamer-0.10
 
     install -m 0755 ${WORKDIR}/nv ${D}${bindir}
-    install -m 0755 ${WORKDIR}/nvfb ${D}${bindir}
-    rm -rf ${D}${sysconfdir}/init.d/nvfb
     rm -rf ${D}${sysconfdir}/init.d/nv
+
+    # Correct the ld.so.conf.d file
+    echo "/usr/lib/arm-linux-gnueabihf/tegra" > \
+        ${D}${sysconfdir}/ld.so.conf.d/nvidia-tegra.conf
+    echo "/usr/lib/arm-linux-gnueabihf/tegra-egl" >> \
+        ${D}${sysconfdir}/ld.so.conf.d/nvidia-tegra.conf
 }
 
-SYSTEMD_SERVICE_${PN} = "nvfb.service"
 SYSTEMD_SERVICE_${PN} += " nv.service"
 

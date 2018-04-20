@@ -5,7 +5,6 @@ LICENSE = "Proprietary"
 SRC_URI = "http://developer.download.nvidia.com/embedded/L4T/r21_Release_v6.0/Tegra124_Linux_R21.6.0_armhf.tbz2 \
            file://xorg.conf.add \
            file://nv \
-           file://nvfb \
 	   "
 
 LIC_FILES_CHKSUM = "file://nv_tegra/LICENSE;md5=60ad17cc726658e8cf73578bea47b85f"
@@ -22,9 +21,6 @@ INITSCRIPT_PACKAGES = "${PN}-boot ${PN}-firstboot"
 INITSCRIPT_NAME_${PN}-boot = "nv"
 INITSCRIPT_PARAMS_${PN}-boot = "start 41 S . "
 
-INITSCRIPT_NAME_${PN}-firstboot = "nvfb"
-INITSCRIPT_PARAMS_${PN}-firstboot = "start 40 S . "
-
 DEPENDS = "virtual/libx11 alsa-lib libxext"
 
 INSANE_SKIP_${PN} = "ldflags"
@@ -34,7 +30,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 S = "${WORKDIR}/Linux_for_Tegra"
 
 
-PACKAGES =+ "${PN}-firmware ${PN}-boot ${PN}-firstboot"
+PACKAGES =+ "${PN}-firmware ${PN}-boot"
 
 INSANE_SKIP_${PN}-dev = "ldflags"
 
@@ -68,9 +64,7 @@ do_install () {
     # install init scripts
     install -d ${D}${sysconfdir}/init.d/
     install -m 0755 ${WORKDIR}/nv ${D}${sysconfdir}/init.d/nv
-    install -m 0755 ${WORKDIR}/nvfb ${D}${sysconfdir}/init.d/nvfb
     install -d ${D}${sysconfdir}/nv
-    touch ${D}${sysconfdir}/nv/nvfirstboot
 }
 
 do_populate_sysroot () {
@@ -92,9 +86,4 @@ PACKAGEFUNCS =+ "add_xorg_abi_depends"
 
 FILES_${PN}-boot = " \
 	${sysconfdir}/init.d/nv \
-"
-
-FILES_${PN}-firstboot = "\
-	${sysconfdir}/init.d/nvfb \
-	${sysconfdir}/nv/nvfirstboot \
 "
